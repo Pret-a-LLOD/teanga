@@ -68,13 +68,8 @@ def generate_setup_operators(list_of_containers):
 #}}
 
 def generate_setupOperator_rqService():
-        name = "request_service"
-        if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
-        else:
-            image_localId = f"{name}:{tag}" 
-        task_id=f"setup--{name}--{tag}--{port}"
-        command=f'docker run --rm -d {image_localId}'
+        task_id=f"setup--requestService"
+        command=f'docker run --rm -dt rq_service'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -228,6 +223,7 @@ with open(workflow_file) as workflow_input:
     containers = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
                 for d in workflow.values()]
     operators["setup_operators"] = generate_setup_operators(containers)
+
 
     # docker cp operators
     containers = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
