@@ -7,7 +7,7 @@ from airflow.utils.dates import days_ago
 import sys
 import os
 sys.path.insert(0,os.getcwd())
-from dags_generator import dag, operators
+from dags_generator import dag, operators_instances
 {%OPERATORS%}
 
 #{%DAG_STR%}

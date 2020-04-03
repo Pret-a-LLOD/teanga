@@ -1,1 +1,1 @@
-from .generator import dag, operators
+from .generator import dag, operators_instances

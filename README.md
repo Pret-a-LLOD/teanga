@@ -1,5 +1,3 @@
-# teanga-executor-service
-Teanga executor service
 # Guidelines in how to use Teanga Backend
 ## requirements
 ### docker & docker.sock file
