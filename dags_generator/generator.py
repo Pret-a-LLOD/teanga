@@ -43,6 +43,20 @@ def generate_pull_operators(list_of_images):
                 provide_context=True,
                 xcom_push=True,
         )
+    repo="berstearns"
+    name="rq_manager"
+    tag="v1"
+    full_imagePath = f"{repo}/{name}:{tag}" 
+    task_id=f"pull--{repo}--{name}--{tag}"
+    command=f'docker pull {full_imagePath}'
+    print(command);
+    operators[task_id] = BashOperator(
+            task_id=task_id,
+            bash_command=command,
+            dag=dag,
+            provide_context=True,
+            xcom_push=True,
+    )
     return operators
 #}}
 
@@ -72,7 +86,7 @@ def generate_setupOperator_rqService():
     #{{
         operators = {}
         task_id=f"setup--requestService"
-        command=f'docker run --rm --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -dt rq_service'
+        command=f'docker run --rm --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -dt berstearns/rq_manager:v1'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
