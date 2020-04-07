@@ -65,13 +65,14 @@ def generate_setup_operators(list_of_containers):
     """
 #{
     operators = {}
-    for (repo,name,tag,port) in list_of_containers:
-        if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
+    for workflow_id,service_info in list_of_containers:
+        service_info = d
+        if d['repo']:
+            img_pullref = f"{d['repo']}/{d['name']}:{d['tag']}" 
         else:
-            image_localId = f"{name}:{tag}" 
-        task_id=f"setup--{name}--{tag}--{port}"
-        command=f'docker run --rm -d -p {port}:{port} -e PORT={port} {image_localId}'
+            img_pullref = f"{d['name']}:{d['tag']}" 
+        task_id=f"setup--{d['name']}--{d['tag']}--{d['port']}"
+        command=f"docker run --rm -d -p {d['port']}:{d['port']} -e PORT={d['port']} {img_pullref}"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -102,15 +103,16 @@ def generate_initWebserver_operators(list_of_containers):
     """
 #{
     operators = {}
-    for (repo,name,tag,port) in list_of_containers:
+    for workflow_id,service_info in list_of_containers:
+        service_info = d
         if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
+            image_localId = f"{d['repo']}/{d['name']}:{d['tag']}" 
         else:
-            image_localId = f"{name}:{tag}" 
-        setup_task_id=f"setup--{name}--{tag}--{port}"
-        task_id=f"initWebserver--{name}--{tag}--{port}"
+            image_localId = f"{d['name']}:{d['tag']}" 
+        setup_task_id=f"setup--{d['name']}--{d['tag']}--{d['port']}"
+        task_id=f"initWebserver--{d['name']}--{d['tag']}--{d['port']}"
 
-        command=f'docker exec -d {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} sh -c "/app/webserver.sh {port}"'
+        command=f'docker exec -d {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} sh -c "/app/webserver.sh {d["port"]}"'
         #f'echo {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} >> /teanga/text.txt'
         print(command);
         operators[task_id] = BashOperator(
@@ -127,13 +129,14 @@ def generate_dockercp_operators(list_of_containers):
     """
 #{
     operators = {}
-    for (repo,name,tag,port) in list_of_containers:
+    for workflow_id,service_info in list_of_containers:
+        service_info = d
         if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
+            image_localId = f"{d['repo']}/{d['name']}:{d['tag']}" 
         else:
-            image_localId = f"{name}:{tag}" 
-        setup_task_id=f"setup--{name}--{tag}--{port}"
-        task_id=f"dockercp-OAS--{name}--{tag}--{port}"
+            image_localId = f"{d['name']}:{d['tag']}" 
+        setup_task_id=f"setup--workflow_{workflow_id}--{d['name']}--{d['tag']}--{d['port']}"
+        task_id=f"dockercp-OAS--{d['name']}--{d['tag']}--{d['port']}"
 
         command=f'docker cp {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}:/openapi.yaml /teanga/OAS/{{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
         #f'echo {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} >> /teanga/text.txt'
@@ -168,13 +171,14 @@ def generate_echo_operators(list_of_containers):
     """
 #{
     operators = {}
-    for (repo,name,tag,port) in list_of_containers:
+    for workflow_id,service_info in list_of_containers:
+        service_info = d
         if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
+            image_localId = f"{d['repo']}/{d['name']}:{d['tag']}" 
         else:
-            image_localId = f"{name}:{tag}" 
-        setup_task_id=f"setup--{name}--{tag}"
-        task_id=f"echo--{name}--{tag}"
+            image_localId = f"{d['name']}:{d['tag']}" 
+        setup_task_id=f"setup--workflow_{workflow_id}--{d['name']}--{d['tag']}"
+        task_id=f"echo--{d['name']}--{d['tag']}"
         command=f'echo {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} >> /teanga/text.txt'
         print(command);
         operators[task_id] = BashOperator(
@@ -191,13 +195,14 @@ def generate_stop_operators(list_of_containers):
     """
 #{{
     operators = {}
-    for (repo,name,tag,port) in list_of_containers:
+    for workflow_id,service_info in list_of_containers:
+        service_info = d
         if repo:
-            image_localId = f"{repo}/{name}:{tag}" 
+            image_localId = f"{d['repo']}/{d['name']}:{d['tag']}" 
         else:
-            image_localId = f"{name}:{tag}" 
-        setup_task_id=f"setup--{name}--{tag}--{port}"
-        task_id=f"stop--{name}--{tag}--{port}"
+            image_localId = f"{d['name']}:{d['tag']}" 
+        setup_task_id=f"setup--workflow_{workflow_id}--{d['name']}--{d['tag']}--{d['port']}"
+        task_id=f"stop--{d['name']}--{d['tag']}--{d['port']}"
         command=f'docker stop {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
         print(command);
         operators[task_id] = BashOperator(
@@ -248,33 +253,28 @@ operators_instances = {}
 
 with open(workflow_file) as workflow_input:
     workflow = json.load(workflow_input)
+    # 
+    services = [(service_id, d)  
+        for service_id, d in workflow.items()]
 
     # instanciate operators
     #{{
     # pull operators_instances 
-    images = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
-                for d in workflow.values()]
-    operators_instances["pull_operators_instances"] = generate_pull_operators(images)
+    operators_instances["pull_operators_instances"] = generate_pull_operators(services)
 
     # services setup operators_instances
-    containers = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
-                for d in workflow.values()]
-    operators_instances["setup_operators_instances"] = generate_setup_operators(containers)
-    #operators_instances["setupService_operator"] = generate_setupOperator_rqService(containers)
+    operators_instances["setup_operators_instances"] = generate_setup_operators(services)
+    #operators_instances["setupService_operator"] = generate_setupOperator_rqService(services)
 
 
     # docker cp operators_instances
-    containers = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
-                for d in workflow.values()]
-    operators_instances["dockercp_operators_instances"] = generate_dockercp_operators(containers)
+    operators_instances["dockercp_operators_instances"] = generate_dockercp_operators(services)
 
     # docker setup requestService operators_instances
     operators_instances["setupOperator_requestService"] = generate_setupOperator_rqService()
     operators_instances["execOperator_requestService"] = generate_executeRequests_operator()
     # docker stop operators_instances
-    containers = [(d['repo'],d['image_id'],d['image_tag'],d['port'])
-                for d in workflow.values()]
-    #operators_instances["stop_operators_instances"] = generate_stop_operators_instances(containers)
+    #operators_instances["stop_operators_instances"] = generate_stop_operators_instances(services)
     #}}
 
     # create graph dependencies
