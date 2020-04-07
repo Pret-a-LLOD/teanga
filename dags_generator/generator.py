@@ -86,7 +86,7 @@ def generate_setupOperator_rqService():
     #{{
         operators = {}
         task_id=f"setup--requestService"
-        command=f'docker run --rm --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -dt berstearns/rq_manager:v1'
+        command=f'docker run --rm --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/IO-dt berstearns/rq_manager:v1'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
