@@ -136,10 +136,10 @@ def generate_dockercp_operators(list_of_containers):
             image_localId = f"{d['repo']}/{d['image_id']}:{d['image_tag']}" 
         else:
             image_localId = f"{d['image_id']}:{d['image_tag']}" 
-        setup_task_id=f"setup--workflow_{workflow_id}--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
+        setup_task_id=f"setup--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
         task_id=f"dockercp-OAS--{d['image_id']}--{d['image_tag']}--{d['port']}"
 
-        command=f'docker cp {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}:/openapi.yaml /teanga/OAS/{{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
+        command=f'docker cp {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}:/openapi.yaml /teanga/OAS/{{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}_{workflow_id}'
         #f'echo {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} >> /teanga/text.txt'
         print(command);
         operators[task_id] = BashOperator(
