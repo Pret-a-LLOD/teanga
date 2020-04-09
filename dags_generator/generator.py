@@ -41,13 +41,14 @@ def generate_pull_operators(list_of_containers):
                 task_id=task_id,
                 bash_command=command,
                 dag=dag,
-                provide_context=True,
                 xcom_push=True,
         )
-    repo="berstearns"
+    '''
+    repo="berstearns"# #{
     name="rq_manager"
-    tag="v1"
-    full_imagePath = f"{repo}/{name}:{tag}" 
+    tag="dev"
+    # f"{repo}/{name}:{tag}"
+    full_imagePath = f"{name}:{tag}"  
     task_id=f"pull--{repo}--{name}--{tag}"
     command=f'docker pull {full_imagePath}'
     print(command);
@@ -55,23 +56,23 @@ def generate_pull_operators(list_of_containers):
             task_id=task_id,
             bash_command=command,
             dag=dag,
-            provide_context=True,
             xcom_push=True,
-    )
+    )# #}
+    '''
     return operators
 #}}
 
 def generate_setup_operators(list_of_containers):
     """
     """
-#{
+#{{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
         if d['repo']:
-            img_pullref = f"{d['repo']}/{d['image_id']}:{d['image_tag']}" 
+            img_pullref = f"{d['repo']}/{d['image_id']}:{d['image_tag']}"
         else:
-            img_pullref = f"{d['image_id']}:{d['image_tag']}" 
+            img_pullref = f"{d['image_id']}:{d['image_tag']}"
         task_id=f"setup--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
         command=f"docker run --rm -d -p {d['port']}:{d['port']} -e PORT={d['port']} {img_pullref}"
         print(command);
@@ -88,7 +89,7 @@ def generate_setupOperator_rqService():
     #{{
         operators = {}
         task_id=f"setup--requestService"
-        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows berstearns/rq_manager:v1'
+        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows fcf64b55d3e0'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -139,7 +140,7 @@ def generate_dockercp_operators(list_of_containers):
         setup_task_id=f"setup--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
         task_id=f"dockercp-OAS--{d['image_id']}--{d['image_tag']}--{d['port']}"
 
-        command=f'docker cp {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}:/openapi.yaml /teanga/OAS/{{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}_{workflow_id}'
+        command=f'docker cp {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}:/openapi.yaml /teanga/OAS/{workflow_id}_{{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
         #f'echo {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}} >> /teanga/text.txt'
         print(command);
         operators[task_id] = BashOperator(
@@ -265,7 +266,6 @@ with open(workflow_file) as workflow_input:
 
     # services setup operators_instances
     operators_instances["setup_operators_instances"] = generate_setup_operators(services)
-    #operators_instances["setupService_operator"] = generate_setupOperator_rqService(services)
 
 
     # docker cp operators_instances
@@ -275,7 +275,7 @@ with open(workflow_file) as workflow_input:
     operators_instances["setupOperator_requestService"] = generate_setupOperator_rqService()
     operators_instances["execOperator_requestService"] = generate_executeRequests_operator()
     # docker stop operators_instances
-    #operators_instances["stop_operators_instances"] = generate_stop_operators_instances(services)
+    # operators_instances["stop_operators_instances"] = generate_stop_operators_instances(services)
     #}}
 
     # create graph dependencies
