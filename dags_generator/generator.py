@@ -9,10 +9,9 @@ import os
 import json
 import datetime
 
-def generate_dag(name, description):
+def generate_dag(name, description): #{{
     """
     """
-#{{
     dag = DAG(
         name,
         default_args=default_args,
@@ -23,10 +22,9 @@ def generate_dag(name, description):
     return dag
 #}}
 
-def generate_pull_operators(list_of_containers):
+def generate_pull_operators(list_of_containers): #{
     """
     """
-#{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -62,10 +60,9 @@ def generate_pull_operators(list_of_containers):
     return operators
 #}}
 
-def generate_setup_operators(list_of_containers):
+def generate_setup_operators(list_of_containers): #{{
     """
     """
-#{{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -73,6 +70,7 @@ def generate_setup_operators(list_of_containers):
             img_pullref = f"{d['repo']}/{d['image_id']}:{d['image_tag']}"
         else:
             img_pullref = f"{d['image_id']}:{d['image_tag']}"
+        img_pullref = "dummy_teanga_webservice:dev"
         task_id=f"setup--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
         command=f"docker run --rm -d -p {d['port']}:{d['port']} -e PORT={d['port']} {img_pullref}"
         print(command);
@@ -85,11 +83,10 @@ def generate_setup_operators(list_of_containers):
     return operators
 #}}
 
-def generate_setupOperator_rqService():
-    #{{
+def generate_setupOperator_rqService(): #{{
         operators = {}
         task_id=f"setup--requestService"
-        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows fcf64b55d3e0'
+        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows -v {os.environ["TEANGA_DIR"]}/services:/teanga/services  rq_manager:dev'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -100,10 +97,9 @@ def generate_setupOperator_rqService():
         return operators
     #}}
 
-def generate_initWebserver_operators(list_of_containers):
+def generate_initWebserver_operators(list_of_containers): #{
     """
     """
-#{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -126,10 +122,9 @@ def generate_initWebserver_operators(list_of_containers):
     return operators
 #}}
 
-def generate_dockercp_operators(list_of_containers):
+def generate_dockercp_operators(list_of_containers): #{
     """
     """
-#{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -152,10 +147,9 @@ def generate_dockercp_operators(list_of_containers):
     return operators
 #}}
 
-def generate_executeRequests_operator():
+def generate_executeRequests_operator(): #{
     """
     """
-#{
     operators = {}    
     task_id=f"exec--requestService"
     command=f'docker exec {{{{ task_instance.xcom_pull(task_ids="setup--requestService") }}}} sh -c "python3 /teanga/request_manager.py"'
@@ -168,10 +162,9 @@ def generate_executeRequests_operator():
     return operators
 #}}
 
-def generate_echo_operators(list_of_containers):
+def generate_echo_operators(list_of_containers): #{
     """
     """
-#{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -192,10 +185,9 @@ def generate_echo_operators(list_of_containers):
     return operators
 #}}
 
-def generate_stop_operators(list_of_containers):
+def generate_stop_operators(list_of_containers): #{{
     """
     """
-#{{
     operators = {}
     for workflow_id,service_info in list_of_containers:
         d = service_info
@@ -262,11 +254,10 @@ with open(workflow_file) as workflow_input:
     # instanciate operators
     #{{
     # pull operators_instances 
-    operators_instances["pull_operators_instances"] = generate_pull_operators(services)
+    #operators_instances["pull_operators_instances"] = generate_pull_operators(services)
 
     # services setup operators_instances
     operators_instances["setup_operators_instances"] = generate_setup_operators(services)
-
 
     # docker cp operators_instances
     operators_instances["dockercp_operators_instances"] = generate_dockercp_operators(services)
@@ -280,17 +271,16 @@ with open(workflow_file) as workflow_input:
 
     # create graph dependencies
     #{{
-    pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
+    #pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
     setup_operators_instances = [operator for operator in operators_instances["setup_operators_instances"].values()]
     dockercp_operators_instances = [operator for operator in operators_instances["dockercp_operators_instances"].values()]
     setupRequestService_operator_instances = [operator for operator in operators_instances["setupOperator_requestService"].values()]
     executeRequest_operator_instance = [operator for operator in operators_instances["execOperator_requestService"].values()]
 
-
-
-
+    '''
     for pull_operators_instance in pull_operators_instances:
         pull_operators_instance >> setup_operators_instances
+    '''
     
     for setup_operator_instance in setup_operators_instances :
        setup_operator_instance >> dockercp_operators_instances
