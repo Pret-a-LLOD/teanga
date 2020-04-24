@@ -70,7 +70,6 @@ def generate_setup_operators(list_of_containers): #{{
             img_pullref = f"{d['repo']}/{d['image_id']}:{d['image_tag']}"
         else:
             img_pullref = f"{d['image_id']}:{d['image_tag']}"
-        img_pullref = "dummy_teanga_webservice:dev"
         task_id=f"setup--workflow_{workflow_id}--{d['image_id']}--{d['image_tag']}--{d['port']}"
         command=f"docker run --rm -d -p {d['port']}:{d['port']} -e PORT={d['port']} {img_pullref}"
         print(command);
