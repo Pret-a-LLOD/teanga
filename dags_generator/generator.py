@@ -242,7 +242,7 @@ global dag
 dag = generate_dag(f"teangaWorkflow","pull images for each given repo")
 
 base_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-workflow_file = os.path.join(base_folder,"workflows","example_flaskapp.json")
+workflow_file = os.path.join(base_folder,"workflows","dev_workflow.json")
 operators_instances = {}
 
 with open(workflow_file) as workflow_input:
