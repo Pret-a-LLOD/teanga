@@ -35,7 +35,11 @@ cd ./teanga-client
 source docker-run.sh
 ```
 
-Then airflow should be accessible at http://localhost:8080
+Then airflow should be accessible at [http://localhost:8080](http://localhost:8080) , With a example Teanga workflow.
+
+[]()
+
+![airflow](https://ibb.co/Yc7crTq)
 
 ## manually using the backend
 
