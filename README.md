@@ -19,12 +19,14 @@ This repository contains three different parts:
 
 - docker
 - access to docker.sock file
-- having ports 8080, 800{1...number_of_services} available
+- some PORTS should be free:
+8080
+8000:8000+{numbers_of_services}
 
 ## Quick start
 
 ```bash
-git clone https://github.com/berstearns/teanga-client ./teanga-client
+git clone https://github.com/berstearns/teanga-client.git ./teanga-client
 ```
 
 ```bash
@@ -41,17 +43,33 @@ Then airflow should be accessible at [http://localhost:8080](http://localhost:80
 
 ![https://i.ibb.co/jyvypZ1/Screenshot-2020-05-08-at-05-16-21.png](https://i.ibb.co/jyvypZ1/Screenshot-2020-05-08-at-05-16-21.png)
 
-## manually using the backend
 
-### init Teanga-backend (airflow container)
+## Run Teanga-Backend manually
 
-### turn on airflow webserver and scheduler
+### building
 
-### generate airflow dag ( there's a dummy one created already)
+```bash
+git clone https://github.com/Pret-a-LLOD/teanga-executor-service.git ./teanga-core
+```
 
-### acess webserver (localhost:8080)
+```bash
+cd ./teanga-core
+```
 
-### run dag
+```bash
+docker build -t teanga_backend:v0.0.1 .
+```
 
-### get output
+```bash
+docker run -dt --rm --name teanga_backend \
+           -v /var/run/docker.sock:/var/run/docker.sock \
+           -v $PWD/workflows:/teanga/workflows \
+           -v $PWD/OAS:/teanga/OAS \
+           -e TEANGA_DIR=$PWD \
+           -p 8080:8080 \
+           teanga_backend:v0.0.1
+```
+
+- then acess webserver (localhost:8080)
+- You need to have a `workflows/` folder containing the workflows you want to run in the directory you are executing the last command ( the docker run command)
 
