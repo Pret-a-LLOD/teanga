@@ -85,7 +85,7 @@ def generate_setup_operators(list_of_containers): #{{
 def generate_setupOperator_rqService(): #{{
         operators = {}
         task_id=f"setup--requestService"
-        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows -v {os.environ["TEANGA_DIR"]}/services:/teanga/services  berstearns/rq_manager:v1.1'
+        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows -v {os.environ["TEANGA_DIR"]}/services:/teanga/services  rq_manager:dev'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -241,7 +241,7 @@ global dag
 dag = generate_dag(f"teangaWorkflow","pull images for each given repo")
 
 base_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-workflow_file = os.path.join(base_folder,"workflows","deploy_workflow.json")
+workflow_file = os.path.join(base_folder,"workflows","dev_workflow.json")
 operators_instances = {}
 
 with open(workflow_file) as workflow_input:
@@ -253,7 +253,7 @@ with open(workflow_file) as workflow_input:
     # instanciate operators
     #{{
     # pull operators_instances 
-    operators_instances["pull_operators_instances"] = generate_pull_operators(services)
+    #operators_instances["pull_operators_instances"] = generate_pull_operators(services)
 
     # services setup operators_instances
     operators_instances["setup_operators_instances"] = generate_setup_operators(services)
@@ -265,20 +265,22 @@ with open(workflow_file) as workflow_input:
     operators_instances["setupOperator_requestService"] = generate_setupOperator_rqService()
     operators_instances["execOperator_requestService"] = generate_executeRequests_operator()
     # docker stop operators_instances
-    operators_instances["stop_operators_instances"] = generate_stop_operators(services)
+    #operators_instances["stop_operators_instances"] = generate_stop_operators(services)
     #}}
 
     # create graph dependencies
     #{{
-    pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
+    #pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
     setup_operators_instances = [operator for operator in operators_instances["setup_operators_instances"].values()]
     dockercp_operators_instances = [operator for operator in operators_instances["dockercp_operators_instances"].values()]
     setupRequestService_operator_instances = [operator for operator in operators_instances["setupOperator_requestService"].values()]
     executeRequest_operator_instance = [operator for operator in operators_instances["execOperator_requestService"].values()]
-    stop_operators_instance = [operator for operator in operators_instances["stop_operators_instances"].values()]
+    #stop_operators_instance = [operator for operator in operators_instances["stop_operators_instances"].values()]
 
+    '''
     for pull_operators_instance in pull_operators_instances:
         pull_operators_instance >> setup_operators_instances
+    '''
     
     for setup_operator_instance in setup_operators_instances :
        setup_operator_instance >> dockercp_operators_instances
@@ -289,8 +291,10 @@ with open(workflow_file) as workflow_input:
     for setup_operator_instance in setupRequestService_operator_instances:
         setup_operator_instance >> executeRequest_operator_instance
 
+    '''
     for stop_operator in stop_operators_instance:
         executeRequest_operator_instance >> stop_operator 
+    '''
 
     #}}
 #}}
