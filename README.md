@@ -39,7 +39,7 @@ Then airflow should be accessible at [http://localhost:8080](http://localhost:80
 
 []()
 
-![airflow](https://ibb.co/Yc7crTq)
+![https://i.ibb.co/jyvypZ1/Screenshot-2020-05-08-at-05-16-21.png](https://i.ibb.co/jyvypZ1/Screenshot-2020-05-08-at-05-16-21.png)
 
 ## manually using the backend
 
