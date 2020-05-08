@@ -41,12 +41,11 @@ def generate_pull_operators(list_of_containers): #{
                 dag=dag,
                 xcom_push=True,
         )
-    '''
     repo="berstearns"# #{
     name="rq_manager"
-    tag="dev"
+    tag="v0.0.1"
     # f"{repo}/{name}:{tag}"
-    full_imagePath = f"{name}:{tag}"  
+    full_imagePath = f"{repo}/{name}:{tag}"  
     task_id=f"pull--{repo}--{name}--{tag}"
     command=f'docker pull {full_imagePath}'
     print(command);
@@ -56,7 +55,6 @@ def generate_pull_operators(list_of_containers): #{
             dag=dag,
             xcom_push=True,
     )# #}
-    '''
     return operators
 #}}
 
