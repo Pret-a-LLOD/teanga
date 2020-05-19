@@ -41,14 +41,8 @@ def generate_pull_operators(unique_services): #{
     repo="berstearns"# #{
     name="rq_manager"
     tag="dev"
-    # f"{repo}/{name}:{tag}"
-<<<<<<< Updated upstream
     full_imagePath = f"{name}:{tag}"  
     task_id=f"pull--{repo}--{name}--{tag}"
-=======
-    full_imagePath = f"{repo}/{name}:{tag}"  
-    task_id=f"pull--{full_imagePath}"
->>>>>>> Stashed changes
     command=f'docker pull {full_imagePath}'
     print(command);
     operators[task_id] = BashOperator(
@@ -260,29 +254,18 @@ global dag
 dag = generate_dag(f"teangaWorkflow","runs the workflow described in given workflow json file ")
 
 base_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-<<<<<<< Updated upstream
 workflow_file = os.path.join(base_folder,"workflows","dev_workflow.json")
-=======
-workflow_filepath = os.path.join(base_folder,"workflows","deploy_workflow.json")
->>>>>>> Stashed changes
 operators_instances = {}
 
 workflow, unique_services = groupby_services(workflow_filepath)
 # instanciate operators
 #{{
 # pull operators_instances 
-operators_instances["pull_operators_instances"] = generate_pull_operators(services)
+operators_instances["pull_operators_instances"] = generate_pull_operators(unique_services)
 
-<<<<<<< Updated upstream
-    # instanciate operators
-    #{{
-    # pull operators_instances 
-    #operators_instances["pull_operators_instances"] = generate_pull_operators(services)
-=======
 # services setup operators_instances
-operators_instances["setup_operators_instances"] = generate_setup_operators(services)
->>>>>>> Stashed changes
-
+operators_instances["setup_operators_instances"] = generate_setup_operators(unique_services)
+'''
 # docker cp operators_instances
 operators_instances["dockercp_operators_instances"] = generate_dockercp_operators(services)
 
@@ -291,33 +274,9 @@ operators_instances["setupOperator_requestService"] = generate_setupOperator_rqS
 operators_instances["execOperator_requestService"] = generate_executeRequests_operator()
 # docker stop operators_instances
 operators_instances["stop_operators_instances"] = generate_stop_operators(services)
+'''
 #}}
 
-<<<<<<< Updated upstream
-    # docker setup requestService operators_instances
-    operators_instances["setupOperator_requestService"] = generate_setupOperator_rqService()
-    operators_instances["execOperator_requestService"] = generate_executeRequests_operator()
-    # docker stop operators_instances
-    #operators_instances["stop_operators_instances"] = generate_stop_operators(services)
-    #}}
-
-    # create graph dependencies
-    #{{
-    #pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
-    setup_operators_instances = [operator for operator in operators_instances["setup_operators_instances"].values()]
-    dockercp_operators_instances = [operator for operator in operators_instances["dockercp_operators_instances"].values()]
-    setupRequestService_operator_instances = [operator for operator in operators_instances["setupOperator_requestService"].values()]
-    executeRequest_operator_instance = [operator for operator in operators_instances["execOperator_requestService"].values()]
-    #stop_operators_instance = [operator for operator in operators_instances["stop_operators_instances"].values()]
-
-    '''
-    for pull_operators_instance in pull_operators_instances:
-        pull_operators_instance >> setup_operators_instances
-    '''
-    
-    for setup_operator_instance in setup_operators_instances :
-       setup_operator_instance >> dockercp_operators_instances
-=======
 # create graph dependencies
 #{{
 pull_operators_instances = [operator for operator in operators_instances["pull_operators_instances"].values()]
@@ -328,13 +287,11 @@ setupRequestService_operator_instances = [operator for operator in operators_ins
 executeRequest_operator_instance = [operator for operator in operators_instances["execOperator_requestService"].values()]
 stop_operators_instance = [operator for operator in operators_instances["stop_operators_instances"].values()]
 '''
-
 for pull_operators_instance in pull_operators_instances:
     pull_operators_instance >> setup_operators_instances
 
 for setup_operator_instance in setup_operators_instances :
    setup_operator_instance >> dockercp_operators_instances
->>>>>>> Stashed changes
 
 '''
 for docker_operator_instance in dockercp_operators_instances:
@@ -342,18 +299,7 @@ for docker_operator_instance in dockercp_operators_instances:
 
 for setup_operator_instance in setupRequestService_operator_instances:
     setup_operator_instance >> executeRequest_operator_instance
-
-<<<<<<< Updated upstream
-    '''
-    for stop_operator in stop_operators_instance:
-        executeRequest_operator_instance >> stop_operator 
-    '''
-=======
-for stop_operator in stop_operators_instance:
-    executeRequest_operator_instance >> stop_operator 
 '''
->>>>>>> Stashed changes
-
 #}}
 #}}
 
