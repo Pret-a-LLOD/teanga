@@ -26,9 +26,10 @@ def generate_pull_operators(unique_services): #{
     """
     """
     operators = {}
-    for full_imagePath, services_instances in unique_services:
-        d = services_instances[0]
-        task_id=f"pull--{full_imagePath}--{d['port']}"
+    for full_imagePath, services_instances in unique_services.items():
+        d = services_instances[0][1]
+        airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
+        task_id=f"pull--{airflow_imageName}--{d['port']}"
         command=f'docker pull {full_imagePath}'
         print(command);
         operators[task_id] = BashOperator(
@@ -59,9 +60,10 @@ def generate_setup_operators(list_of_containers): #{{
     """
     """
     operators = {}
-    for full_imagePath, services_instances in unique_services:
-        d = services_instances[0]
-        task_id=f"setup-{full_imagePath}--{d['port']}"
+    for full_imagePath, services_instances in unique_services.items():
+        d = services_instances[0][1]
+        airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
+        task_id=f"setup-{airflow_imageName}--{d['port']}"
         command=f"docker run --rm -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath}"
         print(command);
         operators[task_id] = BashOperator(
@@ -254,7 +256,7 @@ global dag
 dag = generate_dag(f"teangaWorkflow","runs the workflow described in given workflow json file ")
 
 base_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-workflow_file = os.path.join(base_folder,"workflows","dev_workflow.json")
+workflow_filepath = os.path.join(base_folder,"workflows","dev_workflow.json")
 operators_instances = {}
 
 workflow, unique_services = groupby_services(workflow_filepath)
@@ -290,10 +292,10 @@ stop_operators_instance = [operator for operator in operators_instances["stop_op
 for pull_operators_instance in pull_operators_instances:
     pull_operators_instance >> setup_operators_instances
 
+'''
 for setup_operator_instance in setup_operators_instances :
    setup_operator_instance >> dockercp_operators_instances
 
-'''
 for docker_operator_instance in dockercp_operators_instances:
   docker_operator_instance >> setupRequestService_operator_instances 
 
