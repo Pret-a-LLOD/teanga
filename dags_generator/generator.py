@@ -67,7 +67,7 @@ def generate_setup_operators(unique_services): #{{
         d = services_instances[0][1]
         airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
         task_id=f"setup-{airflow_imageName}--{d['port']}"
-        command=f"docker run --rm -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath}"
+        command=f"docker run --rm --name {{airflow_imageName}} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath}"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -82,7 +82,7 @@ def generate_setupOperator_rqService(): #{{
         operators = {}
         task_id=f"setup--requestService"
         today_date = datetime.datetime.now().strftime("%d%m%Y")
-        command=f'docker run --rm -dt --network="host" -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows -v {os.environ["TEANGA_DIR"]}/services:/teanga/services  rq_manager:{today_date}'
+        command=f'docker run --rm --name requests_manager -dt --network="host" -v {os.environ["TEANGA_DIR"]}/files:/teanga/files -v {os.environ["TEANGA_DIR"]}/OAS:/teanga/OAS -v {os.environ["TEANGA_DIR"]}/IO:/teanga/IO -v {os.environ["TEANGA_DIR"]}/workflows:/teanga/workflows -v {os.environ["TEANGA_DIR"]}/services:/teanga/services  rq_manager:{today_date}'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
