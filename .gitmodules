@@ -1,0 +1,6 @@
+[submodule "teanga-client"]
+	path = teanga-client
+	url = https://github.com/berstearns/teanga-client.git
+[submodule "teanga-services"]
+	path = teanga-services
+	url = https://github.com/berstearns/teanga-services.git
