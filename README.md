@@ -4,13 +4,13 @@
 If you have wget command installed in your terminal:
 
 `
-wget -O - https://raw.githubusercontent.com/berstearns/cliable/master/install.sh | sudo bash
+wget -O - https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh | sudo bash
 `
 
 If you have curl command installed in your terminal:
 
 `
-curl https://raw.githubusercontent.com/berstearns/cliable/master/install.sh | sudo bash
+curl https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh | sudo bash
 `
 
 ## Requirements
