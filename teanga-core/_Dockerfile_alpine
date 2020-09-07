@@ -1,0 +1,25 @@
+FROM python:3.8.3-alpine3.11
+RUN apk --update add --no-cache g++
+
+RUN apk add --update docker openrc
+RUN apk add --update alpine-sdk
+RUN apk add --update linux-headers
+RUN apk add --virtual .build-deps gcc musl-dev
+RUN apk add --update cython
+
+WORKDIR /teanga
+ENV AIRFLOW_HOME /teanga
+RUN chmod +x /teanga
+COPY ./pip_requirements.txt /teanga/pip_requirements.txt
+#RUN pip3 install -r pip_requirements.txt
+COPY ./ /teanga
+#RUN airflow initdb
+#RUN chmod +x /teanga/init.sh
+#CMD ["./init.sh"]  
+
+#FROM python:3.7-alpine
+#RUN apk add --no-cache python3-dev libstdc++ && \
+#    apk add --no-cache g++ && \
+#    ln -s /usr/include/locale.h /usr/include/xlocale.h && \
+#    pip3 install numpy && \
+#    pip3 install pandas
