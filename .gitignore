@@ -107,4 +107,3 @@ venv.bak/
 #bernardo local .gitignore
 .bash_history
 commands/
-docs/
