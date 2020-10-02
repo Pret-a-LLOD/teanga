@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Teanga'
-copyright = '2020, bernardo stearns, john mccrae'
-author = 'bernardo stearns, john mccrae'
+project = 'teanga'
+copyright = '2020, bernardo stearns and john mccrae'
+author = 'bernardo stearns and john mccrae'
 
 
 # -- General configuration ---------------------------------------------------
