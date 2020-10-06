@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>What’s new in aiohttp 1.1 &#8212; Teanga</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/whats_new_1_1.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="what-s-new-in-aiohttp-1-1">
+<h1>What’s new in aiohttp 1.1<a class="headerlink" href="#what-s-new-in-aiohttp-1-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="yarl-and-url-encoding">
+<h2>YARL and URL encoding<a class="headerlink" href="#yarl-and-url-encoding" title="Permalink to this headline">¶</a></h2>
+<p>Since aiohttp 1.1 the library uses <a class="reference internal" href="glossary.html#term-yarl"><span class="xref std std-term">yarl</span></a> for URL processing.</p>
+<div class="section" id="new-api">
+<h3>New API<a class="headerlink" href="#new-api" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> gives handy methods for URL operations etc.</p>
+<p>Client API still accepts <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> everywhere <em>url</em> is used,
+e.g. <code class="docutils literal notranslate"><span class="pre">session.get('http://example.com')</span></code> works as well as
+<code class="docutils literal notranslate"><span class="pre">session.get(yarl.URL('http://example.com'))</span></code>.</p>
+<p>Internal API has been switched to <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a>.
+<a class="reference internal" href="client_reference.html#aiohttp.CookieJar" title="aiohttp.CookieJar"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.CookieJar</span></code></a> accepts <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a> instances only.</p>
+<p>On server side has added <code class="xref py py-class docutils literal notranslate"><span class="pre">web.Request.url</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">web.Request.rel_url</span></code> properties for representing relative and
+absolute request’s URL.</p>
+<p>URL using is the recommended way, already existed properties for
+retrieving URL parts are deprecated and will be eventually removed.</p>
+<p>Redirection web exceptions accepts <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> as <em>location</em>
+parameter. <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> is still supported and will be supported forever.</p>
+<p>Reverse URL processing for <em>router</em> has been changed.</p>
+<p>The main API is <code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Request.url_for(name,</span> <span class="pre">**kwargs)</span></code>
+which returns a <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> instance for named resource. It
+does not support <em>query args</em> but adding <em>args</em> is trivial:
+<code class="docutils literal notranslate"><span class="pre">request.url_for('named_resource',</span> <span class="pre">param='a').with_query(arg='val')</span></code>.</p>
+<p>The method returns a <em>relative</em> URL, absolute URL may be constructed by
+<code class="docutils literal notranslate"><span class="pre">request.url.join(request.url_for(...)</span></code> call.</p>
+</div>
+<div class="section" id="url-encoding">
+<h3>URL encoding<a class="headerlink" href="#url-encoding" title="Permalink to this headline">¶</a></h3>
+<p>YARL encodes all non-ASCII symbols on <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> creation.</p>
+<p>Thus <code class="docutils literal notranslate"><span class="pre">URL('https://www.python.org/путь')</span></code> becomes
+<code class="docutils literal notranslate"><span class="pre">'https://www.python.org/%D0%BF%D1%83%D1%82%D1%8C'</span></code>.</p>
+<p>On filling route table it’s possible to use both non-ASCII and percent
+encoded paths:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s1">&#39;/путь&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s1">&#39;/%D0%BF%D1</span><span class="si">%83%</span><span class="s1">D1</span><span class="si">%82%</span><span class="s1">D1%8C&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>are the same. Internally <code class="docutils literal notranslate"><span class="pre">'/путь'</span></code> is converted into
+percent-encoding representation.</p>
+<p>Route matching also accepts both URL forms: raw and encoded by
+converting the route pattern to <em>canonical</em> (encoded) form on route
+registration.</p>
+</div>
+</div>
+<div class="section" id="sub-applications">
+<h2>Sub-Applications<a class="headerlink" href="#sub-applications" title="Permalink to this headline">¶</a></h2>
+<p>Sub applications are designed for solving the problem of the big
+monolithic code base.
+Let’s assume we have a project with own business logic and tools like
+administration panel and debug toolbar.</p>
+<p>Administration panel is a separate application by its own nature but all
+toolbar URLs are served by prefix like <code class="docutils literal notranslate"><span class="pre">/admin</span></code>.</p>
+<p>Thus we’ll create a totally separate application named <code class="docutils literal notranslate"><span class="pre">admin</span></code> and
+connect it to main app with prefix:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">admin</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="c1"># setup admin routes, signals and middlewares</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">add_subapp</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Middlewares and signals from <code class="docutils literal notranslate"><span class="pre">app</span></code> and <code class="docutils literal notranslate"><span class="pre">admin</span></code> are chained.</p>
+<p>It means that if URL is <code class="docutils literal notranslate"><span class="pre">'/admin/something'</span></code> middlewares from
+<code class="docutils literal notranslate"><span class="pre">app</span></code> are applied first and <code class="docutils literal notranslate"><span class="pre">admin.middlewares</span></code> are the next in
+the call chain.</p>
+<p>The same is going for
+<a class="reference internal" href="web_reference.html#aiohttp.web.Application.on_response_prepare" title="aiohttp.web.Application.on_response_prepare"><code class="xref py py-attr docutils literal notranslate"><span class="pre">on_response_prepare</span></code></a> signal – the
+signal is delivered to both top level <code class="docutils literal notranslate"><span class="pre">app</span></code> and <code class="docutils literal notranslate"><span class="pre">admin</span></code> if
+processing URL is routed to <code class="docutils literal notranslate"><span class="pre">admin</span></code> sub-application.</p>
+<p>Common signals like <a class="reference internal" href="web_reference.html#aiohttp.web.Application.on_startup" title="aiohttp.web.Application.on_startup"><code class="xref py py-attr docutils literal notranslate"><span class="pre">on_startup</span></code></a>,
+<a class="reference internal" href="web_reference.html#aiohttp.web.Application.on_shutdown" title="aiohttp.web.Application.on_shutdown"><code class="xref py py-attr docutils literal notranslate"><span class="pre">on_shutdown</span></code></a> and
+<a class="reference internal" href="web_reference.html#aiohttp.web.Application.on_cleanup" title="aiohttp.web.Application.on_cleanup"><code class="xref py py-attr docutils literal notranslate"><span class="pre">on_cleanup</span></code></a> are delivered to all
+registered sub-applications. The passed parameter is sub-application
+instance, not top-level application.</p>
+<p>Third level sub-applications can be nested into second level ones –
+there are no limitation for nesting level.</p>
+<div class="section" id="url-reversing">
+<h3>Url reversing<a class="headerlink" href="#url-reversing" title="Permalink to this headline">¶</a></h3>
+<p>Url reversing for sub-applications should generate urls with proper prefix.</p>
+<p>But for getting URL sub-application’s router should be used:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">admin</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s1">&#39;/resource&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">add_subapp</span><span class="p">(</span><span class="s1">&#39;/admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">admin</span><span class="o">.</span><span class="n">router</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">url_for</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The generated <code class="docutils literal notranslate"><span class="pre">url</span></code> from example will have a value
+<code class="docutils literal notranslate"><span class="pre">URL('/admin/resource')</span></code>.</p>
+</div>
+</div>
+<div class="section" id="application-freezing">
+<h2>Application freezing<a class="headerlink" href="#application-freezing" title="Permalink to this headline">¶</a></h2>
+<p>Application can be used either as main app (<code class="docutils literal notranslate"><span class="pre">app.make_handler()</span></code>) or as
+sub-application – not both cases at the same time.</p>
+<p>After connecting application by <code class="docutils literal notranslate"><span class="pre">.add_subapp()</span></code> call or starting
+serving web-server as toplevel application the application is
+<strong>frozen</strong>.</p>
+<p>It means that registering new routes, signals and middlewares is
+forbidden.  Changing state (<code class="docutils literal notranslate"><span class="pre">app['name']</span> <span class="pre">=</span> <span class="pre">'value'</span></code>) of frozen application is
+deprecated and will be eventually removed.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/whats_new_1_1.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

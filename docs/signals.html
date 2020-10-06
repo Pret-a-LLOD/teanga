@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Signals &#8212; Teanga</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/signals.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="signals">
+<h1>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h1>
+<p>Signal is a list of registered asynchronous callbacks.</p>
+<p>The signal’s life-cycle has two stages: after creation its content
+could be filled by using standard list operations: <code class="docutils literal notranslate"><span class="pre">sig.append()</span></code>
+etc.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">sig.freeze()</span></code> call the signal is <em>frozen</em>: adding, removing
+and dropping callbacks are forbidden.</p>
+<p>The only available operation is calling previously registered
+callbacks by <code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">sig.send(data)</span></code>.</p>
+<p>For concrete usage examples see <a class="reference internal" href="web_advanced.html#aiohttp-web-signals"><span class="std std-ref">signals in aiohttp.web</span></a> chapter.</p>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 3.0: </span><code class="docutils literal notranslate"><span class="pre">sig.send()</span></code> call is forbidden for non-frozen signal.</p>
+<p>Support for regular (non-async) callbacks is dropped. All callbacks
+should be async functions.</p>
+</div>
+<dl class="class">
+<dt id="aiohttp.Signal">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">Signal</code><a class="reference internal" href="_modules/aiohttp/signals.html#Signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.Signal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The signal, implements <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableSequence" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableSequence</span></code></a>
+interface.</p>
+<dl class="attribute">
+<dt id="aiohttp.Signal.frozen">
+<code class="descname">frozen</code><a class="headerlink" href="#aiohttp.Signal.frozen" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if <a class="reference internal" href="#aiohttp.Signal.freeze" title="aiohttp.Signal.freeze"><code class="xref py py-meth docutils literal notranslate"><span class="pre">freeze()</span></code></a> was called, read-only property.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp.Signal.freeze">
+<code class="descname">freeze</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#aiohttp.Signal.freeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Freeze the list. After the call any content modification is forbidden.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/signals.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

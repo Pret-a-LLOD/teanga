@@ -1,0 +1,187 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The aiohttp Request Lifecycle &#8212; Teanga</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Tracing Reference" href="tracing_reference.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/http_request_lifecycle.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="the-aiohttp-request-lifecycle">
+<span id="aiohttp-request-lifecycle"></span><h1>The aiohttp Request Lifecycle<a class="headerlink" href="#the-aiohttp-request-lifecycle" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="why-is-aiohttp-client-api-that-way">
+<h2>Why is aiohttp client API that way?<a class="headerlink" href="#why-is-aiohttp-client-api-that-way" title="Permalink to this headline">¶</a></h2>
+<p>The first time you use aiohttp, you’ll notice that a simple HTTP request is performed not with one, but with up to three steps:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://python.org&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>It’s especially unexpected when coming from other libraries such as the very popular <a class="reference internal" href="glossary.html#term-requests"><span class="xref std std-term">requests</span></a>, where the “hello world” looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://python.org&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So why is the aiohttp snippet so verbose?</p>
+<p>Because aiohttp is asynchronous, its API is designed to make the most out of non-blocking network operations. In code like this, requests will block three times, and does it transparently, while aiohttp gives the event loop three opportunities to switch context:</p>
+<ul class="simple">
+<li>When doing the <code class="docutils literal notranslate"><span class="pre">.get()</span></code>, both libraries send a GET request to the remote server. For aiohttp, this means asynchronous I/O, which is marked here with an <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">with</span></code> that gives you the guarantee that not only it doesn’t block, but that it’s cleanly finalized.</li>
+<li>When doing <code class="docutils literal notranslate"><span class="pre">response.text</span></code> in requests, you just read an attribute. The call to <code class="docutils literal notranslate"><span class="pre">.get()</span></code> already preloaded and decoded the entire response payload, in a blocking manner. aiohttp loads only the headers when <code class="docutils literal notranslate"><span class="pre">.get()</span></code> is executed, letting you decide to pay the cost of loading the body afterward, in a second asynchronous operation. Hence the <code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">response.text()</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">with</span> <span class="pre">aiohttp.ClientSession()</span></code> does not perform I/O when entering the block, but at the end of it, it will ensure all remaining resources are closed correctly. Again, this is done asynchronously and must be marked as such. The session is also a performance tool, as it manages a pool of connections for you, allowing you to reuse them instead of opening and closing a new one at each request. You can even <a class="reference external" href="client_advanced.html#limiting-connection-pool-size">manage the pool size by passing a connector object</a>.</li>
+</ul>
+</div>
+<div class="section" id="using-a-session-as-a-best-practice">
+<h2>Using a session as a best practice<a class="headerlink" href="#using-a-session-as-a-best-practice" title="Permalink to this headline">¶</a></h2>
+<p>The requests library does in fact also provides a session system. Indeed, it lets you do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://python.org&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It’s just not the default behavior, nor is it advertised early in the documentation. Because of this, most users take a hit in performance, but can quickly start hacking. And for requests, it’s an understandable trade-off, since its goal is to be “HTTP for humans” and simplicity has always been more important than performance in this context.</p>
+<p>However, if one uses aiohttp, one chooses asynchronous programming, a paradigm that makes the opposite trade-off: more verbosity for better performance. And so the library default behavior reflects this, encouraging you to use performant best practices from the start.</p>
+</div>
+<div class="section" id="how-to-use-the-clientsession">
+<h2>How to use the ClientSession ?<a class="headerlink" href="#how-to-use-the-clientsession" title="Permalink to this headline">¶</a></h2>
+<p>By default the <code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.ClientSession</span></code> object will hold a connector with a maximum of 100 connections, putting the rest in a queue. This is quite a big number, this means you must be connected to a hundred different servers (not pages!) concurrently before even having to consider if your task needs resource adjustment.</p>
+<p>In fact, you can picture the session object as a user starting and closing a browser: it wouldn’t make sense to do that every time you want to load a new tab.</p>
+<p>So you are expected to reuse a session object and make many requests from it. For most scripts and average-sized software, this means you can create a single session, and reuse it for the entire execution of the program. You can even pass the session around as a parameter in functions. For example, the typical “hello world”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://python.org&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Can become this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="n">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">await</span> <span class="n">fetch</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;http://python.org&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>On more complex code bases, you can even create a central registry to hold the session object from anywhere in the code, or a higher level <code class="docutils literal notranslate"><span class="pre">Client</span></code> class that holds a reference to it.</p>
+<p>When to create more than one session object then? It arises when you want more granularity with your resources management:</p>
+<ul class="simple">
+<li>you want to group connections by a common configuration. e.g: sessions can set cookies, headers, timeout values, etc. that are shared for all connections they hold.</li>
+<li>you need several threads and want to avoid sharing a mutable object between them.</li>
+<li>you want several connection pools to benefit from different queues and assign priorities. e.g: one session never uses the queue and is for high priority requests, the other one has a small concurrency limit and a very long queue, for non important requests.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/http_request_lifecycle.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,477 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FAQ &#8212; Teanga</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/faq.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="faq">
+<h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#are-there-plans-for-an-app-route-decorator-like-in-flask" id="id1">Are there plans for an &#64;app.route decorator like in Flask?</a></li>
+<li><a class="reference internal" href="#does-aiohttp-have-a-concept-like-flask-s-blueprint-or-django-s-app" id="id2">Does aiohttp have a concept like Flask’s “blueprint” or Django’s “app”?</a></li>
+<li><a class="reference internal" href="#how-do-i-create-a-route-that-matches-urls-with-a-given-prefix" id="id3">How do I create a route that matches urls with a given prefix?</a></li>
+<li><a class="reference internal" href="#where-do-i-put-my-database-connection-so-handlers-can-access-it" id="id4">Where do I put my database connection so handlers can access it?</a></li>
+<li><a class="reference internal" href="#how-can-middleware-store-data-for-web-handlers-to-use" id="id5">How can middleware store data for web handlers to use?</a></li>
+<li><a class="reference internal" href="#can-a-handler-receive-incoming-events-from-different-sources-in-parallel" id="id6">Can a handler receive incoming events from different sources in parallel?</a></li>
+<li><a class="reference internal" href="#how-do-i-programmatically-close-a-websocket-server-side" id="id7">How do I programmatically close a WebSocket server-side?</a></li>
+<li><a class="reference internal" href="#how-do-i-make-a-request-from-a-specific-ip-address" id="id8">How do I make a request from a specific IP address?</a></li>
+<li><a class="reference internal" href="#what-is-the-api-stability-and-deprecation-policy" id="id9">What is the API stability and deprecation policy?</a></li>
+<li><a class="reference internal" href="#how-do-i-enable-gzip-compression-globally-for-my-entire-application" id="id10">How do I enable gzip compression globally for my entire application?</a></li>
+<li><a class="reference internal" href="#how-do-i-manage-a-clientsession-within-a-web-server" id="id11">How do I manage a ClientSession within a web server?</a></li>
+<li><a class="reference internal" href="#how-do-i-access-database-connections-from-a-subapplication" id="id12">How do I access database connections from a subapplication?</a></li>
+<li><a class="reference internal" href="#how-do-i-perform-operations-in-a-request-handler-after-sending-the-response" id="id13">How do I perform operations in a request handler after sending the response?</a></li>
+<li><a class="reference internal" href="#how-do-i-make-sure-my-custom-middleware-response-will-behave-correctly" id="id14">How do I make sure my custom middleware response will behave correctly?</a></li>
+<li><a class="reference internal" href="#why-is-creating-a-clientsession-outside-of-an-event-loop-dangerous" id="id15">Why is creating a ClientSession outside of an event loop dangerous?</a></li>
+</ul>
+</div>
+<div class="section" id="are-there-plans-for-an-app-route-decorator-like-in-flask">
+<h2><a class="toc-backref" href="#id1">Are there plans for an &#64;app.route decorator like in Flask?</a><a class="headerlink" href="#are-there-plans-for-an-app-route-decorator-like-in-flask" title="Permalink to this headline">¶</a></h2>
+<p>As of aiohttp 2.3, <a class="reference internal" href="web_reference.html#aiohttp.web.RouteTableDef" title="aiohttp.web.RouteTableDef"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteTableDef</span></code></a> provides an API
+similar to Flask’s <code class="docutils literal notranslate"><span class="pre">&#64;app.route</span></code>. See
+<a class="reference internal" href="web_quickstart.html#aiohttp-web-alternative-routes-definition"><span class="std std-ref">Alternative ways for registering routes</span></a>.</p>
+<p>Unlike Flask’s <code class="docutils literal notranslate"><span class="pre">&#64;app.route</span></code>, <a class="reference internal" href="web_reference.html#aiohttp.web.RouteTableDef" title="aiohttp.web.RouteTableDef"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteTableDef</span></code></a>
+does not require an <code class="docutils literal notranslate"><span class="pre">app</span></code> in the module namespace (which often leads
+to circular imports).</p>
+<p>Instead, a <a class="reference internal" href="web_reference.html#aiohttp.web.RouteTableDef" title="aiohttp.web.RouteTableDef"><code class="xref py py-class docutils literal notranslate"><span class="pre">RouteTableDef</span></code></a> is decoupled from an application instance:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">routes</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">RouteTableDef</span><span class="p">()</span>
+
+<span class="nd">@routes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/get&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handle_get</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="o">...</span>
+
+
+<span class="nd">@routes</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/post&#39;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handle_post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="does-aiohttp-have-a-concept-like-flask-s-blueprint-or-django-s-app">
+<h2><a class="toc-backref" href="#id2">Does aiohttp have a concept like Flask’s “blueprint” or Django’s “app”?</a><a class="headerlink" href="#does-aiohttp-have-a-concept-like-flask-s-blueprint-or-django-s-app" title="Permalink to this headline">¶</a></h2>
+<p>If you’re writing a large application, you may want to consider
+using <a class="reference internal" href="web_advanced.html#aiohttp-web-nested-applications"><span class="std std-ref">nested applications</span></a>, which
+are similar to Flask’s “blueprints” or Django’s “apps”.</p>
+<p>See: <a class="reference internal" href="web_advanced.html#aiohttp-web-nested-applications"><span class="std std-ref">Nested applications</span></a>.</p>
+</div>
+<div class="section" id="how-do-i-create-a-route-that-matches-urls-with-a-given-prefix">
+<h2><a class="toc-backref" href="#id3">How do I create a route that matches urls with a given prefix?</a><a class="headerlink" href="#how-do-i-create-a-route-that-matches-urls-with-a-given-prefix" title="Permalink to this headline">¶</a></h2>
+<p>You can do something like the following:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;/path/to/{tail:.+}&#39;</span><span class="p">,</span> <span class="n">sink_handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first argument, <code class="docutils literal notranslate"><span class="pre">*</span></code>,  matches any HTTP method
+(<em>GET, POST, OPTIONS</em>, etc). The second argument matches URLS with the desired prefix.
+The third argument is the handler function.</p>
+</div>
+<div class="section" id="where-do-i-put-my-database-connection-so-handlers-can-access-it">
+<h2><a class="toc-backref" href="#id4">Where do I put my database connection so handlers can access it?</a><a class="headerlink" href="#where-do-i-put-my-database-connection-so-handlers-can-access-it" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a> object supports the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>
+interface and provides a place to store your database connections or any
+other resource you want to share between handlers.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">go</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT 42&#39;</span><span class="p">)</span>
+    <span class="c1"># ...</span>
+    <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;ok&#39;</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">init_app</span><span class="p">():</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">create_connection</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;123&#39;</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">go</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-can-middleware-store-data-for-web-handlers-to-use">
+<h2><a class="toc-backref" href="#id5">How can middleware store data for web handlers to use?</a><a class="headerlink" href="#how-can-middleware-store-data-for-web-handlers-to-use" title="Permalink to this headline">¶</a></h2>
+<p>Both <a class="reference internal" href="web_reference.html#aiohttp.web.Request" title="aiohttp.web.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Request</span></code></a>  and <a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a>
+support the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> interface.</p>
+<p>Therefore, data may be stored inside a request object.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">request</span><span class="p">[</span><span class="s1">&#39;unique_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://github.com/aio-libs/aiohttp_session">https://github.com/aio-libs/aiohttp_session</a> code for an example.
+The <code class="docutils literal notranslate"><span class="pre">aiohttp_session.get_session(request)</span></code> method uses <code class="docutils literal notranslate"><span class="pre">SESSION_KEY</span></code>
+for saving request-specific session information.</p>
+<p>As of aiohttp 3.0, all response objects are dict-like structures as
+well.</p>
+</div>
+<div class="section" id="can-a-handler-receive-incoming-events-from-different-sources-in-parallel">
+<span id="aiohttp-faq-parallel-event-sources"></span><h2><a class="toc-backref" href="#id6">Can a handler receive incoming events from different sources in parallel?</a><a class="headerlink" href="#can-a-handler-receive-incoming-events-from-different-sources-in-parallel" title="Permalink to this headline">¶</a></h2>
+<p>Yes.</p>
+<p>As an example, we may have two event sources:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>WebSocket for events from an end user</li>
+<li>Redis PubSub for events from other parts of the application</li>
+</ol>
+</div></blockquote>
+<p>The most native way to handle this is to create a separate task for
+PubSub handling.</p>
+<p>Parallel <code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.WebSocketResponse.receive()</span></code> calls are forbidden;
+a single task should perform WebSocket reading.
+However, other tasks may use the same WebSocket object for sending data to
+peers.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">WebSocketResponse</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+        <span class="n">read_subscription</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span>
+                          <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;redis&#39;</span><span class="p">]))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">:</span>
+            <span class="c1"># handle incoming messages</span>
+            <span class="c1"># use ws.send_str() to send data back</span>
+            <span class="o">...</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">read_subscription</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">redis</span><span class="p">):</span>
+    <span class="n">channel</span><span class="p">,</span> <span class="o">=</span> <span class="k">await</span> <span class="n">redis</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s1">&#39;channel:1&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">channel</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">process_the_message</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># your function here</span>
+            <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">send_str</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">redis</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">(</span><span class="s1">&#39;channel:1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-do-i-programmatically-close-a-websocket-server-side">
+<span id="aiohttp-faq-terminating-websockets"></span><h2><a class="toc-backref" href="#id7">How do I programmatically close a WebSocket server-side?</a><a class="headerlink" href="#how-do-i-programmatically-close-a-websocket-server-side" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say we have an application with two endpoints:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">/echo</span></code> a WebSocket echo server that authenticates the user</li>
+<li><code class="docutils literal notranslate"><span class="pre">/logout_user</span></code> that, when invoked, closes all open
+WebSockets for that user.</li>
+</ol>
+</div></blockquote>
+<p>One simple solution is to keep a shared registry of WebSocket
+responses for a user in the <a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a> instance
+and call <code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.WebSocketResponse.close()</span></code> on all of them in
+<code class="docutils literal notranslate"><span class="pre">/logout_user</span></code> handler:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">echo_handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">WebSocketResponse</span><span class="p">()</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">authenticate_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">ws</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;websockets&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">:</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">send_str</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;websockets&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ws</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">logout_handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">authenticate_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="n">ws_closers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                  <span class="k">for</span> <span class="n">ws</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;websockets&#39;</span><span class="p">][</span><span class="n">user_id</span><span class="p">]</span>
+                  <span class="k">if</span> <span class="ow">not</span> <span class="n">ws</span><span class="o">.</span><span class="n">closed</span><span class="p">]</span>
+
+    <span class="c1"># Watch out, this will keep us from returing the response</span>
+    <span class="c1"># until all are closed</span>
+    <span class="n">ws_closers</span> <span class="ow">and</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">ws_closers</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;OK&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;/echo&#39;</span><span class="p">,</span> <span class="n">echo_handler</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;/logout&#39;</span><span class="p">,</span> <span class="n">logout_handler</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">[</span><span class="s1">&#39;websockets&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+    <span class="n">web</span><span class="o">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-do-i-make-a-request-from-a-specific-ip-address">
+<h2><a class="toc-backref" href="#id8">How do I make a request from a specific IP address?</a><a class="headerlink" href="#how-do-i-make-a-request-from-a-specific-ip-address" title="Permalink to this headline">¶</a></h2>
+<p>If your system has several IP interfaces, you may choose one which will
+be used used to bind a socket locally:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">TCPConnector</span><span class="p">(</span><span class="n">local_addr</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">connector</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="client_reference.html#aiohttp.TCPConnector" title="aiohttp.TCPConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TCPConnector</span></code></a> and <code class="docutils literal notranslate"><span class="pre">local_addr</span></code> parameter.</p>
+</div>
+</div>
+<div class="section" id="what-is-the-api-stability-and-deprecation-policy">
+<h2><a class="toc-backref" href="#id9">What is the API stability and deprecation policy?</a><a class="headerlink" href="#what-is-the-api-stability-and-deprecation-policy" title="Permalink to this headline">¶</a></h2>
+<p><em>aiohttp</em> follows strong <a class="reference external" href="https://semver.org">Semantic Versioning</a> (SemVer).</p>
+<p>Obsolete attributes and methods are marked as <em>deprecated</em> in the
+documentation and raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#DeprecationWarning" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecationWarning</span></code></a> upon usage.</p>
+<p>Assume aiohttp <code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> where <code class="docutils literal notranslate"><span class="pre">X</span></code> is major version,
+<code class="docutils literal notranslate"><span class="pre">Y</span></code> is minor version and <code class="docutils literal notranslate"><span class="pre">Z</span></code> is bugfix number.</p>
+<p>For example, if the latest released version is <code class="docutils literal notranslate"><span class="pre">aiohttp==3.0.6</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">3.0.7</span></code> fixes some bugs but have no new features.</p>
+<p><code class="docutils literal notranslate"><span class="pre">3.1.0</span></code> introduces new features and can deprecate some API but never
+remove it, also all bug fixes from previous release are merged.</p>
+<p><code class="docutils literal notranslate"><span class="pre">4.0.0</span></code> removes all deprecations collected from <code class="docutils literal notranslate"><span class="pre">3.Y</span></code> versions
+<strong>except</strong> deprecations from the <strong>last</strong> <code class="docutils literal notranslate"><span class="pre">3.Y</span></code> release. These
+deprecations will be removed by <code class="docutils literal notranslate"><span class="pre">5.0.0</span></code>.</p>
+<p>Unfortunately we may have to break these rules when a <strong>security
+vulnerability</strong> is found.
+If a security problem cannot be fixed without breaking backward
+compatibility, a bugfix release may break compatibility. This is unlikely, but
+possible.</p>
+<p>All backward incompatible changes are explicitly marked in
+<a class="reference internal" href="changes.html#aiohttp-changes"><span class="std std-ref">the changelog</span></a>.</p>
+</div>
+<div class="section" id="how-do-i-enable-gzip-compression-globally-for-my-entire-application">
+<h2><a class="toc-backref" href="#id10">How do I enable gzip compression globally for my entire application?</a><a class="headerlink" href="#how-do-i-enable-gzip-compression-globally-for-my-entire-application" title="Permalink to this headline">¶</a></h2>
+<p>It’s impossible. Choosing what to compress and what not to compress
+is a tricky matter.</p>
+<p>If you need global compression, write a custom middleware. Or
+enable compression in NGINX (you are deploying aiohttp behind reverse
+proxy, right?).</p>
+</div>
+<div class="section" id="how-do-i-manage-a-clientsession-within-a-web-server">
+<h2><a class="toc-backref" href="#id11">How do I manage a ClientSession within a web server?</a><a class="headerlink" href="#how-do-i-manage-a-clientsession-within-a-web-server" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.ClientSession</span></code> should be created once for the lifetime
+of the server in order to benefit from connection pooling.</p>
+<p>Sessions save cookies internally. If you don’t need cookie processing,
+use <a class="reference internal" href="client_reference.html#aiohttp.DummyCookieJar" title="aiohttp.DummyCookieJar"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.DummyCookieJar</span></code></a>. If you need separate cookies
+for different http calls but process them in logical chains, use a single
+<a class="reference internal" href="client_reference.html#aiohttp.TCPConnector" title="aiohttp.TCPConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TCPConnector</span></code></a> with separate
+client sessions and <code class="docutils literal notranslate"><span class="pre">own_connector=False</span></code>.</p>
+</div>
+<div class="section" id="how-do-i-access-database-connections-from-a-subapplication">
+<h2><a class="toc-backref" href="#id12">How do I access database connections from a subapplication?</a><a class="headerlink" href="#how-do-i-access-database-connections-from-a-subapplication" title="Permalink to this headline">¶</a></h2>
+<p>Restricting access from subapplication to main (or outer) app is a
+deliberate choice.</p>
+<p>A subapplication is an isolated unit by design. If you need to share a
+database object, do it explicitly:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">subapp</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mainapp</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
+<span class="n">mainapp</span><span class="o">.</span><span class="n">add_subapp</span><span class="p">(</span><span class="s1">&#39;/prefix&#39;</span><span class="p">,</span> <span class="n">subapp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-do-i-perform-operations-in-a-request-handler-after-sending-the-response">
+<h2><a class="toc-backref" href="#id13">How do I perform operations in a request handler after sending the response?</a><a class="headerlink" href="#how-do-i-perform-operations-in-a-request-handler-after-sending-the-response" title="Permalink to this headline">¶</a></h2>
+<p>Middlewares can be written to handle post-response operations, but
+they run after every request. You can explicitly send the response by
+calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.Response.write_eof()</span></code>, which starts sending
+before the handler returns, giving you a chance to execute follow-up
+operations:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ping_handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Send PONG and increase DB counter.&quot;&quot;&quot;</span>
+
+    <span class="c1"># explicitly send the response</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">json_response</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;PONG&#39;</span><span class="p">})</span>
+    <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">write_eof</span><span class="p">()</span>
+
+    <span class="c1"># increase the pong count</span>
+    <span class="n">APP</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">inc_pong</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">resp</span>
+</pre></div>
+</div>
+<p>A <a class="reference internal" href="web_reference.html#aiohttp.web.Response" title="aiohttp.web.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Response</span></code></a> object must be returned. This is
+required by aiohttp web contracts, even though the response
+already been sent.</p>
+</div>
+<div class="section" id="how-do-i-make-sure-my-custom-middleware-response-will-behave-correctly">
+<h2><a class="toc-backref" href="#id14">How do I make sure my custom middleware response will behave correctly?</a><a class="headerlink" href="#how-do-i-make-sure-my-custom-middleware-response-will-behave-correctly" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes your middleware handlers might need to send a custom response.
+This is just fine as long as you always create a new
+<a class="reference internal" href="web_reference.html#aiohttp.web.Response" title="aiohttp.web.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Response</span></code></a> object when required.</p>
+<p>The response object is a Finite State Machine. Once it has been dispatched
+by the server, it will reach its final state and cannot be used again.</p>
+<p>The following middleware will make the server hang, once it serves the second
+response:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiohttp</span> <span class="k">import</span> <span class="n">web</span>
+
+<span class="k">def</span> <span class="nf">misbehaved_middleware</span><span class="p">():</span>
+    <span class="c1"># don&#39;t do this!</span>
+    <span class="n">cached</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Hi, I am cached!&#39;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+        <span class="c1"># ignoring response for the sake of this example</span>
+        <span class="n">_res</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cached</span>
+
+    <span class="k">return</span> <span class="n">middleware</span>
+</pre></div>
+</div>
+<p>The rule of thumb is <em>one request, one response</em>.</p>
+</div>
+<div class="section" id="why-is-creating-a-clientsession-outside-of-an-event-loop-dangerous">
+<h2><a class="toc-backref" href="#id15">Why is creating a ClientSession outside of an event loop dangerous?</a><a class="headerlink" href="#why-is-creating-a-clientsession-outside-of-an-event-loop-dangerous" title="Permalink to this headline">¶</a></h2>
+<p>Short answer is: life-cycle of all asyncio objects should be shorter
+than life-cycle of event loop.</p>
+<p>Full explanation is longer.  All asyncio object should be correctly
+finished/disconnected/closed before event loop shutdown.  Otherwise
+user can get unexpected behavior. In the best case it is a warning
+about unclosed resource, in the worst case the program just hangs,
+awaiting for coroutine is never resumed etc.</p>
+<p>Consider the following code from <code class="docutils literal notranslate"><span class="pre">mod.py</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiohttp</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The session grabs current event loop instance and stores it in a
+private variable.</p>
+<p>The main module imports the module and installs <code class="docutils literal notranslate"><span class="pre">uvloop</span></code> (an
+alternative fast event loop implementation).</p>
+<p><code class="docutils literal notranslate"><span class="pre">main.py</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">uvloop</span>
+<span class="kn">import</span> <span class="nn">mod</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop_policy</span><span class="p">(</span><span class="n">uvloop</span><span class="o">.</span><span class="n">EventLoopPolicy</span><span class="p">())</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The code is broken: <code class="docutils literal notranslate"><span class="pre">session</span></code> is bound to default <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> loop
+on import time but the loop is changed <strong>after the import</strong> by
+<code class="docutils literal notranslate"><span class="pre">set_event_loop()</span></code>.  As result <code class="docutils literal notranslate"><span class="pre">fetch()</span></code> call hangs.</p>
+<p>To avoid import dependency hell <em>aiohttp</em> encourages creation of
+<code class="docutils literal notranslate"><span class="pre">ClientSession</span></code> from async function.  The same policy works for
+<code class="docutils literal notranslate"><span class="pre">web.Application</span></code> too.</p>
+<p>Another use case is unit test writing.  Very many test libraries
+(<em>aiohttp test tools</em> first) creates a new loop instance for every
+test function execution.  It’s done for sake of tests isolation.
+Otherwise pending activity (timers, network packets etc.) from
+previous test may interfere with current one producing very cryptic
+and unstable test failure.</p>
+<p>Note: <em>class variables</em> are hidden globals actually. The following
+code has the same problem as <code class="docutils literal notranslate"><span class="pre">mod.py</span></code> example, <code class="docutils literal notranslate"><span class="pre">session</span></code> variable
+is the hidden global object:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/faq.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

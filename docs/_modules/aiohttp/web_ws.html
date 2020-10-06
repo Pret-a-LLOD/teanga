@@ -1,0 +1,562 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>aiohttp.web_ws &#8212; Teanga</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/_modules/aiohttp/web_ws.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for aiohttp.web_ws</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">async_timeout</span>
+<span class="kn">import</span> <span class="nn">attr</span>
+<span class="kn">from</span> <span class="nn">multidict</span> <span class="k">import</span> <span class="n">CIMultiDict</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">hdrs</span>
+<span class="kn">from</span> <span class="nn">.abc</span> <span class="k">import</span> <span class="n">AbstractStreamWriter</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">call_later</span><span class="p">,</span> <span class="n">set_result</span>
+<span class="kn">from</span> <span class="nn">.http</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">WS_CLOSED_MESSAGE</span><span class="p">,</span>
+    <span class="n">WS_CLOSING_MESSAGE</span><span class="p">,</span>
+    <span class="n">WS_KEY</span><span class="p">,</span>
+    <span class="n">WebSocketError</span><span class="p">,</span>
+    <span class="n">WebSocketReader</span><span class="p">,</span>
+    <span class="n">WebSocketWriter</span><span class="p">,</span>
+    <span class="n">WSMessage</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.http</span> <span class="k">import</span> <span class="n">WSMsgType</span> <span class="k">as</span> <span class="n">WSMsgType</span>
+<span class="kn">from</span> <span class="nn">.http</span> <span class="k">import</span> <span class="n">ws_ext_gen</span><span class="p">,</span> <span class="n">ws_ext_parse</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">ws_logger</span>
+<span class="kn">from</span> <span class="nn">.streams</span> <span class="k">import</span> <span class="n">EofStream</span><span class="p">,</span> <span class="n">FlowControlDataQueue</span>
+<span class="kn">from</span> <span class="nn">.typedefs</span> <span class="k">import</span> <span class="n">JSONDecoder</span><span class="p">,</span> <span class="n">JSONEncoder</span>
+<span class="kn">from</span> <span class="nn">.web_exceptions</span> <span class="k">import</span> <span class="n">HTTPBadRequest</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span class="kn">from</span> <span class="nn">.web_request</span> <span class="k">import</span> <span class="n">BaseRequest</span>
+<span class="kn">from</span> <span class="nn">.web_response</span> <span class="k">import</span> <span class="n">StreamResponse</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;WebSocketResponse&#39;</span><span class="p">,</span> <span class="s1">&#39;WebSocketReady&#39;</span><span class="p">,</span> <span class="s1">&#39;WSMsgType&#39;</span><span class="p">,)</span>
+
+<span class="n">THRESHOLD_CONNLOST_ACCESS</span> <span class="o">=</span> <span class="mi">5</span>
+
+
+<div class="viewcode-block" id="WebSocketReady"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketReady">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">WebSocketReady</span><span class="p">:</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">protocol</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok</span></div>
+
+
+<div class="viewcode-block" id="WebSocketResponse"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse">[docs]</a><span class="k">class</span> <span class="nc">WebSocketResponse</span><span class="p">(</span><span class="n">StreamResponse</span><span class="p">):</span>
+
+    <span class="n">_length_check</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                 <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">receive_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">autoclose</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoping</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">heartbeat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">protocols</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">compress</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_msg_size</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protocols</span> <span class="o">=</span> <span class="n">protocols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ws_protocol</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[str]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[WebSocketWriter]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[FlowControlDataQueue[WSMessage]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conn_lost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[int]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[asyncio.AbstractEventLoop]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[asyncio.Future[bool]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Optional[BaseException]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_receive_timeout</span> <span class="o">=</span> <span class="n">receive_timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_autoclose</span> <span class="o">=</span> <span class="n">autoclose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_autoping</span> <span class="o">=</span> <span class="n">autoping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat</span> <span class="o">=</span> <span class="n">heartbeat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat_cb</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">heartbeat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pong_heartbeat</span> <span class="o">=</span> <span class="n">heartbeat</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compress</span> <span class="o">=</span> <span class="n">compress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_msg_size</span> <span class="o">=</span> <span class="n">max_msg_size</span>
+
+    <span class="k">def</span> <span class="nf">_cancel_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat_cb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat_cb</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat_cb</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_reset_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_heartbeat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat_cb</span> <span class="o">=</span> <span class="n">call_later</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_send_heartbeat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_send_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_heartbeat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="c1"># fire-and-forget a task is not perfect but maybe ok for</span>
+            <span class="c1"># sending ping. Otherwise we need a long-living heartbeat</span>
+            <span class="c1"># task in the class.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">ping</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pong_response_cb</span> <span class="o">=</span> <span class="n">call_later</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pong_not_received</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pong_heartbeat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_pong_not_received</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_req</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_req</span><span class="o">.</span><span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_req</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractStreamWriter</span><span class="p">:</span>
+        <span class="c1"># make pre-check to don&#39;t hide it by do_handshake() exceptions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_payload_writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_payload_writer</span>
+
+        <span class="n">protocol</span><span class="p">,</span> <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_start</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">payload_writer</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">payload_writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_start</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">payload_writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">payload_writer</span>
+
+    <span class="k">def</span> <span class="nf">_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s1">&#39;CIMultiDict[str]&#39;</span><span class="p">,</span>
+                                                        <span class="nb">str</span><span class="p">,</span>
+                                                        <span class="nb">bool</span><span class="p">,</span>
+                                                        <span class="nb">bool</span><span class="p">]:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span>
+        <span class="k">if</span> <span class="s1">&#39;websocket&#39;</span> <span class="o">!=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">UPGRADE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">HTTPBadRequest</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;No WebSocket UPGRADE hdr: </span><span class="si">{}</span><span class="se">\n</span><span class="s1"> Can &#39;</span>
+                      <span class="s1">&#39;&quot;Upgrade&quot; only to &quot;WebSocket&quot;.&#39;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">UPGRADE</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="s1">&#39;upgrade&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONNECTION</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">HTTPBadRequest</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;No CONNECTION upgrade hdr: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONNECTION</span><span class="p">)))</span>
+
+        <span class="c1"># find common sub-protocol between client and server</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_PROTOCOL</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
+            <span class="n">req_protocols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">proto</span> <span class="ow">in</span>
+                             <span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_PROTOCOL</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+
+            <span class="k">for</span> <span class="n">proto</span> <span class="ow">in</span> <span class="n">req_protocols</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">proto</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocols</span><span class="p">:</span>
+                    <span class="n">protocol</span> <span class="o">=</span> <span class="n">proto</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># No overlap found: Return no protocol as per spec</span>
+                <span class="n">ws_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">&#39;Client protocols </span><span class="si">%r</span><span class="s1"> don’t overlap server-known ones </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="n">req_protocols</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocols</span><span class="p">)</span>
+
+        <span class="c1"># check supported version</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_VERSION</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;13&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">HTTPBadRequest</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Unsupported version: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
+
+        <span class="c1"># check client handshake for validity</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_KEY</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">16</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">HTTPBadRequest</span><span class="p">(</span>
+                    <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Handshake error: </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">binascii</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HTTPBadRequest</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Handshake error: </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">None</span>
+
+        <span class="n">accept_val</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span>
+            <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="n">WS_KEY</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="n">response_headers</span> <span class="o">=</span> <span class="n">CIMultiDict</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="p">{</span><span class="n">hdrs</span><span class="o">.</span><span class="n">UPGRADE</span><span class="p">:</span> <span class="s1">&#39;websocket&#39;</span><span class="p">,</span>
+             <span class="n">hdrs</span><span class="o">.</span><span class="n">CONNECTION</span><span class="p">:</span> <span class="s1">&#39;upgrade&#39;</span><span class="p">,</span>
+             <span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_ACCEPT</span><span class="p">:</span> <span class="n">accept_val</span><span class="p">})</span>
+
+        <span class="n">notakeover</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compress</span><span class="p">:</span>
+            <span class="n">extensions</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_EXTENSIONS</span><span class="p">)</span>
+            <span class="c1"># Server side always get return with no exception.</span>
+            <span class="c1"># If something happened, just drop compress extension</span>
+            <span class="n">compress</span><span class="p">,</span> <span class="n">notakeover</span> <span class="o">=</span> <span class="n">ws_ext_parse</span><span class="p">(</span><span class="n">extensions</span><span class="p">,</span> <span class="n">isserver</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">compress</span><span class="p">:</span>
+                <span class="n">enabledext</span> <span class="o">=</span> <span class="n">ws_ext_gen</span><span class="p">(</span><span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">,</span> <span class="n">isserver</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                        <span class="n">server_notakeover</span><span class="o">=</span><span class="n">notakeover</span><span class="p">)</span>
+                <span class="n">response_headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_EXTENSIONS</span><span class="p">]</span> <span class="o">=</span> <span class="n">enabledext</span>
+
+        <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
+            <span class="n">response_headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">SEC_WEBSOCKET_PROTOCOL</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">response_headers</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="n">protocol</span><span class="p">,</span>
+                <span class="n">compress</span><span class="p">,</span>
+                <span class="n">notakeover</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_pre_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">WebSocketWriter</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">_loop</span>
+
+        <span class="n">headers</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">compress</span><span class="p">,</span> <span class="n">notakeover</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_heartbeat</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compress</span> <span class="o">=</span> <span class="n">compress</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">transport</span>
+        <span class="k">assert</span> <span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">WebSocketWriter</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">_protocol</span><span class="p">,</span>
+                                 <span class="n">transport</span><span class="p">,</span>
+                                 <span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">,</span>
+                                 <span class="n">notakeover</span><span class="o">=</span><span class="n">notakeover</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">writer</span>
+
+    <span class="k">def</span> <span class="nf">_post_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">,</span>
+                    <span class="n">protocol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">writer</span><span class="p">:</span> <span class="n">WebSocketWriter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ws_protocol</span> <span class="o">=</span> <span class="n">protocol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">writer</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span>
+        <span class="k">assert</span> <span class="n">loop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">FlowControlDataQueue</span><span class="p">(</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">_protocol</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">16</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">set_parser</span><span class="p">(</span><span class="n">WebSocketReader</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_msg_size</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_compress</span><span class="p">))</span>
+        <span class="c1"># disable HTTP keepalive for WebSocket</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WebSocketResponse.can_prepare"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse.can_prepare">[docs]</a>    <span class="k">def</span> <span class="nf">can_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WebSocketReady</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Already started&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">HTTPException</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WebSocketReady</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WebSocketReady</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">protocol</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">close_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ws_protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ws_protocol</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">compress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compress</span>
+
+<div class="viewcode-block" id="WebSocketResponse.exception"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">pong</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># unsolicited pong</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">pong</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;data argument must be str (</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span>
+                         <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="nb">memoryview</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;data argument must be byte-ish (</span><span class="si">%r</span><span class="s1">)&#39;</span> <span class="o">%</span>
+                            <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                        <span class="n">dumps</span><span class="p">:</span> <span class="n">JSONEncoder</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_str</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">write_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eof_sent</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_payload_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Response has not been started&quot;</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eof_sent</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_heartbeat</span><span class="p">()</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
+        <span class="k">assert</span> <span class="n">reader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="c1"># we need to break `receive()` cycle first,</span>
+        <span class="c1"># `close()` may be called from different task</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">feed_data</span><span class="p">(</span><span class="n">WS_CLOSING_MESSAGE</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_payload_writer</span>
+                <span class="k">assert</span> <span class="n">writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">exc</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
+            <span class="k">assert</span> <span class="n">reader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">async_timeout</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">exc</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WSMessage</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Call .prepare() first&#39;</span><span class="p">)</span>
+
+        <span class="n">loop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span>
+        <span class="k">assert</span> <span class="n">loop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s1">&#39;Concurrent call to receive() is not allowed&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_conn_lost</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conn_lost</span> <span class="o">&gt;=</span> <span class="n">THRESHOLD_CONNLOST_ACCESS</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;WebSocket connection is closed.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">WS_CLOSED_MESSAGE</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">WS_CLOSING_MESSAGE</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">create_future</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="n">async_timeout</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span>
+                            <span class="n">timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_receive_timeout</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">):</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_reset_heartbeat</span><span class="p">()</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="n">waiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span>
+                    <span class="n">set_result</span><span class="p">(</span><span class="n">waiter</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_waiting</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="n">EofStream</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1000</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">WSMessage</span><span class="p">(</span><span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSED</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">WebSocketError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">WSMessage</span><span class="p">(</span><span class="n">WSMsgType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span> <span class="o">=</span> <span class="n">exc</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="mi">1006</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">WSMessage</span><span class="p">(</span><span class="n">WSMsgType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_close_code</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autoclose</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSING</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_closing</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">PING</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autoping</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">pong</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">PONG</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autoping</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Received message </span><span class="si">{}</span><span class="s2">:</span><span class="si">{!r}</span><span class="s2"> is not WSMsgType.TEXT&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">msg</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">WSMsgType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Received message </span><span class="si">{}</span><span class="s2">:</span><span class="si">{!r}</span><span class="s2"> is not bytes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                                               <span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">loads</span><span class="p">:</span> <span class="n">JSONDecoder</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive_str</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Cannot call .write() for websocket&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__aiter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;WebSocketResponse&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__anext__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WSMessage</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">,</span>
+                        <span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSING</span><span class="p">,</span>
+                        <span class="n">WSMsgType</span><span class="o">.</span><span class="n">CLOSED</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">StopAsyncIteration</span>  <span class="c1"># NOQA</span>
+        <span class="k">return</span> <span class="n">msg</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
