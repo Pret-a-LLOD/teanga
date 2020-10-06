@@ -25,6 +25,7 @@ curl https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh 
 
 ## Docs
 [Docs here](https://pret-a-llod.github.io/teanga/)
+
 ### Installing Teanga Manually
 
 ### Teanga-Backend
