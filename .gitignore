@@ -107,3 +107,6 @@ venv.bak/
 #bernardo local .gitignore
 .bash_history
 commands/
+docs/doc_builder/pythonenv/
+old_docs/
+pythonenv
