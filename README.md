@@ -26,9 +26,7 @@ curl https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh 
 ## Docs
 [Docs here](https://pret-a-llod.github.io/teanga/)
 
-### Installing Teanga Manually
-
-### Teanga-Backend
+## Teanga-Backend
 
 Teanga backend is the core component of Teanga which coordinates a sequence of services(implemented as docker containers) by matching input and output based on services dependencies. 
 
