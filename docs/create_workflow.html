@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Client Quickstart" href="client_quickstart.html" />
+    <link rel="next" title="How to create a service in Teanga" href="create_service.html" />
     <link rel="prev" title="Welcome to Teanga" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -38,114 +38,40 @@
             
   <div class="section" id="how-to-create-a-workflow-in-teanga">
 <span id="create-teanga-workflow"></span><h1>How to create a workflow in Teanga<a class="headerlink" href="#how-to-create-a-workflow-in-teanga" title="Permalink to this headline">¶</a></h1>
-<p>The page contains all information about teanga workflows:</p>
-<div class="toctree-wrapper compound" id="client">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="client_quickstart.html">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#make-a-request">Make a Request</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#passing-parameters-in-urls">Passing Parameters In URLs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#response-content-and-status-code">Response Content and Status Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#binary-response-content">Binary Response Content</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#json-request">JSON Request</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#json-response-content">JSON Response Content</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#streaming-response-content">Streaming Response Content</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#more-complicated-post-requests">More complicated POST requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#post-a-multipart-encoded-file">POST a Multipart-Encoded File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#streaming-uploads">Streaming uploads</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#websockets">WebSockets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_quickstart.html#timeouts">Timeouts</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="client_advanced.html">Advanced Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#client-session">Client Session</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#custom-request-headers">Custom Request Headers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#custom-cookies">Custom Cookies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#response-headers-and-cookies">Response Headers and Cookies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#redirection-history">Redirection History</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#cookie-jar">Cookie Jar</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#cookie-safety">Cookie Safety</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#dummy-cookie-jar">Dummy Cookie Jar</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#uploading-pre-compressed-data">Uploading pre-compressed data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#disabling-content-type-validation-for-json-responses">Disabling content type validation for JSON responses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#client-tracing">Client Tracing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#connectors">Connectors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#limiting-connection-pool-size">Limiting connection pool size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#tuning-the-dns-cache">Tuning the DNS cache</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#resolving-using-custom-nameservers">Resolving using custom nameservers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#unix-domain-sockets">Unix domain sockets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_advanced.html#named-pipes-in-windows">Named pipes in Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#ssl-control-for-tcp-sockets">SSL control for TCP sockets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#proxy-support">Proxy support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#persistent-session">Persistent session</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#graceful-shutdown">Graceful Shutdown</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_advanced.html#http-pipelining">HTTP Pipelining</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="client_reference.html">Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#client-session">Client Session</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#basic-api">Basic API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#connectors">Connectors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#baseconnector">BaseConnector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#tcpconnector">TCPConnector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#unixconnector">UnixConnector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#connection">Connection</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#response-object">Response object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#clientwebsocketresponse">ClientWebSocketResponse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#utilities">Utilities</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#clienttimeout">ClientTimeout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#requestinfo">RequestInfo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#basicauth">BasicAuth</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#cookiejar">CookieJar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#formdata">FormData</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="client_reference.html#client-exceptions">Client exceptions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#response-errors">Response errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#connection-errors">Connection errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="client_reference.html#hierarchy-of-exceptions">Hierarchy of exceptions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tracing_reference.html">Tracing Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#request-life-cycle">Request life cycle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tracing_reference.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tracing_reference.html#connection-acquiring">Connection acquiring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tracing_reference.html#dns-resolving">DNS resolving</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconfig">TraceConfig</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracerequeststartparams">TraceRequestStartParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracerequestchunksentparams">TraceRequestChunkSentParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceresponsechunksentparams">TraceResponseChunkSentParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracerequestendparams">TraceRequestEndParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracerequestexceptionparams">TraceRequestExceptionParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracerequestredirectparams">TraceRequestRedirectParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconnectionqueuedstartparams">TraceConnectionQueuedStartParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconnectionqueuedendparams">TraceConnectionQueuedEndParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconnectioncreatestartparams">TraceConnectionCreateStartParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconnectioncreateendparams">TraceConnectionCreateEndParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#traceconnectionreuseconnparams">TraceConnectionReuseconnParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracednsresolvehoststartparams">TraceDnsResolveHostStartParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracednsresolvehostendparams">TraceDnsResolveHostEndParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracednscachehitparams">TraceDnsCacheHitParams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing_reference.html#tracednscachemissparams">TraceDnsCacheMissParams</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="http_request_lifecycle.html">The aiohttp Request Lifecycle</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="http_request_lifecycle.html#why-is-aiohttp-client-api-that-way">Why is aiohttp client API that way?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="http_request_lifecycle.html#using-a-session-as-a-best-practice">Using a session as a best practice</a></li>
-<li class="toctree-l2"><a class="reference internal" href="http_request_lifecycle.html#how-to-use-the-clientsession">How to use the ClientSession ?</a></li>
-</ul>
-</li>
-</ul>
+<p>Workflows are the main component in Teanga. Using a similar concept of <a class="reference external" href="https://airflow.apache.org/docs/stable/concepts.html#dags">Airflow DAGS</a> where a sequence of operations(snippets of code) are representated as a graph. In Teanga each operation is a requet to a local or remote service which is a dockerized rest API following the openAPI specification. If the service follows the openAPI specificitation, every endpoint will have an operation id so that by knowing the docker image informations (repository name, image id and image tag) Teanga can access and manage this image as necessary.
+Once you have those information for every endpoint you want to use in your workflow, you just need to specify the inputs for that endpoint and their dependencies. By default if an input is missing for a step in the workflow, Teanga will check it’s dependencies inputs and outputs to try to have all the inputs necessary. If this matching fails and inputs still missing the operation will be flaged as failed.</p>
+<p>A workflow file description look like this:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;1&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;operation_id&quot;</span><span class="p">:</span><span class="s2">&quot;upload&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;left_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;left.rdf&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;repo&quot;</span><span class="p">:</span><span class="s2">&quot;berstearns&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;naisc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image_tag&quot;</span><span class="p">:</span><span class="s2">&quot;062020&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;host_port&quot;</span><span class="p">:</span><span class="mi">8001</span><span class="p">,</span>
+        <span class="s2">&quot;container_port&quot;</span><span class="p">:</span><span class="mi">8080</span><span class="p">,</span>
+        <span class="s2">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;2&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;operation_id&quot;</span><span class="p">:</span><span class="s2">&quot;upload&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;right_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;right.rdf&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;repo&quot;</span><span class="p">:</span><span class="s2">&quot;berstearns&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image_id&quot;</span><span class="p">:</span><span class="s2">&quot;naisc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image_tag&quot;</span><span class="p">:</span><span class="s2">&quot;062020&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;host_port&quot;</span><span class="p">:</span><span class="mi">8002</span><span class="p">,</span>
+        <span class="s2">&quot;container_port&quot;</span><span class="p">:</span><span class="mi">8080</span><span class="p">,</span>
+        <span class="s2">&quot;dependencies&quot;</span><span class="p">:[]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
+<p>It’s a json file describing each step of the workflow</p>
 </div>
 
 
@@ -180,6 +106,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to create a workflow in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

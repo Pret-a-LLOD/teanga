@@ -5,14 +5,5 @@ How to create a service in Teanga
 
 .. currentmodule:: teanga-services
 
-The page contains all information about Teanga services:
+this tutorial will be available soon
 
-
-.. toctree::
-   :name: client
-
-   Quickstart <client_quickstart>
-   Advanced Usage <client_advanced>
-   Reference <client_reference>
-   Tracing Reference <tracing_reference>
-   The aiohttp Request Lifecycle <http_request_lifecycle>
