@@ -1,6 +1,6 @@
 # Teanga
 
-## Quick start
+## Quick start Teanga CLI
 If you have wget command installed in your terminal:
 
 `
@@ -32,10 +32,10 @@ Teanga backend is the core component of Teanga which coordinates a sequence of s
 This repository contains three different parts:
 
 1. [Teanga-backend core](https://github.com/Pret-a-LLOD/teanga/tree/master/teanga-core)
-    1.  use this repo if you want to build teanga-backend from scratch
+    1.  use this folder if you want to build teanga-backend from scratch
 2. [Teanga-backend services](https://github.com/Pret-a-LLOD/teanga/tree/master/teanga-services)
     1. if  you want create teanga-services use this repo to see templates examples
-3. [Teanga-backend client](https://github.com/Pret-a-LLOD/teanga/tree/master/CLI) (cli):
+3. [Teanga CLI](https://github.com/Pret-a-LLOD/teanga/tree/master/CLI) (cli):
     1. use this repo if you want to use pre-built teanga docker image in a workflow you have
 
 
