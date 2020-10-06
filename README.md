@@ -1,4 +1,6 @@
 # Teanga
+Teanga is a command-line tool that automates and facilitates using sequences of containerized rest api as a workflow. It aims at creation of complex Natural Language Processing workflows using Airflow, OpenAPI specification and docker.
+
 
 ## Quick start Teanga CLI
 If you have wget command installed in your terminal:
@@ -21,6 +23,8 @@ curl https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh 
 8080
 8000:8000+{numbers_of_services}
 
+## Docs
+[Docs here](https://pret-a-llod.github.io/teanga/)
 ### Installing Teanga Manually
 
 ### Teanga-Backend
