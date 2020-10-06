@@ -1,11 +1,11 @@
-.. _create-teanga-workflow:
+.. _create-teanga-service:
 
-How to create a workflow in Teanga
+How to create a service in Teanga
 ======
 
-.. currentmodule:: teanga-workflow
+.. currentmodule:: teanga-services
 
-The page contains all information about teanga workflows:
+The page contains all information about Teanga services:
 
 
 .. toctree::

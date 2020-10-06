@@ -1,4 +1,4 @@
-.. _create-teanga-workflow:
+.. _teanga-workflow:
 
 How to create a workflow in Teanga
 ======

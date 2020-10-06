@@ -26,6 +26,7 @@ Others
    :maxdepth: 1
 
    create_workflow
+   create_service
 
 Installation
 ============
@@ -42,7 +43,7 @@ At the command line
 Quick Start
 ================================
 1. Download the workflow `example <http://cnn.com>`_ 
-   or Create your own workflow file following :ref:`how to create a workflow in Teanga<teanga-workflow>`
+   or Create your own workflow file following :ref:`how to create a workflow in Teanga<create-teanga-workflow>`
 
 2. Run Workflow::
 
@@ -72,8 +73,6 @@ Dependencies
 
 - Python 3
 - Docker
-- OpenAPI
-- Apache Airflow
 
 Authors and License
 ===================

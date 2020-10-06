@@ -1,11 +1,11 @@
-.. _teanga-workflow:
+.. _create-teanga-workflow:
 
 How to create a workflow in Teanga
 ======
 
 .. currentmodule:: teanga-workflow
 
-The page contains all information about aiohttp Client API:
+The page contains all information about teanga workflows:
 
 
 .. toctree::
