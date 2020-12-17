@@ -2,16 +2,18 @@
 import requests
 import json
 import pprint
-port="8080"
+port="8001"
 naisc_path = f'http://localhost:{port}'
 config = "auto"
 left_dataset = "./datasets/small_left.rdf"
 right_dataset = "./datasets/small_right.rdf"
-id1 = "left_id345"
-id2 = "right_id345"
+id1 = "left_id"
+id2 = "right_id"
 
 
 
+
+'''
 #step1 - upload left
 left_file=open(left_dataset).read()
 url = f'{naisc_path}/naisc/upload/{id1}'
@@ -31,6 +33,7 @@ r = requests.put(
                 data=right_file
                 )
 print(r.text)
+'''
 
 #step3 - block
 #url_dummy=f'http://localhost:{port}/naisc/{config}/block/{id1}/{id2}'
@@ -46,7 +49,8 @@ r2 = requests.get(url  = url2,
 print(r2.text)
 blocks = json.loads(r2.text)
 print_BLK = r2.text[:500] if len(r2.text) > 500 else r2.text 
-print("{len(blocks)} blocks: {print_BLK}")
+print(f"{len(blocks)} blocks: {print_BLK}")
+exit()
 
 alignments = []
 for block_idx, block in enumerate(blocks):

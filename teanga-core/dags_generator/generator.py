@@ -230,25 +230,6 @@ def generate_stop_operators(unique_services): #{{
     return operators
 #}}
 
-def groupby_services(workflow_filepath):#{
-    with open(workflow_filepath) as workflow_input:
-        workflow = json.load(workflow_input)
-        unique_services = {}
-        for workflow_id, d in workflow.items():
-            service_id = f'{d["repo"]}/{d["image_id"]}:{d["image_tag"]}'\
-                         if d['repo'] else f'{d["image_id"]}:{d["image_tag"]}'
-            if unique_services.get(service_id, False):
-                   unique_services[service_id].append([workflow_id, d])  
-            else:
-                   unique_services[service_id] = [[workflow_id, d]]  
-
-        for service_id in unique_services.keys():
-            for workflow_id, instance_info in unique_services[service_id]:
-                workflow[workflow_id]['port'] = unique_services[service_id][0][1]['port'] 
-                workflow[workflow_id]['host_port'] = unique_services[service_id][0][1]['host_port'] 
-                workflow[workflow_id]['container_port'] = unique_services[service_id][0][1]['container_port'] 
-    return workflow, unique_services# #}
-
 def flatten_operator(id):#{{
     operators = {}    
     task_id=f"flatten--{id}"
@@ -285,6 +266,8 @@ def compose_operator(id):#{{
     )
 #}}
 
+
+
 def matching_operator(airflowOperator_id):#{{ 
     operators = {}    
     task_id=f"matching--{airflowOperator_id}"
@@ -298,10 +281,142 @@ def matching_function(**kwargs):
     # 1 get expected inputs
     # 2 check if there's user input and depencencies input
     # 3 match
+    expected_inputs = {}
+    given_inputs    = {}
     return kwargs['id']
+
+
+
+def match_input(currService_flattenedOAS, given_input, dependecies_inputs, dependecies_outputs):
+    print(f"{'#'*31}") 
+    print(f"{'#'*4} Beginning of Matching {'#'*4}") 
+    print(f"{'#'*31}") 
+    service_input = {}
+    named_candidates = ChainMap(given_input, *dependecies_outputs, *dependecies_inputs)
+    schemas_candidates = ChainMap(*dependecies_outputs, *dependecies_inputs)
+    missing_parameters = []
+    for expected_parameter in currService_flattenedOAS["parameters"]:
+        parameter_name = expected_parameter['name']
+        value = named_candidates.get(parameter_name, False)
+        if value == False: missing_parameters.append(parameter_name)
+        else: 
+            expected_schema = [d for d 
+                    in currService_flattenedOAS["parameters"] 
+                    if d["name"] == parameter_name ][0] 
+            service_input[parameter_name] = {"value":value} 
+            service_input[parameter_name].update(expected_schema)
+
+    print(f'expected inputs: {[d["name"] for d in currService_flattenedOAS["parameters"]]}')
+    print(f'User input: {given_input}')
+    if len(json.dumps(dependecies_inputs)) > 200: Idisplay = json.dumps(dependecies_inputs)[:100]
+    else : Idisplay = json.dumps(dependecies_inputs)
+    print(f'Dependencies INP: {Idisplay}')
+    if len(json.dumps(dependecies_inputs)) > 200: Odisplay = json.dumps(dependecies_outputs)[:100]
+    else : Odisplay = json.dumps(dependecies_outputs)
+    print(f'Dependencies OUT: {Odisplay}')
+    print(f'Missing parameters after matching: {missing_parameters}')
+
+
+    requests_inputs = []
+    if currService_flattenedOAS["requestBody"]:
+        print(f'expected requestBody: {currService_flattenedOAS["requestBody"]}')
+        # if there is input files, put then in requestBody
+        if len(given_input.get("files",[])) == 1:
+            requestBody_value = open(join("files",given_input["files"][0])).read()
+            service_input["request_body"] = {"value":requestBody_value}
+            requests_inputs.append(service_input)
+        elif len(given_input.get("files",[])) > 1: 
+            raise Exception("sending multiple files still not implemented")
+        # if there is no input files, check if expected requestBody schema matches with dpdcies
+        else:
+            expected_schema = currService_flattenedOAS["requestBody"]\
+                        ['content']['application/json']['schema']
+            if expected_schema.get('$ref',False):
+                expected_schema_name = expected_schema["$ref"].split("/")[-1]
+                is_collection_expected = False
+            elif expected_schema.get('items',False): 
+                expected_schema_name = expected_schema['items']\
+                                        ['$ref'].split("/")[-1]
+                is_collection_expected = True 
+            else:
+                raise Exception("expected schema not valid")
+            print(expected_schema_name)
+            for d in dependecies_outputs:
+                if d.get(expected_schema_name,False):
+                    raise Exception("direct schema match not implemented yet")
+                elif d.get(None, False):
+                    if d[None]['schema_info']['name'] == None \
+                       and d[None]['schema_info']['schema']['type'] == 'array' :
+                           array_item_type = d[None]['schema_info']['schema']['items']['$ref'].split("/")[-1]
+                           print(f'dnone: {d[None]}')
+                           if expected_schema_name == array_item_type:
+                               items = d[None]['value']
+                               for idx, item in enumerate(items):
+                                   if is_collection_expected:
+                                       if "requestBody_value" in locals():
+                                           requestBody_value.append(item)
+                                       else:
+                                           requestBody_value = [item]
+                                   else:
+                                       item_request = copy.copy(service_input)
+                                       requestBody_value = item
+                                       item_request["request_body"] = {"value":requestBody_value}
+                                       requests_inputs.append(item_request)
+                           else:
+                               import ipdb;ipdb.set_trace()
+                else:
+                    raise Exception("requestBody not defined")
+            if is_collection_expected:
+                service_input["request_body"] = {"value":requestBody_value}
+                requests_inputs.append(service_input)
+    else:
+        requests_inputs.append(service_input)
+
+
+
+        """
+        #schema_name = currService_flattenedOAS["requestBody"]['content']['application/json']['schema']['$ref'].split("/")[-1]
+        requestBody_value = schemas_candidates.get(schema_name, {"value":{}})
+        expected_requestBody_schema = currService_flattenedOAS['schemas'][schema_name]
+        service_input["request_body"] = requestbody_value
+        schema_name = currService_flattenedOAS["response_schemas"]["$ref"].split("/")[-1]
+        requestBody_value = currService_flattenedOAS["schemas"][schema_name]
+        """
+
+    # expected output info
+    if currService_flattenedOAS.get("response_schemas",False):
+        if currService_flattenedOAS["response_schemas"]["type"] == "array":
+            expected_output_schema = {"name":  None,
+                                      "schema": currService_flattenedOAS["response_schemas"]
+                                     }  
+        else:
+            expOut_name = currService_flattenedOAS["response_schemas"]["$ref"].split("/")[-1]
+            expected_output_schema = {"name":expOut_name,
+                                      "schema":currService_flattenedOAS["schemas"][expOut_name]}  
+    else:
+        expected_output_schema = None
+
+    print(f"{'#'*4} End of Matching ") 
+    if len(json.dumps(service_input)) > 500: print_input =json.dumps(service_input)[:500] 
+    else: print_input =json.dumps(service_input)
+    print(f'SERVICE INPUT: {print_input}')
+    return requests_inputs, expected_output_schema 
+
 #}}
 
-def get_spec_from_operationId(OAS, operationId):
+def groupby_operator(id):#{{
+    operators = {}    
+    task_id=f"groupby--{id}"
+    command=f'echo testing'
+    return BashOperator(
+            task_id=task_id,
+            bash_command=command,
+            dag=dag,
+            xcom_push=True,
+    )
+#}}G
+
+def get_spec_from_operationId(OAS, operationId):#{
     flatten = {}
     for url in OAS['paths'].keys():
         for request_method in OAS['paths'][url].keys():
@@ -317,55 +432,17 @@ def get_spec_from_operationId(OAS, operationId):
                         if flatten["sucess_response"].get('content',False) else None
     flatten["schemas"] = OAS['components']['schemas']
     return flatten 
+#}
 
-def groupby_operator(id):#{{
-    operators = {}    
-    task_id=f"groupby--{id}"
-    command=f'echo testing'
-    return BashOperator(
-            task_id=task_id,
-            bash_command=command,
-            dag=dag,
-            xcom_push=True,
-    )
-#}}G
 #{{ dynamic dag setup
 
-docker_client = docker.from_env()
-base_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-today_date = datetime.datetime.now().strftime("%d%m%Y")
-workflow_filename = os.environ['TARGET_WORKFLOW'] #f'dev_naisc_workflow_{today_date}.json'#"dev_workflow.json"
-workflow_filepath = os.path.join(base_folder,"workflows",workflow_filename)
-dagCreation_timeStr = datetime.datetime.now().strftime("%d_%m_%Y_%H-%M-%S")
 
 # making sure just one container per service is run. grouping steps on the workflow by service
 # copying OAS file to teanga container and adding it to workflow dictionary
 workflow, unique_services = groupby_services(workflow_filepath)#{{
 print(f"WORKFLOW: {workflow}")
 print(f"UK : {unique_services}")
-for service_id, steps_using_service in unique_services.items():
-    try: 
-        docker_image = docker_client.images.get(service_id)
-        print("already exists")
-    except ImageNotFound:
-        docker_image = docker_client.images.pull(service_id)
-    if docker_image in docker_client.images.list():
-        container = docker_client.containers.create(docker_image)
-        stream, stats = container.get_archive("/openapi.yaml")
-        openapi_filename = service_id.replace("/","_")
-        file_obj = BytesIO()
-        for i in stream:
-            file_obj.write(i)
-        file_obj.seek(0)
-        tar = tarfile.open(mode='r', fileobj=file_obj)
-        tar.extractall("/teanga/OAS")
-        tar.close()
-        os.rename("/teanga/OAS/openapi.yaml",f'/teanga/OAS/{openapi_filename}')
-        container.remove()
-        service_openapi_spec = yaml.load(open(f'/teanga/OAS/{openapi_filename}'),Loader=yaml.FullLoader)
-        for (workflow_id, d) in steps_using_service:
-            operation_id  = d["operation_id"]
-            workflow[workflow_id]["operation_spec"] = get_spec_from_operationId(service_openapi_spec, operation_id) 
+#}
 
 with open(os.path.join(base_folder,"workflows",f'updated_{workflow_filename}'),"w") as updated_workflow:
     updated_workflow.write(json.dumps(workflow))

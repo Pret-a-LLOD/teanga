@@ -5,7 +5,6 @@ from airflow.utils.dates import days_ago
 import sys
 import os
 from os.path import abspath, dirname
-from teanga.operators import *
 from teanga import Workflow 
 
 base_folder = dirname(dirname(abspath(__file__)))

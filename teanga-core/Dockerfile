@@ -7,9 +7,9 @@ RUN apt-get install -y docker.io
 WORKDIR /teanga
 ENV AIRFLOW_HOME /teanga
 RUN chmod +x /teanga
-copy ./pip_requirements.txt /teanga/pip_requirements.txt
-RUN pip3 install -r pip_requirements.txt
+copy ./requirements.txt /teanga/requirements.txt
 copy ./ /teanga
+RUN pip3 install -r requirements.txt  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
 RUN airflow initdb
 RUN chmod +x /teanga/init.sh
 CMD ["./init.sh"]  

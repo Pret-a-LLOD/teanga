@@ -110,3 +110,4 @@ commands/
 docs/doc_builder/pythonenv/
 old_docs/
 pythonenv
+.vim/
