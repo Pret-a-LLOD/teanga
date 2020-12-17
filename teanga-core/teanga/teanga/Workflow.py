@@ -172,31 +172,43 @@ class Workflow:
                        for dependency_step in dependency["steps"]:
                            rq_operators_instances[int(dependency_step)-1] >> pre_operator 
                            operation_name = self.workflow[str(dependency_step)]['operation_spec']['operation_id']
-                           matching_operator_id =  f'step-{dependency_step}-endpoint-{operation_name}'
-                           given_inputs.append(matching_operator_id)
+                           dependency_endpoint_operator_id =  f'step-{dependency_step}-endpoint-{operation_name}'
+                           given_inputs.append(dependency_endpoint_operator_id)
 
                    elif dependency["operator"] == "flatten": 
-                       operator = flatten_operator(f'step-{workflow_step}')
-                       rq_operators_instances[int(dependency_step)] >> operator
-                       operator >> rq_operators_instances[int(workflow_step)-1]
+                       flatten_inputs = []
+                       flatten_operator_ = flatten_operator(f'step-{workflow_step}', self.dag)
+                       for dependency_step in dependency["steps"]:
+                           rq_operators_instances[int(dependency_step)-1] >> flatten_operator_ 
+                           flatten_operator_ >> pre_operator   
+                           pre_operator >> rq_operators_instances[int(workflow_step)-1] 
+
+                           operation_name = self.workflow[str(dependency_step)]['operation_spec']['operation_id']
+                           dependency_endpoint_operator_id =  f'step-{dependency_step}-endpoint-{operation_name}'
+                           flatten_inputs.append(dependency_endpoint_operator_id)
+
+                       flatten_operator_.op_kwargs.update({
+                           "given_inputs": flatten_inputs  
+                           })
 
                    elif dependency["operator"] == "concatenate": 
-                       operator = concatenate_operator(f'step-{workflow_step}')
+                       concat_operator = concatenate_operator(f'step-{workflow_step}', self.dag)
                        for dependency_step in dependency["steps"]:
                         if isinstance(dependency_step,dict):
-                           operator_ = groupby_operator(f'step-{workflow_step}')
+                           groupby_operator_ = groupby_operator(f'step-{workflow_step}', self.dag)
                            for dependency_step_ in dependency_step["steps"]:
-                               rq_operators_instances[int(dependency_step_)-1] >> operator_ 
-                               operator_ >> operator
+                               rq_operators_instances[int(dependency_step_)-1] >> groupby_operator_ 
+                           groupby_operator_ >> concat_operator
+                           concat_operator >> pre_operator
+                           pre_operator >>  rq_operators_instances[int(workflow_step)-1]
                         elif isinstance(dependency_step,str):
-                           rq_operators_instances[int(dependency_step)-1] >> operator 
-                           operator >> rq_operators_instances[int(workflow_step)-1]
+                           rq_operators_instances[int(dependency_step)-1] >> concat_operator 
 
                    elif dependency["operator"] == "compose": 
-                       operator_ = compose_operator(f'step-{workflow_step}')
+                       compose_operator_ = compose_operator(f'step-{workflow_step}', self.dag)
                        for dependency_step in dependency["steps"]:
-                           rq_operators_instances[int(dependency_step)-1] >> operator_
-                       operator_ >> rq_operators_instances[int(workflow_step)-1]
+                           rq_operators_instances[int(dependency_step)-1] >> compose_operator_
+                       compose_operator_ >> pre_operator 
                 #}}
 
            pre_operator.op_kwargs.update({"given_inputs":given_inputs,
