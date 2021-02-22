@@ -197,10 +197,25 @@ def matching_operator(airflowOperator_id, dag):#{{
         dag=dag)
 
 def matching_function(*args, **kwargs):
+    """
+        - inputs
+            kwargs: dict, 
+            {
+                "given_inputs": [dict or str],
+                "expected_parameters": [str],
+                "expected_requestBody": dict or None,
+
+            }
+        - outputs: dict,
+        {
+            "inputs": dict or [dict],
+            "json_inputs": True or None,
+            "header": string or None 
+        }
+    """
     # 1 inputs -> "expected_requestBody" "expected_parameters" and "given_inputs" 
     # 2 check if there's user input and depencencies input
     # 3 match
-
     try:
         #{{
         # if input is dictionary, it's a name -> value pair
@@ -212,8 +227,6 @@ def matching_function(*args, **kwargs):
                 kwargs['given_inputs'].pop(idx)
                 for dict_ in kwargs['task_instance'].xcom_pull(task_ids=input_source):
                     kwargs['given_inputs'].append(dict_)
-            
-
 
         expected_inputs = kwargs["expected_parameters"]
         # check if file is required
@@ -292,10 +305,6 @@ def matching_function(*args, **kwargs):
             return {
                 "inputs":given_inputs_dict
                 }
-
-
-
-
     #}}
     except:
         return "a"
