@@ -40,7 +40,6 @@ class Workflow:
 
             for service_id in unique_services.keys():
                 for workflow_id, instance_info in unique_services[service_id]:
-                    workflow[workflow_id]['port'] = unique_services[service_id][0][1]['port'] 
                     workflow[workflow_id]['host_port'] = unique_services[service_id][0][1]['host_port'] 
                     workflow[workflow_id]['container_port'] = unique_services[service_id][0][1]['container_port'] 
         return workflow, unique_services# #}
@@ -49,7 +48,7 @@ class Workflow:
         for service_id, steps_using_service in self.services.items():
             try: 
                 docker_image = self.docker_client.images.get(service_id)
-            except ImageNotFound:
+            except:
                 docker_image = self.docker_client.images.pull(service_id)
             if docker_image in self.docker_client.images.list():
                 container = self.docker_client.containers.create(docker_image)
