@@ -90,7 +90,7 @@ RUN_WORKFLOW () {
                -v /var/run/docker.sock:/var/run/docker.sock \
                -v $PWD/workflows:/teanga/workflows \
                -v $PWD/OAS:/teanga/OAS \
-               -v $PWD/OAS:/teanga/files \
+               -v $PWD/files:/teanga/files \
                -e TEANGA_DIR=$PWD \
                -e TARGET_WORKFLOW=$FILENAME \
                -e RUN_DAG=true \
