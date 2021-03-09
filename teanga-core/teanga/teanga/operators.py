@@ -10,8 +10,8 @@ def generate_pull_operators(unique_services, dag): #{
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
-        airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
-        task_id=f"pull--{airflow_imageName}--{d['port']}"
+        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+        task_id=f"pull--{airflow_imageName}--{d['host_port']}"
         check_imageExists = f'$(docker images -q {full_imagePath})'
         pull_command=f'docker pull {full_imagePath}'
         command=f'if [[ {check_imageExists} != "" ]]; then echo {check_imageExists};else {pull_command}; fi'
@@ -47,8 +47,8 @@ def generate_setup_operators(unique_services, dag): #{{
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
-        airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
-        task_id=f"setup-{airflow_imageName}--{d['port']}"
+        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+        task_id=f"setup-{airflow_imageName}--{d['host_port']}"
         command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath}"
         print(command);
         operators[task_id] = BashOperator(
@@ -90,30 +90,15 @@ def generate_setupOperator_rqService(): #{{
         return operators
     #}}
 
-def request_function(**kwargs): #{{
-    print(kwargs['ti'])
-    return 1
-
-def request_operator(id):
-    operators = {}    
-    task_id=f"request--{id}"
-    return PythonOperator(
-        task_id=task_id,
-        python_callable=request_function,
-        op_kwargs={'id': id},
-        dag=dag)
-#}}
-
-
 def generate_stop_operators(unique_services): #{{
     """
     """
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
-        airflow_imageName = full_imagePath.replace("/","--").replace(":","--") 
-        setup_task_id=f"setup-{airflow_imageName}--{d['port']}"
-        task_id=f"stop-{airflow_imageName}--{d['port']}"
+        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+        setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
+        task_id=f"stop-{airflow_imageName}--{d['host_port']}"
         command=f'docker stop {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
         print(command);
         operators[task_id] = BashOperator(
@@ -216,98 +201,102 @@ def matching_function(*args, **kwargs):
     # 1 inputs -> "expected_requestBody" "expected_parameters" and "given_inputs" 
     # 2 check if there's user input and depencencies input
     # 3 match
-    try:
-        #{{
-        # if input is dictionary, it's a name -> value pair
-        # if is a string, it's a reference for another airflow operator output
-        for idx, input_source in enumerate(kwargs['given_inputs']):
-            if isinstance(input_source,dict):
-                pass
-            elif isinstance(input_source,str):
-                kwargs['given_inputs'].pop(idx)
-                for dict_ in kwargs['task_instance'].xcom_pull(task_ids=input_source):
-                    kwargs['given_inputs'].append(dict_)
+    #{{
+    # if input is dictionary, it's a name -> value pair
+    # if is a string, it's a reference for another airflow operator output
+    logging.info(f"given inputs: {kwargs['given_inputs']}")
+    for idx, input_source in enumerate(kwargs['given_inputs']):
+        if isinstance(input_source,dict):
+            pass
+        elif isinstance(input_source,str):
+            kwargs['given_inputs'].pop(idx)
 
-        expected_inputs = kwargs["expected_parameters"]
-        # check if file is required
-        if kwargs.get("expected_requestBody", False):
-            rqB =  kwargs["expected_requestBody"]
-            if rqB["content"].get("application/json",False):
-                expected_schema_name  = rqB["content"]["application/json"]["schema"]["$ref"].split("/")[-1]
-                expected_inputs[expected_schema_name] = rqB["content"]["application/json"]["schema"]
-            else: 
-                expected_inputs['files'] = kwargs["expected_requestBody"] 
+            logging.info(f"input source: {input_source}")
+            abc = kwargs['task_instance'].xcom_pull(task_ids=input_source)
+            logging.info(f"pull: {abc}")
+            for dict_ in abc:
+                logging.info(f"XCOM DICT: {dict_}")
+                kwargs['given_inputs'].append(dict_)
 
-        # creating given inputs to have given values from user and dependencies
-        # but also the information from the OAS description
-        given_inputs_dict = {}
-        for inputs_dict in kwargs['given_inputs']:
-            for input_key, input_value in inputs_dict.items():
-                if isinstance(input_value, dict):
-                    given_inputs_dict[input_key]= input_value 
-                else:
-                    given_inputs_dict[input_key]= {
-                         "value": input_value
-                        }
+    expected_inputs = kwargs["expected_parameters"]
+    # check if file is required
+    if kwargs.get("expected_requestBody", False):
+        rqB =  kwargs["expected_requestBody"]
+        if rqB["content"].get("application/json",False):
+            expected_schema_name  = rqB["content"]["application/json"]["schema"]["$ref"].split("/")[-1]
+            expected_inputs[expected_schema_name] = rqB["content"]["application/json"]["schema"]
+        else: 
+            expected_inputs['files'] = kwargs["expected_requestBody"] 
 
-
-        
-        missing_expected_inputs = {}
-        isCollection = False 
-        for expected_input, expected_details in expected_inputs.items():
-            if given_inputs_dict.get(expected_input,False):
-                logging.info(f"EI: expected input {expected_input}")
-                logging.info(f"ED: expected details {expected_details}")
-                logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].keys()}")
-                logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].get('schema',None)}")
-                if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array": 
-                    isCollection = expected_input
-                else:
-                    given_inputs_dict[expected_input].update(expected_details)
+    # creating given inputs to have given values from user and dependencies
+    # but also the information from the OAS description
+    given_inputs_dict = {}
+    for inputs_dict in kwargs['given_inputs']:
+        for input_key, input_value in inputs_dict.items():
+            if isinstance(input_value, dict):
+                given_inputs_dict[input_key]= input_value 
             else:
-                missing_expected_inputs[expected_input] = expected_details 
-
-        #for expected_input, expected_details in expected_inputs.items():
-        # if many -> one 
-        #(given input is a schema of type array of a certain schema and expected input is that certain schema)  
-        
-
-        if given_inputs_dict.get("files",False):
-            files = []
-            files_name = given_inputs_dict["files"]["value"]
-            if len(files_name) == 1:
-                filename = files_name[0]
-                given_inputs_dict["files"]["value"] = open(f'/teanga/files/{filename}').read()
-            else:
-                for filename in files_name:
-                    file_content = open(f'/teanga/files/{filename}')
-                    files.append(file_content) 
-        logging.info(f"Iscollection: {isCollection}")
-
-
-        if missing_expected_inputs:
-            raise Exception("Missing inputs")
-        elif isCollection:
-            given_inputs_per_item = [] 
-            logging.info(f"Is collection! {given_inputs_dict[isCollection]['value']}")
-            for item in given_inputs_dict[isCollection]["value"]: 
-                logging.info(item)
-                given_inputs_per_item.append(
-                        dict({k:v for k,v in  given_inputs_dict.items()},
-                            **{isCollection:{"value": {k:v for k,v in  item.items()}}})
-                        )
-            return {
-                    "header":"application/json",
-                    "json_input": isCollection,
-                    "inputs":given_inputs_per_item 
+                given_inputs_dict[input_key]= {
+                     "value": input_value
                     }
+
+
+    
+    missing_expected_inputs = {}
+    isCollection = False 
+    for expected_input, expected_details in expected_inputs.items():
+        if given_inputs_dict.get(expected_input,False):
+            logging.info(f"EI: expected input {expected_input}")
+            logging.info(f"ED: expected details {expected_details}")
+            logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].keys()}")
+            logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].get('schema',None)}")
+            if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array": 
+                isCollection = expected_input
+            else:
+                given_inputs_dict[expected_input].update(expected_details)
         else:
-            return {
-                "inputs":given_inputs_dict
+            missing_expected_inputs[expected_input] = expected_details 
+
+    #for expected_input, expected_details in expected_inputs.items():
+    # if many -> one 
+    #(given input is a schema of type array of a certain schema and expected input is that certain schema)  
+    
+
+    if given_inputs_dict.get("files",False):
+        files = []
+        files_name = given_inputs_dict["files"]["value"]
+        if len(files_name) == 1:
+            filename = files_name[0]
+            given_inputs_dict["files"]["value"] = open(f'/teanga/files/{filename}').read()
+        else:
+            for filename in files_name:
+                file_content = open(f'/teanga/files/{filename}')
+                files.append(file_content) 
+    logging.info(f"Iscollection: {isCollection}")
+
+
+    if missing_expected_inputs:
+        raise Exception("Missing inputs")
+    elif isCollection:
+        given_inputs_per_item = [] 
+        logging.info(f"Is collection! {given_inputs_dict[isCollection]['value']}")
+        for item in given_inputs_dict[isCollection]["value"]: 
+            logging.info(item)
+            given_inputs_per_item.append(
+                    dict({k:v for k,v in  given_inputs_dict.items()},
+                        **{isCollection:{"value": {k:v for k,v in  item.items()}}})
+                    )
+        return {
+                "header":"application/json",
+                "json_input": isCollection,
+                "inputs":given_inputs_per_item 
                 }
-    #}}
-    except:
-        return "a"
+    else:
+        return {
+            "inputs":given_inputs_dict
+            }
+#}}
+
 #}}
 
 def generate_endpointRequest_operator(workflow_step, endpoint_name,endpoint_info, dag):#{
@@ -321,12 +310,11 @@ def generate_endpointRequest_operator(workflow_step, endpoint_name,endpoint_info
     return operator 
 
 def endpointRequest_function(*args, **kwargs):
-    try:
         #{{
         step, operation_id = kwargs['task_instance'].task_id.split("-endpoint")
         matching_operator_id =  f'{step}-matching'
         matching_output = kwargs['task_instance'].xcom_pull(task_ids=matching_operator_id)
-        inputs = matching_output['inputs']
+        inputs = matching_output.get('inputs', None)
         header = matching_output.get('header', None)
 
         def setup_request(named_inputs,#{{
@@ -413,14 +401,6 @@ def endpointRequest_function(*args, **kwargs):
             responses.append(response)
         return responses   
     #}}
-    except:
-        step, operation_id = kwargs['task_instance'].task_id.split("-endpoint")
-        with open(f'/teanga/files/{step}.log') as log:
-            logs = []
-            for line in log:
-                content = eval(line)
-                logs.append(content)
-        return logs 
 #}
 
 def groupby_operator(id, dag):#{{

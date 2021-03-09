@@ -111,3 +111,7 @@ docs/doc_builder/pythonenv/
 old_docs/
 pythonenv
 .vim/
+teanga-dkpro-wrapper/
+teanga-core/files/
+teanga-core/workflows/
+teanga-core/OAS/
