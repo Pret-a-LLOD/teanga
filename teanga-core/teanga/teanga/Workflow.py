@@ -25,7 +25,6 @@ class Workflow:
         self.load_services_description()
         #}}
 
-
     def load_workflow(self):#{
         with open(self.workflow_filepath) as workflow_input:
             workflow = json.load(workflow_input)
@@ -81,13 +80,18 @@ class Workflow:
                     flatten["request_method"] = request_method
                     flatten["parameters"] =  operation_data.get("parameters",[])
                     flatten["requestBody"] =  operation_data.get("requestBody",{})
-                    flatten["sucess_response"] = operation_data["responses"]["200"]
+                    flatten["sucess_response"] = operation_data["responses"].get("200",operation_data["responses"].get(200,None))
+                    if not flatten["sucess_response"]: raise Error("Missing sucess response schema") 
+
                     flatten["response_schema"] = \
                             flatten["sucess_response"]['content']['application/json']['schema']\
                             if flatten["sucess_response"].get('content',False) else None
-                    flatten["response_schema_item_name"] = \
-                            flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]\
-                            if flatten["sucess_response"].get('content',False) else None
+                    if flatten["response_schema"]:
+                        if flatten["response_schema"].get("type",False) == "array":
+                            flatten["response_schema_item_name"] = \
+                                    flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]
+                        elif flatten["response_schema"].get("$ref",False):
+                            pass
         flatten["schemas"] = OAS['components']['schemas']
         return flatten 
     #}

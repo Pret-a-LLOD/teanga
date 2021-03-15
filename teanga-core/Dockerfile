@@ -1,8 +1,9 @@
 FROM ubuntu:18.04
 USER root
-RUN apt-get -y update
-RUN apt-get install  -y python3-pip python3-dev
-RUN apt-get install -y docker.io
+RUN apt-get -y update \
+    && apt-get install  -y python3-pip python3-dev \
+    && apt-get install -y docker.io \
+    && apt-get install -y vim
 
 WORKDIR /teanga
 ENV AIRFLOW_HOME /teanga
