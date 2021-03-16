@@ -1,0 +1,58 @@
+swagger: "2.0"
+info:
+  title: Pig Latin Translation
+  description: This service translates text into Pig Latin
+  version: "0.1"
+  termsOfService: https://hmz.ie
+  contact:
+    name: Housam Ziad
+    url: https://hmz.ie
+    email: h@hmz.ie
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:3900
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - string
+produces:
+  - application/json
+paths:
+  /:
+    x-swagger-router-controller: piglatin_translate
+    get:
+      description: Return the results
+      parameters:
+        - name: text
+          in: query
+          description: The text input for the service
+          required: true
+          type: string
+
+      responses:
+        '200':
+          description: Response from the service
+          schema:
+            $ref: '#/definitions/PigLatinResponse'
+        default:
+          description: Error happened
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+# schema definitions
+definitions:
+  PigLatinResponse:
+    required:
+      - output
+    properties:
+      output:
+        type: string
+  ErrorResponse:
+    required:
+      - output
+    properties:
+      output:
+        type: string
