@@ -91,13 +91,12 @@ def create_app(config=None, testing=False):
         admin = Admin(
             app, name='Airflow',
             static_url_path='/admin',
-            index_view=views.TeangaView(endpoint='', url='/admin', name="DAGs"),#views.HomeView(endpoint='', url='/admin', name="DAGs"),
+            index_view=views.HomeView(endpoint='', url='/admin', name="DAGs"),#views.TeangaView(endpoint='', url='/admin', name="teanga"),
             template_mode='bootstrap3',
         )
         av = admin.add_view
         vs = views
         av(vs.Airflow(name='DAGs', category='DAGs'))
-
         if not conf.getboolean('core', 'secure_mode'):
             av(vs.QueryView(name='Ad Hoc Query', category="Data Profiling"))
             av(vs.ChartModelView(

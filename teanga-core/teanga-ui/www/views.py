@@ -2236,12 +2236,12 @@ class Airflow(AirflowViewMixin, BaseView):
         return redirect('/admin/variable')
 
 
-class TeangaView(AirflowViewMixin, AdminIndexView):
-    @expose("/")
-    def index(self):
-        return self.render("/teanga/index.html")
 
 class HomeView(AirflowViewMixin, AdminIndexView):
+    @expose("/teanga")
+    def teanga_index(self):
+        return self.render("/teanga/index.html")
+
     @expose("/")
     @login_required
     @provide_session
