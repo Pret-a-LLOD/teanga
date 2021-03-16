@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Teanga is a Natural Language Processing Platform">
+	<meta name="author" content="@housamz">
+
+    <link rel="Shortcut Icon" href="{{ url_for('static', filename='public/images/favicon.png')}}">
+
+	<title>Teanga</title>
+
+	<!-- Latest boostrap and font awesome compiled and minified CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='public/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='public/plugins/font-awesome/css/font-awesome.min.css')}}" type="text/css" >
+	
+	<!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='public/css/style.css')}}" rel="stylesheet">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body id="page-top" class="front-page">
+
+	<div class="header">
+		<!-- Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-transparent navbar-inverse bg-dark ">
+			<div class="container navbar-container">
+				<!-- Brand/Logo -->
+				<a class="navbar-brand" href="./">
+                    <img src="{{ url_for('static', filename='public/images/teanga-logo-white.svg')}}" width="160" class="d-none d-lg-inline-block" alt="Teanga">
+                    <img src="{{ url_for('static', filename='public/images/teanga-logo-white.svg')}}" width="160" class="d-lg-none" alt="Teanga">
+					<span class="beta">MVP</span>
+				</a>
+
+				<div class="collapse navbar-collapse align-items-center justify-content-end" id="navbar_main">
+					<ul class="navbar-nav">
+						<li><a href="/about" class="nav-link">About</a></li>
+						<li><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documentation</a>
+							<ul class="dropdown-menu">
+								<li class="dropdown">
+									<a href="/documents" class="dropdown-item" aria-haspopup="true" aria-expanded="false">Documents</a>
+									<a href="/publications" class="dropdown-item" aria-haspopup="true" aria-expanded="false">Publications</a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="/contact" class="nav-link">Contact</a></li>
+					</ul>
+				</div>
+
+				<a href="./platform" class="btn btn-primary btn-big-round">Test the Platform</a>
+
+			</div>
+		</nav>
+	</div>
+
+    <section class="slides">
+        <div class="gradient-bg" style="height:350px">
+            <div class="slide-holder wowimate fadeIn">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <h2 class="text-white">
+                                Linked Data based platform for NLP
+                            </h2>
+                            <p class="text-silver" data-wow-delay="0.3s">
+                                Use many NLP services from a single interface, whether that was a single service or multiple services in a pipeline.
+                            </p>
+
+                            <a href="/about" class="btn btn-primary btn-big-round">
+                                Learn more
+                                <i class="fa fa-caret-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6 ml-md-auto">
+                            <div class="block block-image-holder slide-img">
+                                <div class="block-image">
+                                    <img src="{{ url_for('static', filename='public/images/shots/1.png')}}">
+
+                                    <a href="https://www.youtube.com/watch?v=sXPmWsB3v4En" data-fancybox="">
+                                        <span class="play-video">
+                                            <i class="fa fa-play"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shape-container relative" style="height: 145px;" data-shape-position="bottom">
+            <svg class="shape-item" viewBox="0 0 1000 145" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.9,0c0,0.2,0,0.5,0,0.7c1,27.6,49.3,144.3,177,144.3c98.4,0,190.6-49.5,288.5-59.6  c61.6-6.4,123.7,2.5,185.2,10.3c61.5,7.9,124,14.8,185.2,4.5c60.1-10,127.3-50,162.3-100.3H0.9z"></path>
+            </svg>
+        </div>
+
+    </section>
+
+    <div class="container-fluid">
+
+        <section class="features">
+            <div class="container">
+                <div class="row cols-xs-space cols-sm-space cols-md-space">
+                    <div class="col-12 col-lg-3 wowimate zoomIn">
+                        <div class="icon-block">
+                            <div class="block-icon">
+                                <i class="fa fa-hdd-o" aria-hidden="true"></i>
+                            </div>
+                            <div class="block-content">
+                                <h3>Containerisation</h3>
+                                <p>
+                                    Containerization using Docker for fast implementation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3 wowimate zoomIn" data-wow-delay="0.3s">
+                        <div class="icon-block">
+                            <div class="block-icon">
+                                <i class="fa fa-play" aria-hidden="true"></i>
+                            </div>
+                            <div class="block-content">
+                                <h3>Easy Installation</h3>
+                                <p>
+                                    Using modern technologies with Docker to make it easy to install by third-party.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3 wowimate zoomIn" data-wow-delay="0.6s">
+                        <div class="icon-block">
+                            <div class="block-icon">
+                                <i class="fa fa-hand-o-up" aria-hidden="true"></i>
+                            </div>
+                            <div class="block-content">
+                                <h3>Easy to use</h3>
+                                <p>
+                                    Drag-and-drop workflow builder makes Teanga extremely easy to use.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3 wowimate zoomIn" data-wow-delay="0.9s">
+                        <div class="icon-block">
+                            <div class="block-icon">
+                                <i class="fa fa-tasks" aria-hidden="true"></i>
+                            </div>
+                            <div class="block-content">
+                                <h3>Pipelines</h3>
+                                <p>
+                                    Building services' pipelines in seconds to perform complex NLP tasks.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="screenshots">
+            <div class="container">
+                <div class="row align-items-md-center cols-xs-space cols-md-space cols-lg-space">
+                    <div class="col-md-5">
+                        <div class="px-3 py-3 text-center text-lg-left">
+                            <h3 class="heading heading-3">
+                                Simple way to add your service
+                            </h3>
+                            <p>
+                                You may add any NLP service to Teanga by writing a simple configuration file in JSON-LD format.
+                            </p>
+                            <a href="/about" class="btn btn-primary btn-big-round">
+                                Learn more
+                                <i class="fa fa-caret-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 ml-lg-auto addShadow wowimate slideInRight">
+                        <img src="{{ url_for('static', filename='public/images/shots/2.png')}}" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="screenshots">
+            <div class="container">
+                <div class="row align-items-lg-center cols-xs-space cols-md-space cols-lg-space">
+                    <div class="col-lg-5 ml-lg-auto order-lg-2">
+                        <div class="px-3 py-3 text-center text-lg-left">
+                            <h3 class="heading heading-3 ">
+                                JSON-LD Structured Output
+                            </h3>
+                            <p>
+                                Get JSON-LD output for the results of your pipeline and JSON-LD for each service.
+                            </p>
+                            <a href="/about" class="btn btn-primary btn-big-round">
+                                Learn more
+                                <i class="fa fa-caret-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 addShadow wowimate slideInLeft">
+                        <img src="{{ url_for('static', filename='public/images/shots/3.png')}}" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="screenshots">
+            <div class="container">
+                <div class="row align-items-md-center cols-xs-space cols-md-space cols-lg-space">
+                    <div class="col-md-5">
+                        <div class="px-3 py-3 text-center text-lg-left">
+                            <h3 class="heading heading-3">
+                                Docker Web Interface
+                            </h3>
+                            <p>
+                                Get full control of your containers, images, and services from a web interface, without the need to use your terminal.
+                            </p>
+                            <a href="/about" class="btn btn-primary btn-big-round">
+                                Learn more
+                                <i class="fa fa-caret-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 ml-lg-auto addShadow wowimate slideInRight">
+                        <img src="{{ url_for('static', filename='public/images/shots/4.png')}}" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonial">
+            <div class="container">
+                <div class="text-center">
+                    <h3 class="text-special">
+                        What domain experts are saying about Teanga
+                    </h3>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card addShadow wowimate zoomIn" data-wow-delay="0.3s">
+                            <div class="card-body">
+                                <div class="block-author">
+                                    <div class="author-info">
+                                        <span class="d-block text-special testimonial-name">Mihael Arčan</span>
+                                        <span class="heading-xs testimonial-desc">Research Fellow at Data Science Institute</span>
+                                    </div>
+                                </div>
+
+                                <p class="mt-4">
+                                    Teanga helps solving the problems of disconnected services nowadays found on the web and as a NLP researcher, I find it helpful to combine these services together in a clear user friendly interface.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card addShadow wowimate zoomIn" data-wow-delay="0.9s">
+                            <div class="card-body">
+                                <div class="block-author">
+                                    <div class="author-info">
+                                        <span class="d-block text-special testimonial-name">Emir Muñoz</span>
+                                        <span class="heading-xs testimonial-desc">AI & ML Senior Infrastructure Engineer</span>
+                                    </div>
+                                </div>
+
+                                <p class="mt-4">
+                                    Teanga removes the cumbersome installations of task-specific, platform-dependent, and language-dependent tools. Where in some cases, it is even required to compile from source the tools before they can be ready to use. All that configuration part is abstracted by using Teanga, the reason for which I believe this is a project with a good future.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card addShadow wowimate zoomIn" data-wow-delay="0.6s">
+                            <div class="card-body">
+                                <div class="block-author">
+                                    <div class="author-info">
+                                        <span class="d-block text-special testimonial-name">James O'Neil</span>
+                                        <span class="heading-xs testimonial-desc">Researcher at Liverpool University</span>
+                                    </div>
+                                </div>
+
+                                <p class="mt-4">
+                                    Teanga is an easy to use service that allows easy integration of various NLP modules in a modular way. As a data scientist, this tool would greatly help me in building and testing pipelines for specific tasks in the future.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div> <!-- /.container-fluid -->
+
+
+	<footer>
+		<div class="shape-container relative" style="height: 145px;" data-shape-position="top">
+			<svg class="shape-item" viewBox="0 0 1000 145" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M0.9,0c0,0.2,0,0.5,0,0.7c1,27.6,49.3,144.3,177,144.3c98.4,0,190.6-49.5,288.5-59.6  c61.6-6.4,123.7,2.5,185.2,10.3c61.5,7.9,124,14.8,185.2,4.5c60.1-10,127.3-50,162.3-100.3H0.9z"></path>
+			</svg>
+		</div>
+
+		<div class=" gradient-bg">
+			<div class="container">
+				<div class="row cols-xs-space cols-sm-space cols-md-space">
+					<div class="col-lg-5">
+						<div class="col">
+                            <a href="./"><img src="{{ url_for('static', filename='public/images/teanga-logo-white.svg')}}" width="160"></a>
+							<span class="clearfix"></span>
+							<span class="heading heading-sm c-gray-light strong-400">Linked Data based platform for Natural Language Processing</span>
+							<p class="">
+								Teanga focuses on the problem of NLP services interoperability by using linked data to define the types of services input and output.
+							</p>
+
+							<div class="copyright mt-4">
+								<p>© 2017<script>new Date().getFullYear()>2016&&document.write("-"+new Date().getFullYear());</script>, <a href="https://nuig.insight-centre.org/unlp/" data-toggle="tooltip" title="" data-original-title="The Unit of Natural Language Processing">UNLP</a>, <a href="http://insight-centre.org/" data-toggle="tooltip" title="" data-original-title="Data Science Institute">DSI</a>, <a href="http://nuigalway.ie" target="_blank" data-toggle="tooltip" title="" data-original-title="The National University of Ireland, Galway">NUI Galway.</a></p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-4 col-sm-4">
+						<div class="col">
+							<h4 class="heading heading-xs text-uppercase mb-1">
+								Platform
+							</h4>
+
+							<ul class="footer-links">
+								<li><a href="./about" title="Help center">About</a></li>
+								<li><a href="./documents" title="Discussions">Documentation</a></li>
+								<li><a href="./publications" title="Contact support">Publications</a></li>
+								<li><a href="./contact" title="Blog">Contact</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-4 col-sm-4">
+						<div class="col">
+							<h4 class="heading heading-xs text-uppercase mb-1">
+								UNLP
+							</h4>
+
+							<ul class="footer-links">
+								<li><a href="https://nuig.insight-centre.org/unlp/" target="_blank">Webpage</a></li>
+								<li><a href="https://nuig.insight-centre.org/unlp/research/topics/" target="_blank">Research</a></li>
+								<li><a href="https://nuig.insight-centre.org/unlp/projects/current_projects/" target="_blank">Projects</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-4 col-sm-4">
+						<div class="col">
+							<h4 class="heading heading-xs text-uppercase">
+								Get in touch
+							</h4>
+
+							<ul class="social-media">
+								<li>
+									<a href="#" class="github" target="_blank" data-toggle="tooltip" data-original-title="Github">
+										<i class="fa fa-github"></i>
+									</a>
+								</li>
+								<li>
+									<a href="https://twitter.com/unlp_nuig" class="twitter" target="_blank" data-toggle="tooltip" data-original-title="Twitter">
+										<i class="fa fa-twitter"></i>
+									</a>
+								</li>
+								<li>
+									<a href="./contact" class="envelope" target="_blank" data-toggle="tooltip" data-original-title="Email">
+										<i class="fa fa-envelope"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-12">
+				<ul class="partnerships clearfix">
+                    <li><a href="http://www.insight-centre.org/"><img id="insight_logo" alt="INSIGHT" src="{{ url_for('static', filename='public/images/insight-logo.png')}}"></a></li>
+                    <li><a href="http://www.nuigalway.ie/"><img id="nui_logo" alt="NUI Galway" src="{{ url_for('static', filename='public/images/nuigalway-logo.png')}}"></a></li>
+                    <li><a href="http://www.sfi.ie/"><img id="sfi_logo" alt="SFI" src="{{ url_for('static', filename='public/images/sfi-logo.jpg')}}"></a></li>
+				</ul>
+
+				<p>This resource has been funded by Science Foundation
+					Ireland under Grant No. SFI/08/CE/I1380 (Lion-2) and by Grant No. SFI/12/RC/2289 (INSIGHT)<br>
+					INSIGHT - National University of Ireland, Galway</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top btn btn-primary" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+
+	<!-- jQuery plugin JavaScript-->
+    <script src="{{ url_for('static', filename='public/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='public/plugins/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='public/plugins/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='public/plugins/fancybox/js/jquery.fancybox.min.js')}}"></script>
+
+	<!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static', filename='public/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+	<!-- WOW.js to use animate.css on scroll down -->
+    <script src="{{ url_for('static', filename='public/plugins/WOW/dist/wow.min.js')}}"></script>
+
+	<!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='public/scripts/main.js')}}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='public/plugins/prism/prism.css')}}">
+    <script type="text/javascript" src="{{ url_for('static', filename='public/plugins/prism/prism.js')}}"></script>
+
+
+	<svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+		<linearGradient id="gradient-bottom">
+			<stop offset="0%" stop-color="#0178bc" />
+			<stop offset="100%" stop-color="#00bdda" />
+		</linearGradient>
+		<linearGradient id="gradient-top">
+			<stop offset="0%" stop-color="#00bdda" />
+			<stop offset="100%" stop-color="#0178bc" />
+		</linearGradient>
+	</svg>
+
+</body>
+
+</html>
