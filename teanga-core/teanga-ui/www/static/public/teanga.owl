@@ -1,0 +1,1276 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://teanga.io/ontology#"
+     xml:base="https://teanga.io/ontology"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology">
+        <rdfs:comment xml:lang="en">The ontology for desciption services in the Teanga platform</rdfs:comment>
+        <rdfs:label xml:lang="en">The Teanga Ontology</rdfs:label>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#action -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#action">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Action"/>
+        <rdfs:comment xml:lang="en">The URL used to perform the action of communicating with the service</rdfs:comment>
+        <rdfs:label xml:lang="en">Action</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#input -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#input">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Input"/>
+        <rdfs:comment xml:lang="en">An input parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Input</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#method -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#method">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+        <rdfs:comment xml:lang="en">Indicates the HTTP method to be used to communicate with the server</rdfs:comment>
+        <rdfs:label xml:lang="en">Method</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#oneOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#oneOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter"/>
+        <rdfs:comment xml:lang="en">Indicates that the value must be one of the following</rdfs:comment>
+        <rdfs:label xml:lang="en">One of</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#option -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#option">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Option"/>
+        <rdfs:comment xml:lang="en">Indicates a configuration option of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Option</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#output -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#output">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Output"/>
+        <rdfs:comment xml:lang="en">An output parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Output</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#display -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#display">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Selection"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment xml:lang="en">The display string for a parameter</rdfs:comment>
+        <rdfs:label xml:lang="en">Display</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#key -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#key">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Selection"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">The key (value to be sent) for a parameter</rdfs:comment>
+        <rdfs:label xml:lang="en">Key</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#path -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#path">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Action"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">The path used to access the service</rdfs:comment>
+        <rdfs:label xml:lang="en">Path</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#port -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#port">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Action"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="en">The port used to access the service</rdfs:comment>
+        <rdfs:label xml:lang="en">Port</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/R3IzTs08wZwat67eNPbRtv -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R3IzTs08wZwat67eNPbRtv">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Coding</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R758pxhn3qOAlTW2ZobPi90 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R758pxhn3qOAlTW2ZobPi90">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Indentation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7RAZBsQtjq69V5gjtQjm6l -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7RAZBsQtjq69V5gjtQjm6l">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Accuracy</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7RYRNymYPIsOBGWJPapaCl -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7RYRNymYPIsOBGWJPapaCl">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Brackets</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7SQ78KGhTE9adTZnlZ43kH -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7SQ78KGhTE9adTZnlZ43kH">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Rating</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7TrJ1MiL42woHns1uT3kA2 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7TrJ1MiL42woHns1uT3kA2">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>verb</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7U7ob5a62zRzNfEUuPMXQi -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7U7ob5a62zRzNfEUuPMXQi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Meaning</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7V42kYq2PrtIvHp07RINbp -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7V42kYq2PrtIvHp07RINbp">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDiDIak9zwHNJkEkeMcI3QK"/>
+        <rdfs:label>Linear clustering algorithm</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7YHmnHfRfaFC42PjNPbYbZ -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7YHmnHfRfaFC42PjNPbYbZ">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Dimension</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7dMsG77yp9ByvFzkx9yjoV -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7dMsG77yp9ByvFzkx9yjoV">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R9fvd5Yoi3BvhI1pviDlVL8"/>
+        <rdfs:label>Link</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7ezpm3coAuSSnPNcWOQppr -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7ezpm3coAuSSnPNcWOQppr">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Frequency</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7tbGtFDEvcClQO5OmNnOSb -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7tbGtFDEvcClQO5OmNnOSb">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>verb phrase</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7yJosA9X8kXxNDRVkhfPkD -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R7yJosA9X8kXxNDRVkhfPkD">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL"/>
+        <rdfs:label>Constant</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R80kx5ahhZdGCRtzeQqyqrg -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R80kx5ahhZdGCRtzeQqyqrg">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Apply text Lemmatization and Stemming</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Integer</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R87WV15ZjwsonQ5itaRw8fT -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R87WV15ZjwsonQ5itaRw8fT">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Encoding</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8CtQwL5JyrUO8j6itrpzSv -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8CtQwL5JyrUO8j6itrpzSv">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Size</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8ECfOyEuXZGWoaXaZ6ZgHI -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8ECfOyEuXZGWoaXaZ6ZgHI">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Losses</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8MdMmU7QXEhmOUM9QVYgtM -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8MdMmU7QXEhmOUM9QVYgtM">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL"/>
+        <rdfs:label>Logical operators</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8QbYTadCfqiwmJzq9Ylwkz -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8QbYTadCfqiwmJzq9Ylwkz">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Whitespace</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8R3gYprfAhm6Fld4h71Noj -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8R3gYprfAhm6Fld4h71Noj">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8l757SqLedWQ6ikSUWWVFR"/>
+        <rdfs:label>Predicted</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8SR6hGkLjibOH6ayFOWSjB -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8SR6hGkLjibOH6ayFOWSjB">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Media</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8VJ7bGhLJevSs1atNJom19 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8VJ7bGhLJevSs1atNJom19">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R87WV15ZjwsonQ5itaRw8fT"/>
+        <rdfs:label>Unicode</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8l757SqLedWQ6ikSUWWVFR -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8l757SqLedWQ6ikSUWWVFR">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Pictures</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8mSd0ha4qU0pFZ6b07IvOx -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8mSd0ha4qU0pFZ6b07IvOx">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Stop word list</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8xkkGjEpA2uitS8KbVC29E -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8xkkGjEpA2uitS8KbVC29E">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Word</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8xwWeAtT8CHz7HJ4WVhq8j -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R8xwWeAtT8CHz7HJ4WVhq8j">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R9pWR7rvmmF67oE7BGFTcWF"/>
+        <rdfs:label>Constituency Parsing</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R90VvGh7BMcig07Z8nCclqe -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R90VvGh7BMcig07Z8nCclqe">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Regex</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R94fjizG4z8x5UOj0yNSO9C -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R94fjizG4z8x5UOj0yNSO9C">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Corpus</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R96ovAjh9GM9LmV1FyaVOZS -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R96ovAjh9GM9LmV1FyaVOZS">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RCZ1f98OTqVQUcnf3PcsDUY"/>
+        <rdfs:label>Binary predicates</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9BOkwQZ2LNlAM3W0g5wjpK -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9BOkwQZ2LNlAM3W0g5wjpK">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Window scale</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9GnQM6TpOLncOZAukLfflw -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9GnQM6TpOLncOZAukLfflw">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Score</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9TWIj7lC4e4p4Ye7GMo1OX -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9TWIj7lC4e4p4Ye7GMo1OX">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R9pWR7rvmmF67oE7BGFTcWF"/>
+        <rdfs:label>Dependency parsing</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9UazgC0xqF2l6jw0xGqTYm -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9UazgC0xqF2l6jw0xGqTYm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Suggestion</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9bqplXiwec4mqkorQRs8KA -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9bqplXiwec4mqkorQRs8KA">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Fixing misspelled words</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9fvd5Yoi3BvhI1pviDlVL8 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9fvd5Yoi3BvhI1pviDlVL8">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>The world wide web</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9kxegBFwEU9uRjEsKVkJwd -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9kxegBFwEU9uRjEsKVkJwd">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Braces</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9lthkfMPy3mcdMH3ZT6If1 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9lthkfMPy3mcdMH3ZT6If1">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL"/>
+        <rdfs:label>Clause</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9pDj29rmjGpXJDA6bxKNHS -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9pDj29rmjGpXJDA6bxKNHS">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RCbW04iwxmSxyKK4OYWpfw2"/>
+        <rdfs:label>Facebook</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9pWR7rvmmF67oE7BGFTcWF -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9pWR7rvmmF67oE7BGFTcWF">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Kind of parsing</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9v2TRRSu44O1H7x9YPRRgr -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9v2TRRSu44O1H7x9YPRRgr">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Support vector machines</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9vT2BeGRxRiWfPtCKG7bHP -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R9vT2BeGRxRiWfPtCKG7bHP">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Case sensitive</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB0QPhGIWgiCQcSSRWCoequ -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB0QPhGIWgiCQcSSRWCoequ">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Speech</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>logical form language</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB30inh8KmuWO1II1doUfMP -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB30inh8KmuWO1II1doUfMP">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Parenthesis</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB4ECNbv9ZnyRsl2S6qSUP6 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB4ECNbv9ZnyRsl2S6qSUP6">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Prediction</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB9DpMKhym2mIjNRhtuaHMl -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB9DpMKhym2mIjNRhtuaHMl">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Linear classifiers</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB9u4mEpsolMjMOxRpNK4ab -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RB9u4mEpsolMjMOxRpNK4ab">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R87WV15ZjwsonQ5itaRw8fT"/>
+        <rdfs:label>EBCDIC</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBFNPiFdx9AcPFPxZr7UlOn -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBFNPiFdx9AcPFPxZr7UlOn">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Radicals</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBI4CqSA5Z7yXP3SALtJOn8 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBI4CqSA5Z7yXP3SALtJOn8">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RCbW04iwxmSxyKK4OYWpfw2"/>
+        <rdfs:label>Twitter</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBLJ25iNJK7OUmqOX6I6BkT -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBLJ25iNJK7OUmqOX6I6BkT">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Quotes</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBetpoIJ96vEJhaU20xbbgD -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBetpoIJ96vEJhaU20xbbgD">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>determiner</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBmWRZ9AADS9xwzDAvHHlEo -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBmWRZ9AADS9xwzDAvHHlEo">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDiDIak9zwHNJkEkeMcI3QK"/>
+        <rdfs:label>Non linear clustering algorithm</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBrbFhLGnMQFx5Ln9sdcK5h -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBrbFhLGnMQFx5Ln9sdcK5h">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Government data</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBvpasqPC32CinaZiaZ7jge -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RBvpasqPC32CinaZiaZ7jge">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Kernel estimation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC26XBgx2W7Ne1ROfgwXwTl -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RC26XBgx2W7Ne1ROfgwXwTl">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>noun phrase</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC3NoMFfs4j3ivdcWERb9Lo -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RC3NoMFfs4j3ivdcWERb9Lo">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8VJ7bGhLJevSs1atNJom19"/>
+        <rdfs:label>UTF-16</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCDxEzchGRQV6L3Ezuzn6zC -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCDxEzchGRQV6L3Ezuzn6zC">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Context</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCPdJw7mPqgy4F90GcU1d17 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCPdJw7mPqgy4F90GcU1d17">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Health data</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCTAtqDjyv6hgSoLN6EL9He -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCTAtqDjyv6hgSoLN6EL9He">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>File</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCUHsz9ViEtTigYKLOEJMU -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCUHsz9ViEtTigYKLOEJMU">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Points</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCZ1f98OTqVQUcnf3PcsDUY -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCZ1f98OTqVQUcnf3PcsDUY">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL"/>
+        <rdfs:label>Predicate</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCbW04iwxmSxyKK4OYWpfw2 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCbW04iwxmSxyKK4OYWpfw2">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Social media</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCiilLHrCHqrCZkkhy7Qhfx -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCiilLHrCHqrCZkkhy7Qhfx">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Counts</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCtnmLVkDyZe5nxcM8yu2Cb -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCtnmLVkDyZe5nxcM8yu2Cb">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Concept name</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCyi41YYYF9PNT0jbKEqFfF -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RCyi41YYYF9PNT0jbKEqFfF">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Neural networks</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RD2LwPbHghQrWU895ORtAtI -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RD2LwPbHghQrWU895ORtAtI">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Quadratic classifiers</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDARLdlaiB07MjfqH7rEeQ -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDARLdlaiB07MjfqH7rEeQ">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV"/>
+        <rdfs:label>Decision trees</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDEgbzpHZiAdXWNLzechaJo -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDEgbzpHZiAdXWNLzechaJo">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8l757SqLedWQ6ikSUWWVFR"/>
+        <rdfs:label>Image</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDGimafvU91KlPVnR1tRUwV -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDGimafvU91KlPVnR1tRUwV">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8VJ7bGhLJevSs1atNJom19"/>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Data Sources</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+        <rdfs:label>Boolean</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDWI7s7WgB4rvqyck2oHDKV">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Classification Algorithm</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDaHortPPdaC5PlSlIZmfFt -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDaHortPPdaC5PlSlIZmfFt">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Relationship</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDiDIak9zwHNJkEkeMcI3QK -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDiDIak9zwHNJkEkeMcI3QK">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Clustering Algorithm</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDoRNKXEpS32Shzlb1k1meQ -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDoRNKXEpS32Shzlb1k1meQ">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RB2bemQquHXciydYQxRPQmL"/>
+        <rdfs:label>Variable</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDuC4vA67iUG8U2xZSTapXc -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDuC4vA67iUG8U2xZSTapXc">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S"/>
+        <rdfs:label>Escape character</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDx13aBIq9Ad88HFi4ZnM8W -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RDx13aBIq9Ad88HFi4ZnM8W">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>name</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RJei1QNiUTP73NFru6K65L -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RJei1QNiUTP73NFru6K65L">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Prefixes</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RKOAq0H6LaYJ4r224JrMjN -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RKOAq0H6LaYJ4r224JrMjN">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Sentiment</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Sentence</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RNmJqhM8mTEz7lXcLN0gjA -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RNmJqhM8mTEz7lXcLN0gjA">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Answer</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RNvvntjnQQwm1y190MaN2W -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RNvvntjnQQwm1y190MaN2W">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Removing stop word</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RV3ermRczWo5PIfvrQYrTS -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RV3ermRczWo5PIfvrQYrTS">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Grammatical category</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RVvrcja61AwlwXY3kbilW3 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RVvrcja61AwlwXY3kbilW3">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Entity type</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RXIdUzNuestH1GUCEGnjUr -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RXIdUzNuestH1GUCEGnjUr">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDNc9kBXXK5EV6atOQRCERg"/>
+        <rdfs:label>Database</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RcQBoRsjDLFQGiF7R0CNv9 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RcQBoRsjDLFQGiF7R0CNv9">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Percentage of training set</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RdbudYzITu73SPLFstsyLu -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RdbudYzITu73SPLFstsyLu">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Punctuation sensitive</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Rfmgoyoyf6uwjyzyiiZUXV -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Rfmgoyoyf6uwjyzyiiZUXV">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RMMuMMfUCM2RLaeHScYt8R"/>
+        <rdfs:label>noun</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RfwRXdGoWAE29ubQ7YLFIm -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RfwRXdGoWAE29ubQ7YLFIm">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Range</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Rig7oWvCyEEyrPVZBb1djq -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Rig7oWvCyEEyrPVZBb1djq">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8l757SqLedWQ6ikSUWWVFR"/>
+        <rdfs:label>Label</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RjOpcuFUm3wM0zbbHYwYny -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RjOpcuFUm3wM0zbbHYwYny">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Suffixes</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RnWfpvQ1o41a0ubdRSFIIv -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RnWfpvQ1o41a0ubdRSFIIv">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:label>Question</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RrRmj8ijgGSgExL5oaJi4S">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDRC0bwRjmrR7qFlMT9vZ1j"/>
+        <rdfs:label>Delimiter</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RsdeVlyQ5Ri6GfxLxqCasq -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RsdeVlyQ5Ri6GfxLxqCasq">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8700KpMc5qsQrU0ZF1kKR8"/>
+        <rdfs:label>Percentage of test set</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RuVCpHWtBI5HllwrPnAsHg -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RuVCpHWtBI5HllwrPnAsHg">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R8VJ7bGhLJevSs1atNJom19"/>
+        <rdfs:label>UCS-2</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Ry4b8wOGaYCFVKBkp35Yj5 -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/Ry4b8wOGaYCFVKBkp35Yj5">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R87WV15ZjwsonQ5itaRw8fT"/>
+        <rdfs:label>ASCII</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RyRxTGf0AprpqYSLPvoKTN -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/RyRxTGf0AprpqYSLPvoKTN">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RCZ1f98OTqVQUcnf3PcsDUY"/>
+        <rdfs:label>Unary predicates</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Action -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Action">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#path"/>
+                        <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                        <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#port"/>
+                        <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                        <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="en">The method of accessing a service inside its Docker</rdfs:comment>
+        <rdfs:label xml:lang="en">Action</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Input -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Input">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter"/>
+        <rdfs:comment xml:lang="en">A chainable input parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Input</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Language -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Language">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String"/>
+        <rdfs:comment xml:lang="en">A parameter that is a (string) language code encoded using IETF language tag</rdfs:comment>
+        <rdfs:label xml:lang="en">Language</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#CONNECT"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#DELETE"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#GET"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#HEAD"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#OPTIONS"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PATCH"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#POST"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PUT"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#TRACE"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="en">The HTTP method used to talk to a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Method</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Option -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Option">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter"/>
+        <rdfs:comment xml:lang="en">A user-selected configuration parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Option</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Output -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Output">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter"/>
+        <rdfs:comment xml:lang="en">A chainable output parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Output</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Parameter">
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Input"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Option"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Output"/>
+        </owl:disjointUnionOf>
+        <rdfs:comment xml:lang="en">A parameter of a service</rdfs:comment>
+        <rdfs:label xml:lang="en">Parameter</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType">
+        <rdfs:comment xml:lang="en">The datatype of a parameter</rdfs:comment>
+        <rdfs:label xml:lang="en">Parameter type</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Selection -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Selection">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#key"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">A single option among many options in a selection</rdfs:comment>
+        <rdfs:label xml:lang="en">Selection</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Service">
+        <rdfs:comment xml:lang="en">A single service in the Teanga platform</rdfs:comment>
+        <rdfs:label xml:lang="en">Service</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#String">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#ParameterType"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#CONNECT -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#CONNECT">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#DELETE -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#DELETE">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#GET -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#GET">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#HEAD -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#HEAD">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#OPTIONS -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#OPTIONS">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PATCH -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PATCH">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#POST">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PUT -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#PUT">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#TRACE -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#TRACE">
+        <rdf:type rdf:resource="http://www.semanticweb.org/housamz/ontologies/2019/5/teanga-ontology#Method"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

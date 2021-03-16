@@ -8,9 +8,9 @@ RUN apt-get -y update \
 WORKDIR /teanga
 ENV AIRFLOW_HOME /teanga
 RUN chmod +x /teanga
-copy ./requirements.txt /teanga/requirements.txt
-copy ./ /teanga
+COPY ./requirements.txt /teanga/requirements.txt
+COPY ./ /teanga
 RUN pip3 install -r requirements.txt  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
 RUN airflow initdb
 RUN chmod +x /teanga/init.sh
-CMD ["./init.sh"]  
+#CMD ["./init.sh"]  

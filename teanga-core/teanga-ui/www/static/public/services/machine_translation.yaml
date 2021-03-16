@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  title: Machine Translation
+  description: This service provides machine translation from multiple European languages to English and vice versa.
+  version: "0.1"
+  termsOfService: https://nlp.insight-centre.org
+  contact:
+    name: Mihael Arčan
+    url: https://nlp.insight-centre.org
+    email: firstname.lastname@insight-centre.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+host: 0.0.0.0:8018
+basePath: /
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /api:
+    x-swagger-router-controller: machine_translation
+    get:
+      description: Return the results related to the translation service
+      parameters:
+      - name: algo
+        default: machineTranslation
+        in: query
+        description: defining the algorithm to select the translation
+        required: true
+        type: string
+      - name: i
+        in: query
+        description: The text to be translated
+        required: true
+        type: string
+      - name: sourcelanguage
+        in: query
+        description: source language parameter
+        required: true
+        type: string
+        enum: ["en", "bg", "hr", "cs", "da", "nl", "et", "fi", "fr", "de", "el", "hu", "ga", "it", "lv", "lt", "mt", "pl", "pt", "ro", "sk", "sl", "es", "sv"]
+      - name: targetlanguage
+        in: query
+        description: target language parameter
+        required: true
+        type: string
+        enum: ["en", "bg", "hr", "cs", "da", "nl", "et", "fi", "fr", "de", "el", "hu", "ga", "it", "lv", "lt", "mt", "pl", "pt", "ro", "sk", "sl", "es", "sv"]
+      responses:
+        '200':
+          description: Translation response
+          schema:
+            $ref: '#/definitions/TranslationResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+# complex objects have schema definitions
+definitions:
+  TranslationResponse:
+    required:
+    - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+    - message
+    properties:
+      message:
+        type: string
+
+
+
+
