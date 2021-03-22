@@ -276,7 +276,21 @@ def matching_function(*args, **kwargs):
 
 
     if missing_expected_inputs:
-        raise Exception("Missing inputs")
+        logging.info("Missing")
+        for expected_input, expected_details in missing_expected_inputs.items():
+            logging.info(expected_input)
+            if expected_details.get("required",None) != None:
+                if expected_details["required"] == True:
+                    logging.info(expected_details)
+                    raise Exception("Missing inputs")
+                else:
+                    continue
+            else:
+                logging.info(expected_details)
+                raise Exception("Missing inputs")
+        return {
+            "inputs":given_inputs_dict
+            }
     elif isCollection:
         given_inputs_per_item = [] 
         logging.info(f"Is collection! {given_inputs_dict[isCollection]['value']}")
