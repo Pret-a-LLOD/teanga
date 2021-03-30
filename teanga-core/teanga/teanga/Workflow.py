@@ -91,7 +91,8 @@ class Workflow:
                             flatten["response_schema_item_name"] = \
                                     flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]
                         elif flatten["response_schema"].get("$ref",False):
-                            pass
+                            flatten["response_schema_name"] = \
+                                    flatten["sucess_response"]['content']['application/json']['schema']["$ref"].split("/")[-1]
         flatten["schemas"] = OAS['components']['schemas']
         return flatten 
     #}
@@ -138,18 +139,18 @@ class Workflow:
         self.operators_instances["pull_operators_instances"] = generate_pull_operators(self.services, self.dag)
 
         # services setup operators_instances
-        self.operators_instances["setup_operators_instances"] = generate_setup_operators(self.services, self.dag)
+        #self.operators_instances["setup_operators_instances"] = generate_setup_operators(self.services, self.dag)
         self.operators_instances[f"generate_endpointRequest_operator"] = []
         for workflow_step, step_description in self.workflow.items():
             self.operators_instances[f"generate_endpointRequest_operator"].append(generate_endpointRequest_operator(workflow_step, step_description["operation_id"], step_description, self.dag))
 
 
         pull_operators_instances  =    [operator for operator in self.operators_instances["pull_operators_instances"].values()]
-        setup_operators_instances =    [operator for operator in self.operators_instances["setup_operators_instances"].values()]
+        #setup_operators_instances =    [operator for operator in self.operators_instances["setup_operators_instances"].values()]
         rq_operators_instances    =    [operator for operator in self.operators_instances["generate_endpointRequest_operator"]]
 
-        for pull_operators_instance in pull_operators_instances:
-            pull_operators_instance >> setup_operators_instances
+        #for pull_operators_instance in pull_operators_instances:
+        #pull_operators_instance >> setup_operators_instances
 
         # MAPPING each step on the workflow to a set of airflow operators    
         for workflow_step, step_description in list(self.workflow.items()):#{{
@@ -164,7 +165,7 @@ class Workflow:
                                self.workflow[str(workflow_step)]['operation_spec'].get('parameters',[])])
            expected_requestBody =  self.workflow[str(workflow_step)]['operation_spec'].get('requestBody',None)
            if not step_description["dependencies"]:
-               setup_operators_instances >> pre_operator 
+               pull_operators_instances >> pre_operator 
            else:
                for dependency in step_description["dependencies"]: #{{
                    if dependency["operator"] == "wait": 
