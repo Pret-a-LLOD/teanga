@@ -3,6 +3,7 @@ from airflow.operators import PythonOperator
 import logging
 import json
 import requests
+import ast
 
 def generate_pull_operators(unique_services, dag): #{
     """
@@ -136,39 +137,36 @@ def flatten_function(*args,**kwargs):
         given_inputs dictionaries are a list 
         of objects with the same schema
     '''
-    try:
     #{{
-        for idx, input_source in enumerate(kwargs['given_inputs']):
-            if isinstance(input_source,dict):
-                pass
-            elif isinstance(input_source,str):
-                kwargs['given_inputs'].pop(idx)
-                for list_ in kwargs['task_instance'].xcom_pull(task_ids=input_source):
-                    kwargs['given_inputs'].append(list_)
+    for idx, input_source in enumerate(kwargs['given_inputs']):
+        if isinstance(input_source,dict):
+            pass
+        elif isinstance(input_source,str):
+            kwargs['given_inputs'].pop(idx)
+            for list_ in kwargs['task_instance'].xcom_pull(task_ids=input_source):
+                kwargs['given_inputs'].append(list_)
 
-        logging.info(f"kwargs: {kwargs['given_inputs']}")
-        flattened_elements = []
-        for idx, schema_dict in enumerate(kwargs['given_inputs']):
-                logging.info(schema_dict.items())
-                for schema_name, schema_info in schema_dict.items():
-                    if not isinstance(schema_info, dict):
-                       continue 
-                    logging.info(schema_info)
-                    logging.info(schema_info.keys())
-                    schema = schema_info["schema"]
-                    list_of_objects = schema_info["value"]
-                    for object in list_of_objects:
-                        object.update({"groupById": f"{order_idx}"})
-                        flattened_elements.append({k:v for k,v in object.items()})
-        return {
-                schema_name: {
-                "value":flattened_elements,
-                "schema": schema 
-                }
+    logging.info(f"kwargs: {kwargs['given_inputs']}")
+    flattened_elements = []
+    for idx, schema_dict in enumerate(kwargs['given_inputs']):
+            logging.info(schema_dict.items())
+            for schema_name, schema_info in schema_dict.items():
+                if not isinstance(schema_info, dict):
+                   continue 
+                logging.info(schema_info)
+                logging.info(schema_info.keys())
+                schema = schema_info["schema"]
+                list_of_objects = schema_info["value"]
+                for object in list_of_objects:
+                    object.update({"groupById": f"{order_idx}"})
+                    flattened_elements.append({k:v for k,v in object.items()})
+    return {
+            schema_name: {
+            "value":flattened_elements,
+            "schema": schema 
             }
+        }
     #}}
-    except:
-        return 1
 #}}
 
 def matching_operator(airflowOperator_id, dag):#{{ 
@@ -237,7 +235,8 @@ def matching_function(*args, **kwargs):
                 given_inputs_dict[input_key]= input_value 
             else:
                 given_inputs_dict[input_key]= {
-                     "value": input_value
+                     "value": input_value,
+                     "name": input_key
                     }
 
 
@@ -253,7 +252,8 @@ def matching_function(*args, **kwargs):
             if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array": 
                 isCollection = expected_input
             else:
-                given_inputs_dict[expected_input].update(expected_details)
+                #given_inputs_dict[expected_input].update(expected_details)
+                pass
         else:
             missing_expected_inputs[expected_input] = expected_details 
 
@@ -278,7 +278,6 @@ def matching_function(*args, **kwargs):
     if missing_expected_inputs:
         logging.info("Missing")
         for expected_input, expected_details in missing_expected_inputs.items():
-            logging.info(expected_input)
             if expected_details.get("required",None) != None:
                 if expected_details["required"] == True:
                     logging.info(expected_details)
@@ -289,6 +288,7 @@ def matching_function(*args, **kwargs):
                 logging.info(expected_details)
                 raise Exception("Missing inputs")
         return {
+            "header": {'Content-Type': 'application/json'},
             "inputs":given_inputs_dict
             }
     elif isCollection:
@@ -301,7 +301,7 @@ def matching_function(*args, **kwargs):
                         **{isCollection:{"value": {k:v for k,v in  item.items()}}})
                     )
         return {
-                "header":"application/json",
+                "header": {'Content-Type': 'application/json'},
                 "json_input": isCollection,
                 "inputs":given_inputs_per_item 
                 }
@@ -330,17 +330,19 @@ def endpointRequest_function(*args, **kwargs):
         matching_output = kwargs['task_instance'].xcom_pull(task_ids=matching_operator_id)
         inputs = matching_output.get('inputs', None)
         header = matching_output.get('header', None)
-
+        logging.info(inputs)
         def setup_request(named_inputs,#{{
                         endpoint,
                         request_method,
                         host_port):
-            remaining_inputs = {k: d["value"] for k,d in named_inputs.copy().items() if d.get("value",False)}
+            #remaining_inputs = {k: d["value"] for k,d in named_inputs.copy().items() if d.get("value",False)}
+            remaining_inputs = {k: d["value"] if d.get("value",False) else d for k,d in named_inputs.copy().items() }
             for name, input_dict in named_inputs.items():
                 if input_dict.get("name",False) and  f'{{{input_dict["name"]}}}' in endpoint:
                     endpoint = endpoint.replace(f'{{{input_dict["name"]}}}',str(input_dict["value"]))
                     remaining_inputs.pop(input_dict["name"],None);
             url = f'http://host.docker.internal:{host_port}{endpoint}'
+            logging.info(url)
             if named_inputs.get("files",False):
                 data =  remaining_inputs.pop("files",None)
                 if isinstance(data,dict) or isinstance(data,list) :
@@ -350,7 +352,7 @@ def endpointRequest_function(*args, **kwargs):
                                   headers=headers,
                                   url=url,
                                   params=remaining_inputs,
-                                  data=json.dumps(data))
+                                  data=data['value'])#json.dumps(data))
                 else:
                     headers= {'Content-Type': 'application/rdf+xml'}
                     request_ = requests.Request(
@@ -360,14 +362,16 @@ def endpointRequest_function(*args, **kwargs):
                                   params=remaining_inputs,
                                   data=data)
             else:
-                logging.info(url)
-                logging.info(remaining_inputs)
                 if header:
-                    headers= {'Content-Type': 'application/json'}
-                    data = remaining_inputs.pop(matching_output["json_input"]) 
+                    #data = remaining_inputs.pop(matching_output["json_input"]) 
+                    if len(remaining_inputs.keys()) == 1:
+                        data = remaining_inputs[list(remaining_inputs.keys())[0]]
+                    else:
+                        logging.info(remaining_inputs)
+                        raise Exception("more than one remaining input to attach in request body")
                     request_ = requests.Request(
                                   method=request_method.upper(),
-                                  headers=headers,
+                                  headers=header,
                                   url=url,
                                   params=remaining_inputs,
                                   data=json.dumps(data))
@@ -407,7 +411,18 @@ def endpointRequest_function(*args, **kwargs):
                                         "schema":kwargs['step_description']['operation_spec']["response_schema"]
                                     }
                     }
-                    response.update(kwargs['step_description']['operation_spec']["response_schema"])
+                    #response.update(kwargs['step_description']['operation_spec']["response_schema"])
+
+                elif content.get("application/json", {}).get("schema",{}).get("$ref",None):
+                        response = {
+                        kwargs['step_description']['operation_spec']["response_schema_name"]: {
+                                            "value":eval(session.send(request_).text.encode("utf-8")),
+                                            "name":kwargs['step_description']['operation_spec']["response_schema_name"],
+                                            "schema":kwargs['step_description']['operation_spec']["response_schema"]
+                                        }
+                        }
+                        #response.update(kwargs['step_description']['operation_spec']["response_schema"])
+
                 else: 
                     response = session.send(request_).text.encode("utf-8")
             else:
