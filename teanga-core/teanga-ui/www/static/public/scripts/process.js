@@ -17,7 +17,7 @@ window.onload = function() {
 ////{
 		let all_services = '';
 		for (let key in all_jsons) {
-			let jsonFile = load_json_file(all_jsons[key]);
+			let jsonFile = all_jsons[key]//load_json_file(all_jsons[key]);
 
 			all_services += '<div class="draggable_operator btn btn-'+colours[key % colours.length]+' btn-circle btn-xl" data-nb-action="'+jsonFile.host+'" ';
 			all_services += foreach_data_js(jsonFile, "input");
