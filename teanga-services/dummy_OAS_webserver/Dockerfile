@@ -1,7 +1,6 @@
 FROM ubuntu:latest
 USER root
 RUN apt-get update
-RUN apt-get install -y tmux vim git
 RUN apt-get install -y python-pip python-dev build-essential
 RUN apt-get install -y python3-pip python3-dev
 

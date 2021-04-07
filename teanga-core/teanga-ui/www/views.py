@@ -18,6 +18,7 @@
 # under the License.
 #
 
+import yaml
 import ast
 import codecs
 import copy
@@ -2238,6 +2239,16 @@ class Airflow(AirflowViewMixin, BaseView):
 
 
 class HomeView(AirflowViewMixin, AdminIndexView):
+    @expose("/workflow/build")
+    def teanga_workflow(self):
+        all_jsons = []
+        services_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)),"static","public","services")
+        for filename in os.listdir(services_folder):
+            filepath = os.path.join(services_folder, filename)
+            service_spec = yaml.load(open(filepath),Loader=yaml.FullLoader)
+            all_jsons.append(service_spec)
+        return render_template("/teanga/buildWorkflow.html", all_jsons=json.dumps(all_jsons))
+
     @expose("/teanga")
     def teanga_index(self):
         return self.render("/teanga/index.html")

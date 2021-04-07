@@ -93,7 +93,7 @@ class Workflow:
                         elif flatten["response_schema"].get("$ref",False):
                             flatten["response_schema_name"] = \
                                     flatten["sucess_response"]['content']['application/json']['schema']["$ref"].split("/")[-1]
-        flatten["schemas"] = OAS['components']['schemas']
+        flatten["schemas"] = OAS.get('components',{}).get('schemas',{})
         return flatten 
     #}
 

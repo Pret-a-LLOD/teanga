@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Teanga is a Natural Language Processing Platform">
+	<meta name="author" content="@housamz">
+
+    <link rel="Shortcut Icon" href="{{ url_for('static', filename='public/images/favicon.png') }}">
+
+	<title>Teanga • A Natural Language Processing Platform ●•·</title>
+
+	<!-- Latest boostrap and font awesome compiled and minified CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='public/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='public/plugins/font-awesome/css/font-awesome.min.css') }}" type="text/css" >
+	
+	<!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='public/css/style.css') }}" rel="stylesheet">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body id="page-top" class="fixed-nav sticky-footer platform">
+
+	<!-- Navigation-->
+	<nav class="navbar navbar-expand-lg topbar fixed-top navbar-dark" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="../platform">
+                <img class="pull-left" src="{{ url_for('static',filename='public/images/teanga-logo-white.svg')}}" height="30"> &nbsp;
+                <span class="name"><span class="beta">MVP</span></span>
+            </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <ul class="navbar-nav ml-auto" style="position: relative">
+                <!--<li><a href="/tasks/runatask" class="nav-link"><i class="fa fa-edit fa-fw"></i> Run a Task</a></li>-->
+                <li><a href="#" class="nav-link dropdown-toggle" id="navbarDropdownServices" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-cogs"></i> Services</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownServices">
+                        <a href="/services/addservice" class="dropdown-item" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
+                        <a href="/services/containers" class="dropdown-item" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-archive"></i> Containers</a>
+                        <a href="/services/images" class="dropdown-item" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-hdd-o"></i> Images</a>
+
+                    </div>
+                </li>
+            </ul>
+            <a href="/tasks/runatask" class="btn btn-primary btn-big-round">Run a task</a>
+        </div>
+
+	</nav>
+
+    <div class="container">
+
+
+                    <!-- BODY 
+                        #
+                        #
+                        #
+                        #
+                        #
+                        #
+                    -->
+                    <div class="row">
+                        <div class="col-md-6 col-8">
+                            <h3 class="text-special">Run a Task</h3>
+                            <!-- Breadcrumbs-->
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="../..">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Run a Task</li>
+                            </ol>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <!-- SmartWizard html -->
+                                    <div id="smartwizard">
+                                        <ul>
+                                            <li><a href="#step-1">Upload Text<br /><small>Enter your data in this step</small></a></li>
+                                            <li><a href="#step-2">Create Workflow<br /><small>Use the WYSIWYG Editor</small></a></li>
+                                            <li><a href="#step-3">Check and Run<br /><small>Check your workflow</small></a></li>
+                                            <li><a href="#step-4">Results<br /><small>The final results</small></a></li>
+                                        </ul>
+                                        <div>
+                                            <br>
+                                            <div id="step-1" class="">
+                                                <p>Enter the text below and click proceed</p>
+                                                <textarea class="form-control" id="text_holder" placeholder="Minimum text length is 30 characters" rows="12" required="required">Le sugiero que vea la nueva película para el actor de Hollywood Brad Pitt</textarea>
+                                                <br clear="both">
+                                            </div>
+
+                                            <div id="step-2" class="">
+                                                <p>Create your workflow by dragging services to the the chart area, and then connect them as you wish.</p>
+
+                                                <div id="chart_container">
+                                                    <div class="flowchart-example-container" id="chart_area">
+                                                        <button class="delete_selected_button btn btn-danger">Delete selected service or link</button>
+
+                                                        <!-- Start service options -->
+                                                        <div class="panel panel-default" id="options">
+                                                            <div class="panel-heading">
+                                                                Options
+
+                                                                <button type="button" class="close">
+                                                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div id="optionsContent"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End service options -->
+                                                    </div>
+                                                </div> <!-- /#chart_container -->
+
+                                                <div class="draggable_operators">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            Available Services
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="draggable_operators_divs" id="services_area">
+                                                                        <!-- empty div to be filled with the services bubbles from the javascript code -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- ./draggable_operators -->
+
+
+                                                <br clear="both">
+                                            </div>
+                                            
+                                            <div id="step-3" class="">
+                                                <p>The workflow you created is:</p>
+                                                <div id="check_workflow"></div>
+                                            </div>
+
+                                            <div id="step-4" class="">
+                                                <h3>Results</h3>
+                                                <p id="results_message">Waiting for response from services</p>
+                                                <div class="panel-group" id="results">
+                                                    <!-- empty div to be filled by results from services -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> <!-- /.card-body -->
+                            </div> <!-- /.card -->
+                        </div> <!-- /.col-lg-12 -->
+                    </div> <!-- /.row -->
+
+        <!--<div id="demo"></div>-->
+
+        <script type="text/javascript">
+        var all_jsons = {{all_jsons|safe}} 
+
+        </script>
+        <script src="{{ url_for('static',filename='public/scripts/helper_functions.js')}}"></script>
+        <script src="{{ url_for('static',filename='public/scripts/process.js')}}"></script>
+                    <!-- END BODY 
+                        #
+                        #
+                        #
+                        #
+                        #
+                        #
+                    -->
+
+
+        <br clear="all"><br>
+    </div> <!-- /.container -->
+
+	<footer class="sticky-footer border-top">
+		<div class="container">
+			<div class="text-center">
+				<small>Copyright © <a href="http://teanga.io">Teanga</a> 2017<script>new Date().getFullYear()>2017&&document.write("-"+new Date().getFullYear());</script></small>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top btn btn-primary" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+
+	<!-- jQuery plugin JavaScript-->
+    <script src="{{ url_for('static',filename='public/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='public/plugins/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='public/plugins/jquery-easing/jquery.easing.min.js')}}"></script>
+
+	<!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static',filename='public/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+	<!-- Custom JavaScript -->
+    <script src="{{ url_for('static',filename='public/scripts/main.js')}}"></script>
+
+
+	<!-- Flowchart plugin to show graphical pipeline -->
+    <script src="{{ url_for('static',filename='public/plugins/jquery-flowchart/jquery.flowchart.js')}}"></script>
+
+    <script type="text/javascript" src="{{ url_for('static',filename='public/plugins/smartwizard/dist/js/jquery.smartWizard.min.js')}}"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			// Toolbar extra buttons
+			var btnFinish = $('<button></button>').text('Finish')
+					.addClass('btn btn-info')
+					.on('click', function(){ alert('Finish Clicked'); });
+			var btnCancel = $('<button></button>').text('Cancel')
+					.addClass('btn btn-danger')
+					.on('click', function(){ $('#smartwizard').smartWizard("reset"); });
+
+			// Smart Wizard
+			$('#smartwizard').smartWizard({
+				selected: 0,
+				theme: 'arrows',
+				transitionEffect:'fade',
+				toolbarSettings: {toolbarPosition: 'bottom',
+					toolbarExtraButtons: [btnCancel]
+				}
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		function showHide(thisValue, field, value) {
+			if (thisValue == value){
+				$('#'+field).toggleClass("hide");
+				$('#'+field+'label').toggleClass("hide");
+			}
+			return this;
+		};
+
+		(function( $ ){
+
+		$.fn.solveForm = function(jsonObj, divID) {
+			var html = '<p class="alert alert-info">'+jsonObj.service_description+'</p>';
+			html += '<form';
+			$.each(jsonObj, function(key, value){
+				if(key == "params" || key == "service_description" || key == "output") { return; }
+				html += ' ' + key + ' = ';
+				html += '"' + value + '"';
+				
+			 });
+			html += '>';
+
+			$.each(jsonObj["params"], function(key, value){
+				
+				html += '<div class="'+jsonObj.class+'">';
+
+				switch( value.type ) {
+					case "hidden":
+						html += '<input name ="' + key +'" ';
+						$.each(value, function(newKey, newValue){
+							html += ' ' + newKey + ' = ';
+							html += '"' + newValue + '"';
+						});
+						html += '>';
+						break;
+
+					case "select":
+						html += '<label class="'+value.labelClass+'" for="'+key+'" id="' + key +'label">'+value.label+'</label>';
+						html += '<select class="'+value.class+'" id="' + key +'" name="' + key +'"';
+
+						if (value.onchange !== undefined) {
+							html += ' onchange=\''+value.onchange+'\' ';
+						}
+						html +='>';
+						html += '<option value="">Please Select</option>';
+
+						$.each(value.options, function(newKey, newValue){
+							html += '<option value="' + newKey + '">' + newValue + '</option>';
+						});
+						html += '</select>';
+						break;
+
+					case "textarea":
+						html += '<label class="'+value.labelClass+'" for="'+key+'" id="' + key +'label">'+value.label+'</label>';
+						html += '<textarea class="'+value.class+'"  name ="' + key +'" ';
+						$.each(value, function(newKey, newValue){
+							html += ' ' + newKey + ' = ';
+							html += '"' + newValue + '"';
+						});
+						html += '>';
+						html += '</textarea>';
+						break;
+
+					case "text":
+						html += '<label class="'+value.labelClass+'" for="'+key+'" id="' + key +'label">'+value.label+'</label>';
+						html += '<input name ="' + key +'" ';
+						$.each(value, function(newKey, newValue){
+							html += ' ' + newKey + ' = ';
+							html += '"' + newValue + '"';
+						});
+						html += '>';
+						break;
+				}
+
+				html += '</div>';
+				
+			 });
+
+			html += '<button type="submit" class="btn btn-primary">Submit</button>';
+
+			html += '</form>';
+			
+			$(divID).html(html);
+
+		  return this;
+	   };
+
+	})( jQuery );
+
+
+
+
+	$('#service_select').change(function(){
+		var service = $(this).val();
+		$.getJSON('../services_json/'+service+'.json', function(data) {
+			$('#container').solveForm(data, '#container');
+		});
+	});
+
+	
+
+
+	</script>
+
+</body>
+</html>

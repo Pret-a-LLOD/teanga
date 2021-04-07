@@ -243,6 +243,7 @@ def matching_function(*args, **kwargs):
     
     missing_expected_inputs = {}
     isCollection = False 
+    logging.info(expected_inputs)
     for expected_input, expected_details in expected_inputs.items():
         if given_inputs_dict.get(expected_input,False):
             logging.info(f"EI: expected input {expected_input}")
