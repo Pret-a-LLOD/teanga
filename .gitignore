@@ -112,6 +112,7 @@ old_docs/
 pythonenv
 .vim/
 teanga-dkpro-wrapper/
+old_services/
 teanga-core/files/
 teanga-core/workflows/
 teanga-core/OAS/
