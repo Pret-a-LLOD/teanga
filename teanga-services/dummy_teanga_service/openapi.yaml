@@ -1,11 +1,10 @@
 openapi: 3.0.0
 info:
   title: random value and schemas generator API
-  description: the teanga dummy API example which generates random outputs 
-  version: 0.1.9
-  port: 8080
+  description: the teanga dummy API example which generates random outputs
+  version: 1.0.0-oas3
 paths:
-  /value/{value_type}:
+  '/value/{value_type}':
     get:
       operationId: randomvalue
       summary: Returns a single random  value of given value type.
@@ -13,18 +12,16 @@ paths:
         - in: path
           name: value_type
           schema:
-            type: string 
+            type: string
           required: true
-          enum: ["integer", "string"]
       responses:
         '200':
           description: A single value
           content:
             application/json:
-              schema: 
+              schema:
                 type: string
-
-  /value/arrayof/{number_of_instances}/{value_type}:
+  '/value/arrayof/{number_of_instances}/{value_type}':
     get:
       operationId: randomarrayvalues
       summary: Returns an array of random values of given value type.
@@ -32,9 +29,8 @@ paths:
         - in: path
           name: value_type
           schema:
-            type: string 
+            type: string
           required: true
-          enum: ["integer", "string"]
         - in: path
           name: number_of_instances
           schema:
@@ -45,43 +41,39 @@ paths:
           description: An array of  values
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
-                    type: string
-
-  /schema/{schema_name}:
+                  type: string
+  '/schema/{schema_name}':
     get:
       operationId: randomschema
       summary: Returns a single random  schema of given a schema name.
       parameters:
         - in: path
-          name: schema_name 
+          name: schema_name
           schema:
-            type: string 
+            type: string
           required: true
-          enum: ["person", "animal"]
       responses:
         '200':
           description: A single schema instance
           content:
             application/json:
-              schema: 
+              schema:
                 oneOf:
-                    - $ref: '#/components/schema/Person' 
-                    - $ref: '#/components/schema/Animal' 
-
-  /schema/{number_of_instances}/{schema_name}:
+                  - $ref: '#/components/schemas/Person'
+                  - $ref: '#/components/schemas/Animal'
+  '/schema/{number_of_instances}/{schema_name}':
     get:
-      operationId: randomschema
+      operationId: randomschemas
       summary: Returns a single random  schema of given a schema name.
       parameters:
         - in: path
-          name: schema_name 
+          name: schema_name
           schema:
-            type: string 
+            type: string
           required: true
-          enum: ["person", "animal"]
         - in: path
           name: number_of_instances
           schema:
@@ -92,9 +84,32 @@ paths:
           description: A single schema instance
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
-                    oneOf:
-                        - $ref: '#/components/schema/Person' 
-                        - $ref: '#/components/schema/Animal' 
+                  oneOf:
+                    - $ref: '#/components/schemas/Person'
+                    - $ref: '#/components/schemas/Animal'
+components:
+  schemas:
+    Person:
+      type: object
+      required:
+        - name
+        - age
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+    Animal:
+      type: object
+      required:
+        - name
+        - favorite_food
+      properties:
+        name:
+          type: string
+        favorite_food:
+          type: string
+  
