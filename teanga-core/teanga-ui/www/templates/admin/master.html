@@ -47,12 +47,11 @@
     });
     $('span').tooltip();
     $('time[title]').tooltip();
-    var CSRF = {{ csrf_token() | tojson }};
 
     $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-          xhr.setRequestHeader("X-CSRFToken", CSRF);
+          //xhr.setRequestHeader("X-CSRFToken", CSRF);
         }
       }
     });
@@ -82,9 +81,9 @@ function postAsForm(url, parameters) {
 
   var field = $('<input></input>');
 
-  field.attr("type", "hidden");
-  field.attr("name", "csrf_token");
-  field.attr("value", CSRF);
+  //field.attr("type", "hidden");
+  //field.attr("name", "csrf_token");
+  //field.attr("value", CSRF);
 
   form.append(field);
 

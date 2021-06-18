@@ -17,7 +17,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-
 import yaml
 import ast
 import codecs
@@ -2239,6 +2238,12 @@ class Airflow(AirflowViewMixin, BaseView):
 
 
 class HomeView(AirflowViewMixin, AdminIndexView):
+    @expose("/ping",methods=["POST"])
+    def teanga_create_workflow(self):
+        with open("/teanga/workflows/teanga_ui.json","w") as outf:
+            json.dump(request.json, outf)
+        return jsonify({"status":"created"})  
+
     @expose("/workflow/build")
     def teanga_workflow(self):
         all_jsons = []
@@ -2247,7 +2252,7 @@ class HomeView(AirflowViewMixin, AdminIndexView):
             filepath = os.path.join(services_folder, filename)
             service_spec = yaml.load(open(filepath),Loader=yaml.FullLoader)
             all_jsons.append(service_spec)
-        return render_template("/teanga/buildWorkflow.html", all_jsons=json.dumps(all_jsons))
+        return render_template("/teanga/buildWorkflow_react.html", all_jsons=json.dumps(all_jsons))
 
     @expose("/teanga")
     def teanga_index(self):

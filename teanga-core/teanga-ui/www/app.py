@@ -67,7 +67,7 @@ def create_app(config=None, testing=False):
     if config:
         app.config.from_mapping(config)
 
-    csrf.init_app(app)
+    #csrf.init_app(app)
 
     app.config['TESTING'] = testing
 

@@ -98,6 +98,7 @@ class Workflow:
     #}
 
     def init_dag(self, name="teanga_workflow"):#{{
+        name=self.workflow_creation_timeStr
         default_args = {#{{ 
             'owner': 'teanga',
             'depends_on_past': False,
@@ -124,7 +125,7 @@ class Workflow:
         }
         #}}
         dag = DAG(
-            name,
+            datetime.datetime.now().strftime("%d_%m_%Y_%H-%M-%S"),
             default_args=default_args,
 
             schedule_interval=None,

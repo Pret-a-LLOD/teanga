@@ -19,7 +19,7 @@ else
 fi
 
 echo $IMGNAME
-IMGID=$(echo $(docker build -qt $IMGNAME $1) | sed "s/sha256://g")
+IMGID=$(echo $(docker build --no-cache -qt $IMGNAME $1) | sed "s/sha256://g")
 echo "$DOCKERHUB_PASSWORD" | docker login --username=berstearns --password-stdin
 docker tag $IMGID $IMGNAME  
 docker push $IMGNAME 

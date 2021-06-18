@@ -49,7 +49,7 @@ def schema_instance_generator(schema_name):
     schema_instance = schemas[schema_name]["definition"](**fields)._asdict()
     return json.dumps(schema_instance) 
 
-@webserver.route("/schema//arrayof/<number_of_instances>/<schema_name>")
+@webserver.route("/schema/arrayof/<number_of_instances>/<schema_name>")
 def array_schema_instances_generator(number_of_instances, schema_name):
     schema_instances = []
     for _ in range(int(number_of_instances)):
