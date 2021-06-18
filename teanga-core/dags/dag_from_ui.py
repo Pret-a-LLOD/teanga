@@ -8,6 +8,7 @@ from os.path import abspath, dirname
 from teanga.operators import *
 from teanga import Workflow 
 
-workflow = Workflow(workflow_filename="created_teanga_workflow.json",
-                    base_folder="/teanga")
-globals()["teanga"] = workflow.description_to_dag()
+if os.path.exists("/teanga/workflows/teanga_ui.json"):
+    workflow = Workflow(workflow_filename="teanga_ui.json",
+                        base_folder="/teanga")
+    globals()["teanga_ui"] = workflow.description_to_dag()

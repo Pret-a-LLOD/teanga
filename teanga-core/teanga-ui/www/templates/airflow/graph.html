@@ -52,7 +52,6 @@
     {{ form.arrange(class_="form-control") }}
     <input type="hidden" name="root" value="{{ root }}">
     <input type="hidden" value="{{ dag.dag_id }}" name="dag_id">
-    <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
     <input type="submit" value="Go" class="btn btn-default">
   </form>
   <div class="input-group" style="float: right;">
