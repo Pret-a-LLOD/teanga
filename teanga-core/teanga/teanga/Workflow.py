@@ -98,7 +98,7 @@ class Workflow:
     #}
 
     def init_dag(self, name="teanga_workflow"):#{{
-        name=self.workflow_creation_timeStr
+        name=self.workflow_filename
         default_args = {#{{ 
             'owner': 'teanga',
             'depends_on_past': False,
