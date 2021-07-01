@@ -86,7 +86,7 @@ RUN_WORKFLOW () {
     mkdir -p OAS
     mkdir -p workflows
     cp $WORKFLOW_FILEPATH ./workflows/$FILENAME
-    docker run -dt --rm --name teanga_backend \
+    docker run -t --rm --name teanga_backend \
                -v /var/run/docker.sock:/var/run/docker.sock \
                -v $PWD/workflows:/teanga/workflows \
                -v $PWD/OAS:/teanga/OAS \
