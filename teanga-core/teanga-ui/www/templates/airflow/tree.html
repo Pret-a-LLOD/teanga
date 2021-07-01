@@ -45,7 +45,6 @@
     <input type="hidden" name="root" value="{{ root if root else '' }}">
     <input type="hidden" value="{{ dag.dag_id }}" name="dag_id">
     <input type="submit" value="Go" class="btn btn-default">
-    <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
   </form>
 </div>
 <div style="clear: both;"></div>

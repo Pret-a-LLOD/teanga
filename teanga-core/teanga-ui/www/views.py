@@ -34,6 +34,8 @@ from datetime import timedelta
 from functools import wraps
 from operator import itemgetter
 from textwrap import dedent
+import random
+import string
 
 import sqlalchemy as sqla
 import pendulum
@@ -48,7 +50,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.fields import DateTimeField
 from flask_admin.tools import iterdecode
 import lazy_object_proxy
-from jinja2 import escape
+from jinja2 import escape, Template
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 from jinja2.utils import pformat
 from past.builtins import basestring
@@ -2240,8 +2242,17 @@ class Airflow(AirflowViewMixin, BaseView):
 class HomeView(AirflowViewMixin, AdminIndexView):
     @expose("/ping",methods=["POST"])
     def teanga_create_workflow(self):
-        with open("/teanga/workflows/teanga_ui.json","w") as outf:
+        with open("/teanga/dags_generator/dag_from_ui.py") as templatef:
+            dag_template = Template(templatef.read())
+            workflow_filename="ttt"+''.join(random.choice(string.ascii_lowercase) for i in range(20))+".json"
+            content = dag_template.render(workflow_filename=workflow_filename)
+
+        with open("/teanga/dags/"+workflow_filename.replace(".json",".py"),"w") as dagrun_file:
+            dagrun_file.write(content)
+
+        with open(f"/teanga/workflows/{workflow_filename}","w") as outf:
             json.dump(request.json, outf)
+
         return jsonify({"status":"created"})  
 
     @expose("/workflow/build")

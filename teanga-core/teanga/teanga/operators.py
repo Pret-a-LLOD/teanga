@@ -50,7 +50,7 @@ def generate_setup_operators(unique_services, dag): #{{
         d = services_instances[0][1]
         airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
         task_id=f"setup-{airflow_imageName}--{d['host_port']}"
-        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath}"
+        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 90"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -205,7 +205,11 @@ def matching_function(*args, **kwargs):
     logging.info(f"given inputs: {kwargs['given_inputs']}")
     for idx, input_source in enumerate(kwargs['given_inputs']):
         if isinstance(input_source,dict):
-            pass
+            if input_source.get("requestBody", False):
+               source_idx = idx
+            else:
+                source_idx = None
+
         elif isinstance(input_source,str):
             kwargs['given_inputs'].pop(idx)
 
@@ -223,6 +227,9 @@ def matching_function(*args, **kwargs):
         if rqB["content"].get("application/json",False):
             expected_schema_name  = rqB["content"]["application/json"]["schema"]["$ref"].split("/")[-1]
             expected_inputs[expected_schema_name] = rqB["content"]["application/json"]["schema"]
+            if source_idx:
+                kwargs['given_inputs'][source_idx][expected_schema_name] = kwargs['given_inputs'][source_idx]["requestBody"] 
+                del kwargs['given_inputs'][source_idx]["requestBody"]
         else: 
             expected_inputs['files'] = kwargs["expected_requestBody"] 
 

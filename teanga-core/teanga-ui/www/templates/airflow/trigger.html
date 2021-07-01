@@ -23,7 +23,6 @@
     {{ super() }}
     <h2>Trigger DAG: {{ dag_id }}</h2>
     <form method="POST">
-      <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
       <input name="dag_id" type="hidden" value="{{ dag_id }}"/>
       <input name="origin" type="hidden" value="{{ origin }}"/>
       <div class="form-group">
