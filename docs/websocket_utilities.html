@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -39,7 +39,7 @@
 <dl class="class">
 <dt id="aiohttp.WSCloseCode">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">WSCloseCode</code><a class="reference internal" href="_modules/aiohttp/http_websocket.html#WSCloseCode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.WSCloseCode" title="Permalink to this definition">¶</a></dt>
-<dd><p>An <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.IntEnum" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></a> for keeping close message code.</p>
+<dd><p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code> for keeping close message code.</p>
 <dl class="attribute">
 <dt id="aiohttp.WSCloseCode.OK">
 <code class="descname">OK</code><a class="headerlink" href="#aiohttp.WSCloseCode.OK" title="Permalink to this definition">¶</a></dt>
@@ -139,7 +139,7 @@ target) or reconnect to the same IP upon user action.</p>
 <dl class="class">
 <dt id="aiohttp.WSMsgType">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">WSMsgType</code><a class="reference internal" href="_modules/aiohttp/http_websocket.html#WSMsgType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.WSMsgType" title="Permalink to this definition">¶</a></dt>
-<dd><p>An <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.IntEnum" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></a> for describing <a class="reference internal" href="#aiohttp.WSMessage" title="aiohttp.WSMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">WSMessage</span></code></a> type.</p>
+<dd><p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code> for describing <a class="reference internal" href="#aiohttp.WSMessage" title="aiohttp.WSMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">WSMessage</span></code></a> type.</p>
 <dl class="attribute">
 <dt id="aiohttp.WSMsgType.CONTINUATION">
 <code class="descname">CONTINUATION</code><a class="headerlink" href="#aiohttp.WSMsgType.CONTINUATION" title="Permalink to this definition">¶</a></dt>
@@ -150,13 +150,13 @@ with this type.</p>
 <dl class="attribute">
 <dt id="aiohttp.WSMsgType.TEXT">
 <code class="descname">TEXT</code><a class="headerlink" href="#aiohttp.WSMsgType.TEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Text message, the value has <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> type.</p>
+<dd><p>Text message, the value has <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.WSMsgType.BINARY">
 <code class="descname">BINARY</code><a class="headerlink" href="#aiohttp.WSMsgType.BINARY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Binary message, the value has <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> type.</p>
+<dd><p>Binary message, the value has <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> type.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -208,18 +208,18 @@ received an error.</p>
 <code class="descname">data</code><a class="headerlink" href="#aiohttp.WSMessage.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Message payload.</p>
 <ol class="arabic simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> for <a class="reference internal" href="#aiohttp.WSMsgType.TEXT" title="aiohttp.WSMsgType.TEXT"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.TEXT</span></code></a> messages.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> for <a class="reference internal" href="#aiohttp.WSMsgType.BINARY" title="aiohttp.WSMsgType.BINARY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.BINARY</span></code></a> messages.</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> for <a class="reference internal" href="#aiohttp.WSMsgType.TEXT" title="aiohttp.WSMsgType.TEXT"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.TEXT</span></code></a> messages.</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> for <a class="reference internal" href="#aiohttp.WSMsgType.BINARY" title="aiohttp.WSMsgType.BINARY"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.BINARY</span></code></a> messages.</li>
 <li><a class="reference internal" href="#aiohttp.WSCloseCode" title="aiohttp.WSCloseCode"><code class="xref py py-class docutils literal notranslate"><span class="pre">WSCloseCode</span></code></a> for <a class="reference internal" href="#aiohttp.WSMsgType.CLOSE" title="aiohttp.WSMsgType.CLOSE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.CLOSE</span></code></a> messages.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> for <a class="reference internal" href="#aiohttp.WSMsgType.PING" title="aiohttp.WSMsgType.PING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.PING</span></code></a> messages.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> for <a class="reference internal" href="#aiohttp.WSMsgType.PONG" title="aiohttp.WSMsgType.PONG"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.PONG</span></code></a> messages.</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> for <a class="reference internal" href="#aiohttp.WSMsgType.PING" title="aiohttp.WSMsgType.PING"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.PING</span></code></a> messages.</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> for <a class="reference internal" href="#aiohttp.WSMsgType.PONG" title="aiohttp.WSMsgType.PONG"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.PONG</span></code></a> messages.</li>
 </ol>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.WSMessage.extra">
 <code class="descname">extra</code><a class="headerlink" href="#aiohttp.WSMessage.extra" title="Permalink to this definition">¶</a></dt>
-<dd><p>Additional info, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>.</p>
+<dd><p>Additional info, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>.</p>
 <p>Makes sense only for <a class="reference internal" href="#aiohttp.WSMsgType.CLOSE" title="aiohttp.WSMsgType.CLOSE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">WSMsgType.CLOSE</span></code></a> messages, contains
 optional message description.</p>
 </dd></dl>
@@ -273,6 +273,8 @@ optional message description.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

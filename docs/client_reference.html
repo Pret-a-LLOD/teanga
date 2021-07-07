@@ -13,11 +13,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tracing Reference" href="tracing_reference.html" />
-    <link rel="prev" title="Advanced Client Usage" href="client_advanced.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -78,12 +76,12 @@ lifetime of your application to benefit from connection pooling.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>connector</strong> (<a class="reference internal" href="#aiohttp.BaseConnector" title="aiohttp.BaseConnector"><em>aiohttp.BaseConnector</em></a>) – BaseConnector
 sub-class instance to support connection pooling.</li>
-<li><strong>cookies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Cookies to send with the request (optional)</li>
+<li><strong>cookies</strong> (<em>dict</em>) – Cookies to send with the request (optional)</li>
 <li><strong>headers</strong> – <p>HTTP Headers to send with every request (optional).</p>
 <p>May be either <em>iterable of key-value pairs</em> or
-<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>
-(e.g. <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>,
-<a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDict</span></code></a>).</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>
+(e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDict</span></code>).</p>
 </li>
 <li><strong>skip_auto_headers</strong> – <p>set of headers for which autogeneration
 should be skipped.</p>
@@ -92,7 +90,7 @@ should be skipped.</p>
 passed. Using <code class="docutils literal notranslate"><span class="pre">skip_auto_headers</span></code> parameter allows to skip
 that generation. Note that <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> autogeneration can’t
 be skipped.</p>
-<p>Iterable of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">istr</span></code> (optional)</p>
+<p>Iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">istr</span></code> (optional)</p>
 </li>
 <li><strong>auth</strong> (<a class="reference internal" href="#aiohttp.BasicAuth" title="aiohttp.BasicAuth"><em>aiohttp.BasicAuth</em></a>) – an object that represents HTTP Basic
 Authorization (optional)</li>
@@ -108,9 +106,9 @@ proxy mode.</p>
 provided.</p>
 </li>
 <li><strong>json_serialize</strong> (<em>callable</em>) – <p>Json <em>serializer</em> callable.</p>
-<p>By default <a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a> function.</p>
+<p>By default <code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code> function.</p>
 </li>
-<li><strong>callable</strong><strong>] </strong><strong>raise_for_status</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>,</em>) – <p>Automatically call <a class="reference internal" href="#aiohttp.ClientResponse.raise_for_status" title="aiohttp.ClientResponse.raise_for_status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientResponse.raise_for_status()</span></code></a> for
+<li><strong>callable</strong><strong>] </strong><strong>raise_for_status</strong> (<em>Union</em><em>[</em><em>bool</em><em>,</em>) – <p>Automatically call <a class="reference internal" href="#aiohttp.ClientResponse.raise_for_status" title="aiohttp.ClientResponse.raise_for_status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientResponse.raise_for_status()</span></code></a> for
 each response, <code class="docutils literal notranslate"><span class="pre">False</span></code> by default.</p>
 <p>This parameter can be overridden when you making a request, e.g.:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">client_session</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">raise_for_status</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -150,12 +148,12 @@ overwrite it on a per-request basis.</p>
 <p><span class="versionmodified">New in version 3.3.</span></p>
 </div>
 </li>
-<li><strong>connector_owner</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – <p>Close connector instance on session closing.</p>
+<li><strong>connector_owner</strong> (<em>bool</em>) – <p>Close connector instance on session closing.</p>
 <p>Setting the parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code> allows to share
 connection pool between sessions without sharing session state:
 cookies etc.</p>
 </li>
-<li><strong>auto_decompress</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – <dl class="docutils">
+<li><strong>auto_decompress</strong> (<em>bool</em>) – <dl class="docutils">
 <dt>Automatically decompress response body,</dt>
 <dd><code class="docutils literal notranslate"><span class="pre">True</span></code> by default</dd>
 </dl>
@@ -163,7 +161,7 @@ cookies etc.</p>
 <p><span class="versionmodified">New in version 2.3.</span></p>
 </div>
 </li>
-<li><strong>trust_env</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – <p>Get proxies information from <em>HTTP_PROXY</em> /
+<li><strong>trust_env</strong> (<em>bool</em>) – <p>Get proxies information from <em>HTTP_PROXY</em> /
 <em>HTTPS_PROXY</em> environment variables if the parameter is <code class="docutils literal notranslate"><span class="pre">True</span></code>
 (<code class="docutils literal notranslate"><span class="pre">False</span></code> by default).</p>
 <p>Get proxy credentials from <code class="docutils literal notranslate"><span class="pre">~/.netrc</span></code> file if present.</p>
@@ -178,7 +176,7 @@ cookies etc.</p>
 <p><span class="versionmodified">Changed in version 3.0: </span>Added support for <code class="docutils literal notranslate"><span class="pre">~/.netrc</span></code> file.</p>
 </div>
 </li>
-<li><strong>requote_redirect_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – <dl class="docutils">
+<li><strong>requote_redirect_url</strong> (<em>bool</em>) – <dl class="docutils">
 <dt>Apply <em>URL requoting</em> for redirection URLs if</dt>
 <dd>automatic redirection is enabled (<code class="docutils literal notranslate"><span class="pre">True</span></code> by
 default).</dd>
@@ -243,9 +241,9 @@ constructor.</p>
 <code class="descclassname">aiohttp.</code><code class="descname">headers</code><a class="headerlink" href="#aiohttp.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>HTTP Headers that sent with every request</p>
 <p>May be either <em>iterable of key-value pairs</em> or
-<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>
-(e.g. <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>,
-<a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDict</span></code></a>).</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code>
+(e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDict</span></code>).</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -255,7 +253,7 @@ constructor.</p>
 <dt id="aiohttp.skip_auto_headers">
 <code class="descclassname">aiohttp.</code><code class="descname">skip_auto_headers</code><a class="headerlink" href="#aiohttp.skip_auto_headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set of headers for which autogeneration skipped.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#frozenset" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">istr</span></code> (optional)</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">istr</span></code> (optional)</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -275,7 +273,7 @@ constructor.</p>
 <dt id="aiohttp.json_serialize">
 <code class="descclassname">aiohttp.</code><code class="descname">json_serialize</code><a class="headerlink" href="#aiohttp.json_serialize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Json serializer callable.</p>
-<p>By default <a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a> function.</p>
+<p>By default <code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code> function.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -285,7 +283,7 @@ constructor.</p>
 <dt id="aiohttp.connector_owner">
 <code class="descclassname">aiohttp.</code><code class="descname">connector_owner</code><a class="headerlink" href="#aiohttp.connector_owner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should connector be closed on session closing</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> (optional)</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> (optional)</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -295,7 +293,7 @@ constructor.</p>
 <dt id="aiohttp.raise_for_status">
 <code class="descclassname">aiohttp.</code><code class="descname">raise_for_status</code><a class="headerlink" href="#aiohttp.raise_for_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should <a class="reference internal" href="#aiohttp.ClientResponse.raise_for_status" title="aiohttp.ClientResponse.raise_for_status"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientResponse.raise_for_status()</span></code></a> be called for each response</p>
-<p>Either <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code></p>
+<p>Either <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code></p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -305,7 +303,7 @@ constructor.</p>
 <dt id="aiohttp.auto_decompress">
 <code class="descclassname">aiohttp.</code><code class="descname">auto_decompress</code><a class="headerlink" href="#aiohttp.auto_decompress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should the body response be automatically decompressed</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> default is <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> default is <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -316,7 +314,7 @@ constructor.</p>
 <code class="descclassname">aiohttp.</code><code class="descname">trust_env</code><a class="headerlink" href="#aiohttp.trust_env" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should get proxies information from HTTP_PROXY / HTTPS_PROXY environment
 variables or ~/.netrc file if present</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.7.</span></p>
 </div>
@@ -375,20 +373,20 @@ is controlled by <em>force_close</em> constructor’s parameter).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>keepalive_timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – timeout for connection reusing
+<li><strong>keepalive_timeout</strong> (<em>float</em>) – timeout for connection reusing
 after releasing (optional). Values
 <code class="docutils literal notranslate"><span class="pre">0</span></code>. For disabling <em>keep-alive</em>
 feature use <code class="docutils literal notranslate"><span class="pre">force_close=True</span></code>
 flag.</li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – total number simultaneous connections. If <em>limit</em> is
+<li><strong>limit</strong> (<em>int</em>) – total number simultaneous connections. If <em>limit</em> is
 <code class="docutils literal notranslate"><span class="pre">None</span></code> the connector has no limit (default: 100).</li>
-<li><strong>limit_per_host</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – limit simultaneous connections to the same
+<li><strong>limit_per_host</strong> (<em>int</em>) – limit simultaneous connections to the same
 endpoint.  Endpoints are the same if they are
 have equal <code class="docutils literal notranslate"><span class="pre">(host,</span> <span class="pre">port,</span> <span class="pre">is_ssl)</span></code> triple.
 If <em>limit</em> is <code class="docutils literal notranslate"><span class="pre">0</span></code> the connector has no limit (default: 0).</li>
-<li><strong>force_close</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – close underlying sockets after
+<li><strong>force_close</strong> (<em>bool</em>) – close underlying sockets after
 connection releasing (optional).</li>
-<li><strong>enable_cleanup_closed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – some SSL servers do not properly complete
+<li><strong>enable_cleanup_closed</strong> (<em>bool</em>) – some SSL servers do not properly complete
 SSL shutdown process, in that case asyncio leaks ssl connections.
 If this parameter is set to True, aiohttp additionally aborts underlining
 transport after 2 seconds. It is off by default.</li>
@@ -449,10 +447,10 @@ to use, use a <a class="reference internal" href="#aiohttp.TCPConnector" title="
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">param ssl:</th><td class="field-body"><dl class="first docutils">
 <dt>SSL validation mode. <code class="docutils literal notranslate"><span class="pre">None</span></code> for default SSL check</dt>
-<dd><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.create_default_context" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">ssl.create_default_context()</span></code></a> is used),
+<dd><p class="first last">(<code class="xref py py-func docutils literal notranslate"><span class="pre">ssl.create_default_context()</span></code> is used),
 <code class="docutils literal notranslate"><span class="pre">False</span></code> for skip SSL certificate validation,
 <a class="reference internal" href="#aiohttp.Fingerprint" title="aiohttp.Fingerprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.Fingerprint</span></code></a> for fingerprint
-validation, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ssl.SSLContext</span></code></a> for custom SSL
+validation, <code class="xref py py-class docutils literal notranslate"><span class="pre">ssl.SSLContext</span></code> for custom SSL
 certificate validation.</p>
 </dd>
 </dl>
@@ -469,21 +467,21 @@ certificate validation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>use_dns_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – <p>use internal cache for DNS lookups, <code class="docutils literal notranslate"><span class="pre">True</span></code>
+<li><strong>use_dns_cache</strong> (<em>bool</em>) – <p>use internal cache for DNS lookups, <code class="docutils literal notranslate"><span class="pre">True</span></code>
 by default.</p>
 <p>Enabling an option <em>may</em> speedup connection
 establishing a bit but may introduce some
 <em>side effects</em> also.</p>
 </li>
-<li><strong>ttl_dns_cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – <p>expire after some seconds the DNS entries, <code class="docutils literal notranslate"><span class="pre">None</span></code>
+<li><strong>ttl_dns_cache</strong> (<em>int</em>) – <p>expire after some seconds the DNS entries, <code class="docutils literal notranslate"><span class="pre">None</span></code>
 means cached forever. By default 10 seconds (optional).</p>
 <p>In some environments the IP addresses related to a specific HOST can
 change after a specific time. Use this option to keep the DNS cache
 updated refreshing each entry after N seconds.</p>
 </li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – total number simultaneous connections. If <em>limit</em> is
+<li><strong>limit</strong> (<em>int</em>) – total number simultaneous connections. If <em>limit</em> is
 <code class="docutils literal notranslate"><span class="pre">None</span></code> the connector has no limit (default: 100).</li>
-<li><strong>limit_per_host</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – limit simultaneous connections to the same
+<li><strong>limit_per_host</strong> (<em>int</em>) – limit simultaneous connections to the same
 endpoint.  Endpoints are the same if they are
 have equal <code class="docutils literal notranslate"><span class="pre">(host,</span> <span class="pre">port,</span> <span class="pre">is_ssl)</span></code> triple.
 If <em>limit</em> is <code class="docutils literal notranslate"><span class="pre">0</span></code> the connector has no limit (default: 0).</li>
@@ -495,7 +493,7 @@ way the host is configured.</p>
 version <code class="docutils literal notranslate"><span class="pre">aiohttp.AsyncResolver</span></code> (requires <code class="docutils literal notranslate"><span class="pre">aiodns&gt;=1.1</span></code>) is pretty
 robust but might fail in very rare cases.</p>
 </li>
-<li><strong>family</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – <p>TCP socket family, both IPv4 and IPv6 by default.
+<li><strong>family</strong> (<em>int</em>) – <p>TCP socket family, both IPv4 and IPv6 by default.
 For <em>IPv4</em> only use <code class="xref py py-const docutils literal notranslate"><span class="pre">socket.AF_INET</span></code>,
 for  <em>IPv6</em> only – <code class="xref py py-const docutils literal notranslate"><span class="pre">socket.AF_INET6</span></code>.</p>
 <p><em>family</em> is <code class="docutils literal notranslate"><span class="pre">0</span></code> by default, that means both
@@ -504,11 +502,11 @@ concrete version please pass
 <code class="xref py py-const docutils literal notranslate"><span class="pre">socket.AF_INET</span></code> or
 <code class="xref py py-const docutils literal notranslate"><span class="pre">socket.AF_INET6</span></code> explicitly.</p>
 </li>
-<li><strong>local_addr</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – tuple of <code class="docutils literal notranslate"><span class="pre">(local_host,</span> <span class="pre">local_port)</span></code> used to bind
+<li><strong>local_addr</strong> (<em>tuple</em>) – tuple of <code class="docutils literal notranslate"><span class="pre">(local_host,</span> <span class="pre">local_port)</span></code> used to bind
 socket locally if specified.</li>
-<li><strong>force_close</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – close underlying sockets after
+<li><strong>force_close</strong> (<em>bool</em>) – close underlying sockets after
 connection releasing (optional).</li>
-<li><strong>enable_cleanup_closed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Some ssl servers do not properly complete
+<li><strong>enable_cleanup_closed</strong> (<em>bool</em>) – Some ssl servers do not properly complete
 SSL shutdown process, in that case asyncio leaks SSL connections.
 If this parameter is set to True, aiohttp additionally aborts underlining
 transport after 2 seconds. It is off by default.</li>
@@ -529,14 +527,14 @@ transport after 2 seconds. It is off by default.</li>
 <dt id="aiohttp.TCPConnector.dns_cache">
 <code class="descname">dns_cache</code><a class="headerlink" href="#aiohttp.TCPConnector.dns_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use quick lookup in internal <em>DNS</em> cache for host names if <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<p>Read-only <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> property.</p>
+<p>Read-only <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> property.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.TCPConnector.cached_hosts">
 <code class="descname">cached_hosts</code><a class="headerlink" href="#aiohttp.TCPConnector.cached_hosts" title="Permalink to this definition">¶</a></dt>
 <dd><p>The cache of resolved hosts if <a class="reference internal" href="#aiohttp.TCPConnector.dns_cache" title="aiohttp.TCPConnector.dns_cache"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dns_cache</span></code></a> is enabled.</p>
-<p>Read-only <a class="reference external" href="https://docs.python.org/3/library/types.html#types.MappingProxyType" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">types.MappingProxyType</span></code></a> property.</p>
+<p>Read-only <code class="xref py py-class docutils literal notranslate"><span class="pre">types.MappingProxyType</span></code> property.</p>
 </dd></dl>
 
 <dl class="method">
@@ -576,14 +574,14 @@ connections between processes on the same host.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Unix socket path</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – Unix socket path</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="aiohttp.UnixConnector.path">
 <code class="descname">path</code><a class="headerlink" href="#aiohttp.UnixConnector.path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to <em>UNIX socket</em>, read-only <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> property.</p>
+<dd><p>Path to <em>UNIX socket</em>, read-only <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> property.</p>
 </dd></dl>
 
 </dd></dl>
@@ -600,7 +598,7 @@ but get it by <code class="xref py py-meth docutils literal notranslate"><span c
 <dl class="attribute">
 <dt id="aiohttp.Connection.closed">
 <code class="descname">closed</code><a class="headerlink" href="#aiohttp.Connection.closed" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> read-only property, <code class="docutils literal notranslate"><span class="pre">True</span></code> if connection was
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> read-only property, <code class="docutils literal notranslate"><span class="pre">True</span></code> if connection was
 closed, released or detached.</p>
 </dd></dl>
 
@@ -654,38 +652,38 @@ from API calls.</p>
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.status">
 <code class="descname">status</code><a class="headerlink" href="#aiohttp.ClientResponse.status" title="Permalink to this definition">¶</a></dt>
-<dd><p>HTTP status code of response (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>), e.g. <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p>
+<dd><p>HTTP status code of response (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.reason">
 <code class="descname">reason</code><a class="headerlink" href="#aiohttp.ClientResponse.reason" title="Permalink to this definition">¶</a></dt>
-<dd><p>HTTP status reason of response (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>), e.g. <code class="docutils literal notranslate"><span class="pre">&quot;OK&quot;</span></code>.</p>
+<dd><p>HTTP status reason of response (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">&quot;OK&quot;</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.ok">
 <code class="descname">ok</code><a class="headerlink" href="#aiohttp.ClientResponse.ok" title="Permalink to this definition">¶</a></dt>
-<dd><p>Boolean representation of HTTP status code (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>).
+<dd><p>Boolean representation of HTTP status code (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>).
 <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">status</span></code> is less than <code class="docutils literal notranslate"><span class="pre">400</span></code>; otherwise, <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.method">
 <code class="descname">method</code><a class="headerlink" href="#aiohttp.ClientResponse.method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Request’s method (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>).</p>
+<dd><p>Request’s method (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.url">
 <code class="descname">url</code><a class="headerlink" href="#aiohttp.ClientResponse.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL of request (<a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a>).</p>
+<dd><p>URL of request (<code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.real_url">
 <code class="descname">real_url</code><a class="headerlink" href="#aiohttp.ClientResponse.real_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unmodified URL of request with URL fragment unstripped (<a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a>).</p>
+<dd><p>Unmodified URL of request with URL fragment unstripped (<code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code>).</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.2.</span></p>
 </div>
@@ -715,14 +713,14 @@ encoding of broken compression data.</p>
 <dt id="aiohttp.ClientResponse.cookies">
 <code class="descname">cookies</code><a class="headerlink" href="#aiohttp.ClientResponse.cookies" title="Permalink to this definition">¶</a></dt>
 <dd><p>HTTP cookies of response (<em>Set-Cookie</em> HTTP header,
-<a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleCookie</span></code></a>).</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleCookie</span></code>).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.headers">
 <code class="descname">headers</code><a class="headerlink" href="#aiohttp.ClientResponse.headers" title="Permalink to this definition">¶</a></dt>
 <dd><p>A case-insensitive multidict proxy with HTTP headers of
-response, <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDictProxy</span></code></a>.</p>
+response, <code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDictProxy</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -735,10 +733,10 @@ response, <a class="reference external" href="https://multidict.readthedocs.io/e
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.links">
 <code class="descname">links</code><a class="headerlink" href="#aiohttp.ClientResponse.links" title="Permalink to this definition">¶</a></dt>
-<dd><p>Link HTTP header parsed into a <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiDictProxy</span></code></a>.</p>
+<dd><p>Link HTTP header parsed into a <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiDictProxy</span></code>.</p>
 <p>For each link, key is link param <cite>rel</cite> when it exists, or link url as
-<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> otherwise, and value is <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiDictProxy</span></code></a>
-of link params and url at key <cite>url</cite> as <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a> instance.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> otherwise, and value is <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiDictProxy</span></code>
+of link params and url at key <cite>url</cite> as <code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code> instance.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.2.</span></p>
 </div>
@@ -763,7 +761,7 @@ the server reply, use <a class="reference internal" href="#aiohttp.headers" titl
 <code class="descname">charset</code><a class="headerlink" href="#aiohttp.ClientResponse.charset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read-only property that specifies the <em>encoding</em> for the request’s BODY.</p>
 <p>The value is parsed from the <em>Content-Type</em> HTTP header.</p>
-<p>Returns <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> like <code class="docutils literal notranslate"><span class="pre">'utf-8'</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no <em>Content-Type</em>
+<p>Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> like <code class="docutils literal notranslate"><span class="pre">'utf-8'</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no <em>Content-Type</em>
 header present in HTTP headers or it has no charset information.</p>
 </dd></dl>
 
@@ -778,7 +776,7 @@ header present in HTTP headers.</p>
 <dl class="attribute">
 <dt id="aiohttp.ClientResponse.history">
 <code class="descname">history</code><a class="headerlink" href="#aiohttp.ClientResponse.history" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a> of <a class="reference internal" href="#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code> of <a class="reference internal" href="#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a>
 objects of preceding requests (earliest request first) if there were
 redirects, an empty sequence otherwise.</p>
 </dd></dl>
@@ -819,7 +817,7 @@ Python (e.g. VISCII).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.8)"><strong>RuntimeError</strong></a> – if called before the body has been read,
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>RuntimeError</strong> – if called before the body has been read,
 for <a class="reference internal" href="glossary.html#term-cchardet"><span class="xref std std-term">cchardet</span></a> usage</td>
 </tr>
 </tbody>
@@ -885,7 +883,7 @@ not overlapping.</p>
 <dt id="aiohttp.ClientTimeout.total">
 <code class="descname">total</code><a class="headerlink" href="#aiohttp.ClientTimeout.total" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total number of seconds for the whole request.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -897,7 +895,7 @@ waiting for a free connection from a pool if pool connection
 limits are exceeded.</p>
 <p>For pure socket connection establishment time use
 <a class="reference internal" href="#aiohttp.ClientTimeout.sock_connect" title="aiohttp.ClientTimeout.sock_connect"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sock_connect</span></code></a>.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -905,14 +903,14 @@ limits are exceeded.</p>
 <code class="descname">sock_connect</code><a class="headerlink" href="#aiohttp.ClientTimeout.sock_connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximal number of seconds for connecting to a peer for a new connection, not
 given from a pool.  See also <a class="reference internal" href="#aiohttp.ClientTimeout.connect" title="aiohttp.ClientTimeout.connect"><code class="xref py py-attr docutils literal notranslate"><span class="pre">connect</span></code></a>.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientTimeout.sock_read">
 <code class="descname">sock_read</code><a class="headerlink" href="#aiohttp.ClientTimeout.sock_read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximal number of seconds for reading a portion of data from a peer.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
 </dd></dl>
 
 </dd></dl>
@@ -925,14 +923,14 @@ given from a pool.  See also <a class="reference internal" href="#aiohttp.Client
 <dt id="aiohttp.ClientWSTimeout.ws_receive">
 <code class="descname">ws_receive</code><a class="headerlink" href="#aiohttp.ClientWSTimeout.ws_receive" title="Permalink to this definition">¶</a></dt>
 <dd><p>A timeout for websocket to receive a complete message.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> by default.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientWSTimeout.ws_close">
 <code class="descname">ws_close</code><a class="headerlink" href="#aiohttp.ClientWSTimeout.ws_close" title="Permalink to this definition">¶</a></dt>
 <dd><p>A timeout for the websocket to close.</p>
-<p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">10.0</span></code> by default.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">10.0</span></code> by default.</p>
 </dd></dl>
 
 <div class="versionadded">
@@ -951,25 +949,25 @@ object, available as <a class="reference internal" href="#aiohttp.ClientResponse
 <dl class="attribute">
 <dt id="aiohttp.RequestInfo.url">
 <code class="descname">url</code><a class="headerlink" href="#aiohttp.RequestInfo.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Requested <em>url</em>, <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> instance.</p>
+<dd><p>Requested <em>url</em>, <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.RequestInfo.method">
 <code class="descname">method</code><a class="headerlink" href="#aiohttp.RequestInfo.method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Request HTTP method like <code class="docutils literal notranslate"><span class="pre">'GET'</span></code> or <code class="docutils literal notranslate"><span class="pre">'POST'</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>.</p>
+<dd><p>Request HTTP method like <code class="docutils literal notranslate"><span class="pre">'GET'</span></code> or <code class="docutils literal notranslate"><span class="pre">'POST'</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.RequestInfo.headers">
 <code class="descname">headers</code><a class="headerlink" href="#aiohttp.RequestInfo.headers" title="Permalink to this definition">¶</a></dt>
-<dd><p>HTTP headers for request, <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code></a> instance.</p>
+<dd><p>HTTP headers for request, <code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.CIMultiDict</span></code> instance.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.RequestInfo.real_url">
 <code class="descname">real_url</code><a class="headerlink" href="#aiohttp.RequestInfo.real_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Requested <em>url</em> with URL fragment unstripped, <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> instance.</p>
+<dd><p>Requested <em>url</em> with URL fragment unstripped, <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> instance.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.2.</span></p>
 </div>
@@ -989,9 +987,9 @@ object, available as <a class="reference internal" href="#aiohttp.ClientResponse
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>login</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – login</li>
-<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – password</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – encoding (<code class="docutils literal notranslate"><span class="pre">'latin1'</span></code> by default)</li>
+<li><strong>login</strong> (<em>str</em>) – login</li>
+<li><strong>password</strong> (<em>str</em>) – password</li>
+<li><strong>encoding</strong> (<em>str</em>) – encoding (<code class="docutils literal notranslate"><span class="pre">'latin1'</span></code> by default)</li>
 </ul>
 </td>
 </tr>
@@ -1008,8 +1006,8 @@ e.g. <em>auth</em> parameter for <code class="xref py py-meth docutils literal n
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>auth_header</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header to decode.</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) encoding (‘latin1’ by default)</li>
+<li><strong>auth_header</strong> (<em>str</em>) – The <code class="docutils literal notranslate"><span class="pre">Authorization</span></code> header to decode.</li>
+<li><strong>encoding</strong> (<em>str</em>) – (optional) encoding (‘latin1’ by default)</li>
 </ul>
 </td>
 </tr>
@@ -1048,7 +1046,7 @@ header etc.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">encoded authentication data, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">encoded authentication data, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -1063,7 +1061,7 @@ header etc.</p>
 <dt id="aiohttp.CookieJar">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">CookieJar</code><span class="sig-paren">(</span><em>*</em>, <em>unsafe=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/cookiejar.html#CookieJar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.CookieJar" title="Permalink to this definition">¶</a></dt>
 <dd><p>The cookie jar instance is available as <code class="xref py py-attr docutils literal notranslate"><span class="pre">ClientSession.cookie_jar</span></code>.</p>
-<p>The jar contains <a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.Morsel" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Morsel</span></code></a> items for storing
+<p>The jar contains <code class="xref py py-class docutils literal notranslate"><span class="pre">Morsel</span></code> items for storing
 internal cookie data.</p>
 <p>API provides a count of saved cookies:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">cookie_jar</span><span class="p">)</span>
@@ -1075,15 +1073,15 @@ internal cookie data.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>The class implements <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Iterable</span></code></a>,
-<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sized" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Sized</span></code></a> and
+<p>The class implements <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Iterable</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Sized</span></code> and
 <code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.AbstractCookieJar</span></code> interfaces.</p>
 <p>Implements cookie storage adhering to RFC 6265.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unsafe</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – (optional) Whether to accept cookies from IPs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unsafe</strong> (<em>bool</em>) – (optional) Whether to accept cookies from IPs.</td>
 </tr>
 </tbody>
 </table>
@@ -1096,11 +1094,11 @@ internal cookie data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cookies</strong> – a <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></a>
-(e.g. <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleCookie</span></code></a>) or
+<li><strong>cookies</strong> – a <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code>
+(e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleCookie</span></code>) or
 <em>iterable</em> of <em>pairs</em> with cookies returned by server’s
 response.</li>
-<li><strong>response_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – URL of response, <code class="docutils literal notranslate"><span class="pre">None</span></code> for <em>shared
+<li><strong>response_url</strong> (<em>str</em>) – URL of response, <code class="docutils literal notranslate"><span class="pre">None</span></code> for <em>shared
 cookies</em>.  Regular cookies are coupled with server’s URL and
 are sent only to this server, shared ones are sent in every
 client request.</li>
@@ -1120,9 +1118,9 @@ client request.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – request’s URL for which cookies are asked.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_url</strong> (<em>str</em>) – request’s URL for which cookies are asked.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/http.cookies.html#http.cookies.SimpleCookie" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">http.cookies.SimpleCookie</span></code></a> with filtered
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">http.cookies.SimpleCookie</span></code> with filtered
 cookies for given URL.</td>
 </tr>
 </tbody>
@@ -1139,7 +1137,7 @@ at provided path.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> – Path to file where cookies will be serialized,
-<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> instance.</td>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> instance.</td>
 </tr>
 </tbody>
 </table>
@@ -1155,7 +1153,7 @@ at provided path.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> – Path to file from where cookies will be
-imported, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> instance.</td>
+imported, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code> instance.</td>
 </tr>
 </tbody>
 </table>
@@ -1185,9 +1183,9 @@ without blowing up with saved cookies information.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>digest</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a>) – <em>SHA256</em> digest for certificate in DER-encoded
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>digest</strong> (<em>bytes</em>) – <em>SHA256</em> digest for certificate in DER-encoded
 binary form (see
-<a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket.getpeercert" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ssl.SSLSocket.getpeercert()</span></code></a>).</td>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ssl.SSLSocket.getpeercert()</span></code>).</td>
 </tr>
 </tbody>
 </table>
@@ -1212,7 +1210,7 @@ call, e.g.:</p>
 <p>A <a class="reference internal" href="#aiohttp.FormData" title="aiohttp.FormData"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormData</span></code></a> object contains the form data and also handles
 encoding it into a body that is either <code class="docutils literal notranslate"><span class="pre">multipart/form-data</span></code> or
 <code class="docutils literal notranslate"><span class="pre">application/x-www-form-urlencoded</span></code>. <code class="docutils literal notranslate"><span class="pre">multipart/form-data</span></code> is
-used if at least one field is an <a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code></a> object or was
+used if at least one field is an <code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code> object or was
 added with at least one optional argument to <a class="reference internal" href="#aiohttp.FormData.add_field" title="aiohttp.FormData.add_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_field</span></code></a>
 (<code class="docutils literal notranslate"><span class="pre">content_type</span></code>, <code class="docutils literal notranslate"><span class="pre">filename</span></code>, or <code class="docutils literal notranslate"><span class="pre">content_transfer_encoding</span></code>).
 Otherwise, <code class="docutils literal notranslate"><span class="pre">application/x-www-form-urlencoded</span></code> is used.</p>
@@ -1229,14 +1227,14 @@ on being called.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> – <p>A container for the key/value pairs of this form.</p>
 <p>Possible types are:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code></a>, e.g. a file-like object</li>
-<li><a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a> or <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code></a></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code>, e.g. a file-like object</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code></li>
 </ul>
-<p>If it is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, it must be a valid argument
+<p>If it is a <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, it must be a valid argument
 for <a class="reference internal" href="#aiohttp.FormData.add_fields" title="aiohttp.FormData.add_fields"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_fields</span></code></a>.</p>
-<p>For <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a>, and <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code></a>,
+<p>For <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code>,
 the keys and values must be valid <cite>name</cite> and <cite>value</cite> arguments to
 <a class="reference internal" href="#aiohttp.FormData.add_field" title="aiohttp.FormData.add_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_field</span></code></a>, respectively.</p>
 </td>
@@ -1252,24 +1250,24 @@ the keys and values must be valid <cite>name</cite> and <cite>value</cite> argum
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of the field</li>
+<li><strong>name</strong> (<em>str</em>) – Name of the field</li>
 <li><strong>value</strong> – <p>Value of the field</p>
 <p>Possible types are:</p>
 <ul>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytesarray</span></code>, or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code></a>, e.g. a file-like object</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytesarray</span></code>, or <code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code>, e.g. a file-like object</li>
 </ul>
 </li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The field’s content-type header (optional)</li>
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – <p>The field’s filename (optional)</p>
-<p>If this is not set and <code class="docutils literal notranslate"><span class="pre">value</span></code> is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytesarray</span></code>,
-or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a> object, the <cite>name</cite> argument is used as the filename
+<li><strong>content_type</strong> (<em>str</em>) – The field’s content-type header (optional)</li>
+<li><strong>filename</strong> (<em>str</em>) – <p>The field’s filename (optional)</p>
+<p>If this is not set and <code class="docutils literal notranslate"><span class="pre">value</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytesarray</span></code>,
+or <code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code> object, the <cite>name</cite> argument is used as the filename
 unless <code class="docutils literal notranslate"><span class="pre">content_transfer_encoding</span></code> is specified.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">filename</span></code> is not set and <code class="docutils literal notranslate"><span class="pre">value</span></code> is an <a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code></a>
+<p>If <code class="docutils literal notranslate"><span class="pre">filename</span></code> is not set and <code class="docutils literal notranslate"><span class="pre">value</span></code> is an <code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code>
 object, the filename is extracted from the object if possible.</p>
 </li>
-<li><strong>content_transfer_encoding</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The field’s content-transfer-encoding
+<li><strong>content_transfer_encoding</strong> (<em>str</em>) – The field’s content-transfer-encoding
 header (optional)</li>
 </ul>
 </td>
@@ -1288,9 +1286,9 @@ header (optional)</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fields</strong> – <p>An iterable containing:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/io.html#io.IOBase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code></a>, e.g. a file-like object</li>
-<li><a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDict" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code></a> or <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.MultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code></a></li>
-<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of length two, containing a name-value pair</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">io.IOBase</span></code>, e.g. a file-like object</li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDict</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">multidict.MultiDictProxy</span></code></li>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of length two, containing a name-value pair</li>
 </ul>
 </td>
 </tr>
@@ -1307,8 +1305,8 @@ header (optional)</li>
 <p>Exception hierarchy has been significantly modified in version
 2.0. aiohttp defines only exceptions that covers connection handling
 and server response misbehaviors.  For developer specific mistakes,
-aiohttp uses python standard exceptions like <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> or
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a>.</p>
+aiohttp uses python standard exceptions like <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> or
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
 <p>Reading a response content may raise a <a class="reference internal" href="#aiohttp.ClientPayloadError" title="aiohttp.ClientPayloadError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientPayloadError</span></code></a>
 exception. This exception indicates errors specific to the payload
 encoding. Such as invalid compressed data, malformed chunked-encoded
@@ -1318,7 +1316,7 @@ chunks or not enough data that satisfy the content-length header.</p>
 <dt id="aiohttp.ClientError">
 <em class="property">exception </em><code class="descclassname">aiohttp.</code><code class="descname">ClientError</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#ClientError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ClientError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for all client specific exceptions.</p>
-<p>Derived from <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Derived from <code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 <dl class="class">
@@ -1339,11 +1337,11 @@ payload if one of these errors occurs:</p>
 <em class="property">exception </em><code class="descclassname">aiohttp.</code><code class="descname">InvalidURL</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#InvalidURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.InvalidURL" title="Permalink to this definition">¶</a></dt>
 <dd><p>URL used for fetching is malformed, e.g. it does not contain host
 part.</p>
-<p>Derived from <a class="reference internal" href="#aiohttp.ClientError" title="aiohttp.ClientError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientError</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>Derived from <a class="reference internal" href="#aiohttp.ClientError" title="aiohttp.ClientError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientError</span></code></a> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></p>
 <dl class="attribute">
 <dt id="aiohttp.InvalidURL.url">
 <code class="descname">url</code><a class="headerlink" href="#aiohttp.InvalidURL.url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invalid URL, <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> instance.</p>
+<dd><p>Invalid URL, <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> instance.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1357,14 +1355,14 @@ part.</p>
 <code class="descname">value</code><a class="headerlink" href="#aiohttp.ContentDisposition.value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> instance. Value of Content-Disposition header
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> instance. Value of Content-Disposition header
 itself, e.g. <code class="docutils literal notranslate"><span class="pre">attachment</span></code>.</p>
 <dl class="attribute">
 <dt id="aiohttp.ContentDisposition.filename">
 <code class="descname">filename</code><a class="headerlink" href="#aiohttp.ContentDisposition.filename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> instance. Content filename extracted from
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> instance. Content filename extracted from
 parameters. May be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="attribute">
 <dt id="aiohttp.ContentDisposition.parameters">
@@ -1391,13 +1389,13 @@ about request.</p>
 <dl class="attribute">
 <dt id="aiohttp.ClientResponseError.status">
 <code class="descname">status</code><a class="headerlink" href="#aiohttp.ClientResponseError.status" title="Permalink to this definition">¶</a></dt>
-<dd><p>HTTP status code of response (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>), e.g. <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p>
+<dd><p>HTTP status code of response (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponseError.message">
 <code class="descname">message</code><a class="headerlink" href="#aiohttp.ClientResponseError.message" title="Permalink to this definition">¶</a></dt>
-<dd><p>Message of response (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>), e.g. <code class="docutils literal notranslate"><span class="pre">&quot;OK&quot;</span></code>.</p>
+<dd><p>Message of response (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">&quot;OK&quot;</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1410,14 +1408,14 @@ about request.</p>
 <dt id="aiohttp.ClientResponseError.history">
 <code class="descname">history</code><a class="headerlink" href="#aiohttp.ClientResponseError.history" title="Permalink to this definition">¶</a></dt>
 <dd><p>History from failed response, if available, else empty tuple.</p>
-<p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference internal" href="#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a> objects used for
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code> of <a class="reference internal" href="#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a> objects used for
 handle redirection responses.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aiohttp.ClientResponseError.code">
 <code class="descname">code</code><a class="headerlink" href="#aiohttp.ClientResponseError.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>HTTP status code of response (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>), e.g. <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p>
+<dd><p>HTTP status code of response (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p>
 <div class="deprecated">
 <p><span class="versionmodified">Deprecated since version 3.1.</span></p>
 </div>
@@ -1467,9 +1465,9 @@ parameter <code class="docutils literal notranslate"><span class="pre">max_redir
 <dl class="class">
 <dt id="aiohttp.ClientOSError">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">ClientOSError</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#ClientOSError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ClientOSError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subset of connection errors that are initiated by an <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#OSError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></a>
+<dd><p>Subset of connection errors that are initiated by an <code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code>
 exception.</p>
-<p>Derived from <a class="reference internal" href="#aiohttp.ClientConnectionError" title="aiohttp.ClientConnectionError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientConnectionError</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#OSError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></a></p>
+<p>Derived from <a class="reference internal" href="#aiohttp.ClientConnectionError" title="aiohttp.ClientConnectionError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientConnectionError</span></code></a> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></p>
 </dd></dl>
 
 <dl class="class">
@@ -1501,14 +1499,14 @@ exception.</p>
 <dt id="aiohttp.ClientConnectorSSLError">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">ClientConnectorSSLError</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#ClientConnectorSSLError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ClientConnectorSSLError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Response ssl error.</p>
-<p>Derived from <a class="reference internal" href="#aiohttp.ClientSSLError" title="aiohttp.ClientSSLError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientSSLError</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ssl.SSLError</span></code></a></p>
+<p>Derived from <a class="reference internal" href="#aiohttp.ClientSSLError" title="aiohttp.ClientSSLError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientSSLError</span></code></a> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">ssl.SSLError</span></code></p>
 </dd></dl>
 
 <dl class="class">
 <dt id="aiohttp.ClientConnectorCertificateError">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">ClientConnectorCertificateError</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#ClientConnectorCertificateError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ClientConnectorCertificateError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Response certificate error.</p>
-<p>Derived from <a class="reference internal" href="#aiohttp.ClientSSLError" title="aiohttp.ClientSSLError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientSSLError</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.CertificateError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ssl.CertificateError</span></code></a></p>
+<p>Derived from <a class="reference internal" href="#aiohttp.ClientSSLError" title="aiohttp.ClientSSLError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ClientSSLError</span></code></a> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">ssl.CertificateError</span></code></p>
 </dd></dl>
 
 <dl class="class">
@@ -1528,7 +1526,7 @@ exception.</p>
 <dt id="aiohttp.ServerTimeoutError">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">ServerTimeoutError</code><a class="reference internal" href="_modules/aiohttp/client_exceptions.html#ServerTimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ServerTimeoutError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Server operation timeout: read timeout, etc.</p>
-<p>Derived from <a class="reference internal" href="#aiohttp.ServerConnectionError" title="aiohttp.ServerConnectionError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ServerConnectionError</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.TimeoutError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">asyncio.TimeoutError</span></code></a></p>
+<p>Derived from <a class="reference internal" href="#aiohttp.ServerConnectionError" title="aiohttp.ServerConnectionError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ServerConnectionError</span></code></a> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">asyncio.TimeoutError</span></code></p>
 </dd></dl>
 
 <dl class="class">
@@ -1621,8 +1619,10 @@ exception.</p>
 
 
 <h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

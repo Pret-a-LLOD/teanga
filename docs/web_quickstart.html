@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -40,7 +40,7 @@
 <h2>Run a Simple Web Server<a class="headerlink" href="#run-a-simple-web-server" title="Permalink to this headline">¶</a></h2>
 <p>In order to implement a web server, first create a
 <a class="reference internal" href="#aiohttp-web-handler"><span class="std std-ref">request handler</span></a>.</p>
-<p>A request handler must be a <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#coroutine" title="(in Python v3.8)"><span class="xref std std-ref">coroutine</span></a> that
+<p>A request handler must be a <span class="xref std std-ref">coroutine</span> that
 accepts a <a class="reference internal" href="web_reference.html#aiohttp.web.Request" title="aiohttp.web.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> instance as its only parameter and returns a
 <a class="reference internal" href="web_reference.html#aiohttp.web.Response" title="aiohttp.web.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> instance:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiohttp</span> <span class="k">import</span> <span class="n">web</span>
@@ -113,7 +113,7 @@ accepts a list of any non-parsed command-line arguments and returns an
 </div>
 <div class="section" id="handler">
 <span id="aiohttp-web-handler"></span><h2>Handler<a class="headerlink" href="#handler" title="Permalink to this headline">¶</a></h2>
-<p>A request handler must be a <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#coroutine" title="(in Python v3.8)"><span class="xref std std-ref">coroutine</span></a> that accepts a
+<p>A request handler must be a <span class="xref std std-ref">coroutine</span> that accepts a
 <a class="reference internal" href="web_reference.html#aiohttp.web.Request" title="aiohttp.web.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a> instance as its only argument and returns a
 <a class="reference internal" href="web_reference.html#aiohttp.web.StreamResponse" title="aiohttp.web.StreamResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamResponse</span></code></a> derived (e.g. <a class="reference internal" href="web_reference.html#aiohttp.web.Response" title="aiohttp.web.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a>) instance:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -411,7 +411,7 @@ so you can for example set cookies before returning it from handler.</p>
 <p>Often you need a container for storing user data across requests. The concept
 is usually called a <em>session</em>.</p>
 <p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> has no built-in concept of a <em>session</em>, however, there is a
-third-party library, <a class="reference external" href="https://aiohttp-session.readthedocs.io/en/stable/reference.html#module-aiohttp_session" title="(in aiohttp_session v2.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp_session</span></code></a>, that adds <em>session</em> support:</p>
+third-party library, <code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp_session</span></code>, that adds <em>session</em> support:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">base64</span>
@@ -653,6 +653,8 @@ an absolute URL, relative URL or view name (the argument from router):</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

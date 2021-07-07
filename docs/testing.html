@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -337,7 +337,7 @@ functionality, the AioHTTPTestCase is provided:</p>
 <em class="property">class </em><code class="descclassname">aiohttp.test_utils.</code><code class="descname">AioHTTPTestCase</code><a class="reference internal" href="_modules/aiohttp/test_utils.html#AioHTTPTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.test_utils.AioHTTPTestCase" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>A base class to allow for unittest web applications using aiohttp.</p>
-<p>Derived from <a class="reference external" href="https://docs.python.org/3/library/unittest.html#unittest.TestCase" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></a></p>
+<p>Derived from <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.TestCase</span></code></p>
 <p>Provides the following:</p>
 <dl class="attribute">
 <dt id="aiohttp.test_utils.AioHTTPTestCase.client">
@@ -410,8 +410,8 @@ the <a class="reference internal" href="#aiohttp.test_utils.AioHTTPTestCase.loop
 
 <div class="section" id="patching-unittest-test-cases">
 <h4>Patching unittest test cases<a class="headerlink" href="#patching-unittest-test-cases" title="Permalink to this headline">¶</a></h4>
-<p>Patching test cases is tricky, when using python older than 3.8  <a class="reference external" href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.patch" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">patch()</span></code></a> does not behave as it has to.
-We recommend using <a class="reference external" href="https://asynctest.readthedocs.io/en/latest/index.html#module-asynctest" title="(in asynctest v0.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asynctest</span></code></a> that provides <a class="reference external" href="https://asynctest.readthedocs.io/en/latest/asynctest.mock.html#asynctest.patch" title="(in asynctest v0.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">patch()</span></code></a> that is capable of creating
+<p>Patching test cases is tricky, when using python older than 3.8  <code class="xref py py-func docutils literal notranslate"><span class="pre">patch()</span></code> does not behave as it has to.
+We recommend using <code class="xref py py-mod docutils literal notranslate"><span class="pre">asynctest</span></code> that provides <code class="xref py py-func docutils literal notranslate"><span class="pre">patch()</span></code> that is capable of creating
 a magic mock that supports async. It can be used with a decorator as well as with a context manager:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="kn">from</span> <span class="nn">asynctest.mock</span> <span class="kn">import</span> <span class="n">patch</span> <span class="k">as</span> <span class="n">async_patch</span>
 </span>
@@ -513,20 +513,20 @@ specific conditions and errors are hard to trigger.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – str, that represents HTTP method, like; GET, POST.</li>
-<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – str, The URL including <em>PATH INFO</em> without the host or scheme</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a><em>, </em><a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDict" title="(in multidict v4.7)"><em>multidict.CIMultiDict</em></a><em>, </em><em>list of pairs</em>) – mapping containing the headers. Can be anything accepted
+<li><strong>method</strong> (<em>str</em>) – str, that represents HTTP method, like; GET, POST.</li>
+<li><strong>path</strong> (<em>str</em>) – str, The URL including <em>PATH INFO</em> without the host or scheme</li>
+<li><strong>headers</strong> (<em>dict</em><em>, </em><em>multidict.CIMultiDict</em><em>, </em><em>list of pairs</em>) – mapping containing the headers. Can be anything accepted
 by the multidict.CIMultiDict constructor.</li>
-<li><strong>match_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – mapping containing the info to match with url parameters.</li>
+<li><strong>match_info</strong> (<em>dict</em>) – mapping containing the info to match with url parameters.</li>
 <li><strong>version</strong> (<em>aiohttp.protocol.HttpVersion</em>) – namedtuple with encoded HTTP version</li>
-<li><strong>closing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – flag indicates that connection should be closed after
+<li><strong>closing</strong> (<em>bool</em>) – flag indicates that connection should be closed after
 response.</li>
 <li><strong>app</strong> (<a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><em>aiohttp.web.Application</em></a>) – the aiohttp.web application attached for fake request</li>
 <li><strong>writer</strong> (<em>aiohttp.StreamWriter</em>) – object for managing outcoming data</li>
 <li><strong>transport</strong> (<em>asyncio.transports.Transport</em>) – asyncio transport instance</li>
 <li><strong>payload</strong> (<a class="reference internal" href="streams.html#aiohttp.StreamReader" title="aiohttp.StreamReader"><em>aiohttp.StreamReader</em></a>) – raw payload reader object</li>
-<li><strong>sslcontext</strong> (<a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext" title="(in Python v3.8)"><em>ssl.SSLContext</em></a>) – ssl.SSLContext object, for HTTPS connection</li>
-<li><strong>loop</strong> (<a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.AbstractEventLoop" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.AbstractEventLoop</span></code></a>) – An event loop instance, mocked loop by default.</li>
+<li><strong>sslcontext</strong> (<em>ssl.SSLContext</em>) – ssl.SSLContext object, for HTTPS connection</li>
+<li><strong>loop</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.AbstractEventLoop</span></code>) – An event loop instance, mocked loop by default.</li>
 </ul>
 </td>
 </tr>
@@ -607,10 +607,10 @@ for accessing to the server.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
-<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a host for TCP socket, IPv4 <em>local host</em>
+<li><strong>scheme</strong> (<em>str</em>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
+<li><strong>host</strong> (<em>str</em>) – a host for TCP socket, IPv4 <em>local host</em>
 (<code class="docutils literal notranslate"><span class="pre">'127.0.0.1'</span></code>) by default.</li>
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – <p>optional port for TCP socket, if not provided a
+<li><strong>port</strong> (<em>int</em>) – <p>optional port for TCP socket, if not provided a
 random unused port is used.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.0.</span></p>
@@ -655,7 +655,7 @@ run and <code class="docutils literal notranslate"><span class="pre">'https'</sp
 <dl class="method">
 <dt id="aiohttp.test_utils.BaseTestServer.make_url">
 <code class="descname">make_url</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/test_utils.html#BaseTestServer.make_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.test_utils.BaseTestServer.make_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an <em>absolute</em> <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a> for given <em>path</em>.</p>
+<dd><p>Return an <em>absolute</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code> for given <em>path</em>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -679,10 +679,10 @@ e.g. <a class="reference internal" href="web_reference.html#aiohttp.web.StreamRe
 <a class="reference internal" href="web_exceptions.html#aiohttp.web.HTTPException" title="aiohttp.web.HTTPException"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPException</span></code></a> as a signal for
 non-200 HTTP response.</p>
 </li>
-<li><strong>scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
-<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a host for TCP socket, IPv4 <em>local host</em>
+<li><strong>scheme</strong> (<em>str</em>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
+<li><strong>host</strong> (<em>str</em>) – a host for TCP socket, IPv4 <em>local host</em>
 (<code class="docutils literal notranslate"><span class="pre">'127.0.0.1'</span></code>) by default.</li>
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – <p>optional port for TCP socket, if not provided a
+<li><strong>port</strong> (<em>int</em>) – <p>optional port for TCP socket, if not provided a
 random unused port is used.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.0.</span></p>
@@ -706,10 +706,10 @@ random unused port is used.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>app</strong> – <a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a> instance to run.</li>
-<li><strong>scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
-<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a host for TCP socket, IPv4 <em>local host</em>
+<li><strong>scheme</strong> (<em>str</em>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
+<li><strong>host</strong> (<em>str</em>) – a host for TCP socket, IPv4 <em>local host</em>
 (<code class="docutils literal notranslate"><span class="pre">'127.0.0.1'</span></code>) by default.</li>
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – <p>optional port for TCP socket, if not provided a
+<li><strong>port</strong> (<em>int</em>) – <p>optional port for TCP socket, if not provided a
 random unused port is used.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 3.0.</span></p>
@@ -749,8 +749,8 @@ first with <code class="docutils literal notranslate"><span class="pre">TestServ
 <li><strong>cookie_jar</strong> – an optional <a class="reference internal" href="client_reference.html#aiohttp.CookieJar" title="aiohttp.CookieJar"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.CookieJar</span></code></a> instance,
 may be useful with <code class="docutils literal notranslate"><span class="pre">CookieJar(unsafe=True)</span></code>
 option.</li>
-<li><strong>scheme</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
-<li><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a host for TCP socket, IPv4 <em>local host</em>
+<li><strong>scheme</strong> (<em>str</em>) – HTTP scheme, non-protected <code class="docutils literal notranslate"><span class="pre">&quot;http&quot;</span></code> by default.</li>
+<li><strong>host</strong> (<em>str</em>) – a host for TCP socket, IPv4 <em>local host</em>
 (<code class="docutils literal notranslate"><span class="pre">'127.0.0.1'</span></code>) by default.</li>
 </ul>
 </td>
@@ -803,7 +803,7 @@ queried, and will require an absolute path to the resource.</p>
 <dl class="method">
 <dt id="aiohttp.test_utils.TestClient.make_url">
 <code class="descname">make_url</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/test_utils.html#TestClient.make_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.test_utils.TestClient.make_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an <em>absolute</em> <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a> for given <em>path</em>.</p>
+<dd><p>Return an <em>absolute</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code> for given <em>path</em>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -817,7 +817,7 @@ queried, and will require an absolute path to the resource.</p>
 <dd><p>Creates a coroutine mock.</p>
 <p>Behaves like a coroutine which returns <em>return_value</em>.  But it is
 also a mock object, you might test it as usual
-<a class="reference external" href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mock</span></code></a>:</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Mock</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">mocked</span> <span class="o">=</span> <span class="n">make_mocked_coro</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="k">await</span> <span class="n">mocked</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">mocked</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -861,13 +861,13 @@ called.</td>
 <dl class="function">
 <dt id="aiohttp.test_utils.setup_test_loop">
 <code class="descclassname">aiohttp.test_utils.</code><code class="descname">setup_test_loop</code><span class="sig-paren">(</span><em>loop_factory=&lt;function asyncio.new_event_loop&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/test_utils.html#setup_test_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.test_utils.setup_test_loop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create and return an <a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.AbstractEventLoop" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.AbstractEventLoop</span></code></a> instance.</p>
+<dd><p>Create and return an <code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.AbstractEventLoop</span></code> instance.</p>
 <p>The caller should also call teardown_test_loop, once they are done
 with the loop.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>As side effect the function changes asyncio <em>default loop</em> by
-<a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.set_event_loop" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.set_event_loop()</span></code></a> call.</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.set_event_loop()</span></code> call.</p>
 <p>Previous default loop is not restored.</p>
 <p class="last">It should not be a problem for test suite: every test expects a
 new test loop instance anyway.</p>
@@ -885,7 +885,7 @@ new test loop instance anyway.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loop</strong> (<a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.AbstractEventLoop" title="(in Python v3.8)"><em>asyncio.AbstractEventLoop</em></a>) – the loop to teardown</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loop</strong> (<em>asyncio.AbstractEventLoop</em>) – the loop to teardown</td>
 </tr>
 </tbody>
 </table>
@@ -926,6 +926,8 @@ new test loop instance anyway.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

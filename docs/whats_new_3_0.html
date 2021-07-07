@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -42,13 +42,13 @@
 <code class="docutils literal notranslate"><span class="pre">async</span></code>/<code class="docutils literal notranslate"><span class="pre">await</span></code> everywhere. Farewell, Python 3.4.</p>
 <p>The minimal supported Python version is <strong>3.5.3</strong> now.</p>
 <p>Why not <em>3.5.0</em>?  Because <em>3.5.3</em> has a crucial change:
-<a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_event_loop" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.get_event_loop()</span></code></a> returns the running loop instead of
+<code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.get_event_loop()</span></code> returns the running loop instead of
 <em>default</em>, which may be different, e.g.:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
 <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">f</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>Note, <a class="reference external" href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.set_event_loop" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.set_event_loop()</span></code></a> was not called and default loop
+<p>Note, <code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.set_event_loop()</span></code> was not called and default loop
 is not equal to actually executed one.</p>
 </div>
 <div class="section" id="application-runners">
@@ -76,7 +76,7 @@ info about the feature.</p>
 non-ASCII site DNS names, e.g. <a class="reference external" href="https://историк.рф">https://историк.рф</a> or
 <a class="reference external" href="https://雜草工作室.香港">https://雜草工作室.香港</a>.</p>
 <p>The bug has been fixed in upcoming Python 3.7 only (the change
-requires breaking backward compatibility in <a class="reference external" href="https://docs.python.org/3/library/ssl.html#module-ssl" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ssl</span></code></a> API).</p>
+requires breaking backward compatibility in <code class="xref py py-mod docutils literal notranslate"><span class="pre">ssl</span></code> API).</p>
 <p>aiohttp installs a fix for older Python versions (3.5 and 3.6).</p>
 </div>
 <div class="section" id="dropped-obsolete-api">
@@ -86,7 +86,7 @@ deprecated features.</p>
 <p>The release dropped a lot, see <span class="xref std std-ref">aiohttp_changes</span> for details.</p>
 <p>All removals was already marked as deprecated or related to very low
 level implementation details.</p>
-<p>If user code did not raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#DeprecationWarning" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">DeprecationWarning</span></code></a> it is compatible
+<p>If user code did not raise <code class="xref py py-exc docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> it is compatible
 with aiohttp 3.0 most likely.</p>
 </div>
 <div class="section" id="summary">
@@ -127,6 +127,8 @@ with aiohttp 3.0 most likely.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

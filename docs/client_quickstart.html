@@ -13,11 +13,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Advanced Client Usage" href="client_advanced.html" />
-    <link rel="prev" title="How to create a workflow in Teanga" href="create_workflow.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -59,7 +57,7 @@ get started with aiohttp client API.</p>
 <p>Now, we have a <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code> called <code class="docutils literal notranslate"><span class="pre">session</span></code> and a
 <a class="reference internal" href="client_reference.html#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a> object called <code class="docutils literal notranslate"><span class="pre">resp</span></code>. We can get all the
 information we need from the response.  The mandatory parameter of
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientSession.get()</span></code> coroutine is an HTTP <em>url</em> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> or
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientSession.get()</span></code> coroutine is an HTTP <em>url</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or
 class:<cite>yarl.URL</cite> instance).</p>
 <p>In order to make an HTTP POST request use <code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientSession.post()</span></code> coroutine:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://httpbin.org/post&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
@@ -100,7 +98,7 @@ should be called in this case, e.g.:</p>
 <p>You often want to send some sort of data in the URL’s query string. If
 you were constructing the URL by hand, this data would be given as key/value
 pairs in the URL after a question mark, e.g. <code class="docutils literal notranslate"><span class="pre">httpbin.org/get?key=val</span></code>.
-Requests allows you to provide these arguments as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, using the
+Requests allows you to provide these arguments as a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, using the
 <code class="docutils literal notranslate"><span class="pre">params</span></code> keyword argument. As an example, if you wanted to pass
 <code class="docutils literal notranslate"><span class="pre">key1=value1</span></code> and <code class="docutils literal notranslate"><span class="pre">key2=value2</span></code> to <code class="docutils literal notranslate"><span class="pre">httpbin.org/get</span></code>, you would use the
 following code:</p>
@@ -123,7 +121,7 @@ that case you can specify multiple values for each key:</p>
     <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="n">expect</span>
 </pre></div>
 </div>
-<p>You can also pass <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> content as param, but beware – content
+<p>You can also pass <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> content as param, but beware – content
 is not encoded by library. Note that <code class="docutils literal notranslate"><span class="pre">+</span></code> is not encoded:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://httpbin.org/get&#39;</span><span class="p">,</span>
                        <span class="n">params</span><span class="o">=</span><span class="s1">&#39;key=value+1&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
@@ -193,7 +191,7 @@ just install  <a class="reference external" href="https://pypi.org/project/Brotl
     <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
-<p>By default session uses python’s standard <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a> module for
+<p>By default session uses python’s standard <code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code> module for
 serialization.  But it is possible to use different
 <code class="docutils literal notranslate"><span class="pre">serializer</span></code>. <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code> accepts <code class="docutils literal notranslate"><span class="pre">json_serialize</span></code>
 parameter:</p>
@@ -206,7 +204,7 @@ parameter:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">ujson</span></code> library is faster than standard <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a> but slightly
+<p class="last"><code class="docutils literal notranslate"><span class="pre">ujson</span></code> library is faster than standard <code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code> but slightly
 incompatible.</p>
 </div>
 </div>
@@ -278,7 +276,7 @@ dictionary of data will automatically be form-encoded when the request is made:<
 </pre></div>
 </div>
 <p>If you want to send data that is not form-encoded you can do it by
-passing a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> instead of a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>. This data will be
+passing a <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> instead of a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>. This data will be
 posted directly and content-type set to ‘application/octet-stream’ by
 default:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">Binary-data</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
@@ -458,8 +456,10 @@ data portion from a peer.</div></blockquote>
 
 
 <h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

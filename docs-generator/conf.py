@@ -101,27 +101,7 @@ html_theme_options = {
     'github_repo': 'teanga',
     'github_button': True,
     'github_type': 'star',
-    'github_banner': True,
-    'badges': [{'image': 'https://dev.azure.com/aio-libs/aiohttp/_apis/build/status/CI?branchName=master',
-                'target': 'https://dev.azure.com/aio-libs/aiohttp/_build',
-                'height': '20',
-                'alt': 'Azure Pipelines CI status'},
-               {'image': 'https://codecov.io/github/aio-libs/aiohttp/coverage.svg?branch=master',
-               'target': 'https://codecov.io/github/aio-libs/aiohttp',
-                'height': '20',
-                'alt': 'Code coverage status'},
-               {'image': 'https://badge.fury.io/py/aiohttp.svg',
-               'target': 'https://badge.fury.io/py/aiohttp',
-                'height': '20',
-                'alt': 'Latest PyPI package version'},
-               {'image': 'https://img.shields.io/discourse/status?server=https%3A%2F%2Faio-libs.discourse.group',
-               'target': 'https://aio-libs.discourse.group',
-                'height': '20',
-                'alt': 'Discourse status'},
-               {'image': 'https://badges.gitter.im/Join%20Chat.svg',
-                'target': 'https://gitter.im/aio-libs/Lobby',
-                'height': '20',
-                'alt': 'Chat on Gitter'}],
+    'github_banner': True
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -140,7 +120,7 @@ html_short_title = "Teanga is a open-source tool"
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = 'favicon.ico'
+html_favicon = 'teanga-logo.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
