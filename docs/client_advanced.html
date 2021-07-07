@@ -13,11 +13,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Client Reference" href="client_reference.html" />
-    <link rel="prev" title="Client Quickstart" href="client_quickstart.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -51,7 +49,7 @@ same session.</p>
 <div class="section" id="custom-request-headers">
 <h2>Custom Request Headers<a class="headerlink" href="#custom-request-headers" title="Permalink to this headline">¶</a></h2>
 <p>If you need to add HTTP headers to a request, pass them in a
-<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> to the <em>headers</em> parameter.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> to the <em>headers</em> parameter.</p>
 <p>For example, if you want to specify the content-type directly:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://example.com/image&#39;</span>
 <span class="n">payload</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;GIF89a</span><span class="se">\x01\x00\x01\x00\x00\xff\x00</span><span class="s1">,</span><span class="se">\x00\x00</span><span class="s1">&#39;</span>
@@ -118,7 +116,7 @@ between multiple requests:</p>
 <div class="section" id="response-headers-and-cookies">
 <h2>Response Headers and Cookies<a class="headerlink" href="#response-headers-and-cookies" title="Permalink to this headline">¶</a></h2>
 <p>We can view the server’s response <a class="reference internal" href="client_reference.html#aiohttp.ClientResponse.headers" title="aiohttp.ClientResponse.headers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ClientResponse.headers</span></code></a> using
-a <a class="reference external" href="https://multidict.readthedocs.io/en/stable/multidict.html#multidict.CIMultiDictProxy" title="(in multidict v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDictProxy</span></code></a>:</p>
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">CIMultiDictProxy</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span> <span class="o">==</span> <span class="p">{</span>
     <span class="s1">&#39;ACCESS-CONTROL-ALLOW-ORIGIN&#39;</span><span class="p">:</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
     <span class="s1">&#39;CONTENT-TYPE&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
@@ -417,7 +415,7 @@ checks can be relaxed by setting <em>ssl</em> to <code class="docutils literal n
 </pre></div>
 </div>
 <p>If you need to setup custom ssl parameters (use own certification
-files for example) you can create a <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ssl.SSLContext</span></code></a> instance and
+files for example) you can create a <code class="xref py py-class docutils literal notranslate"><span class="pre">ssl.SSLContext</span></code> instance and
 pass it into the proper <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code> method:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">sslcontext</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">create_default_context</span><span class="p">(</span>
    <span class="n">cafile</span><span class="o">=</span><span class="s1">&#39;/path/to/ca-bundle.crt&#39;</span><span class="p">)</span>
@@ -426,7 +424,7 @@ pass it into the proper <code class="xref py py-class docutils literal notransla
 </div>
 <p>If you need to verify <em>self-signed</em> certificates, you can do the
 same thing as the previous example, but add another call to
-<a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext.load_cert_chain" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ssl.SSLContext.load_cert_chain()</span></code></a> with the key pair:</p>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ssl.SSLContext.load_cert_chain()</span></code> with the key pair:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">sslcontext</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">create_default_context</span><span class="p">(</span>
    <span class="n">cafile</span><span class="o">=</span><span class="s1">&#39;/path/to/ca-bundle.crt&#39;</span><span class="p">)</span>
 <span class="n">sslcontext</span><span class="o">.</span><span class="n">load_cert_chain</span><span class="p">(</span><span class="s1">&#39;/path/to/client/public/device.pem&#39;</span><span class="p">,</span>
@@ -488,7 +486,7 @@ DER with e.g:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Tip: to convert from a hexadecimal digest to a binary byte-string,
-you can use <a class="reference external" href="https://docs.python.org/3/library/binascii.html#binascii.unhexlify" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">binascii.unhexlify()</span></code></a>.</p>
+you can use <code class="xref py py-func docutils literal notranslate"><span class="pre">binascii.unhexlify()</span></code>.</p>
 <p class="last"><em>ssl</em> parameter could be passed
 to <a class="reference internal" href="client_reference.html#aiohttp.TCPConnector" title="aiohttp.TCPConnector"><code class="xref py py-class docutils literal notranslate"><span class="pre">TCPConnector</span></code></a> as default, the value from
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">ClientSession.get()</span></code> and others override default.</p>
@@ -650,8 +648,10 @@ on this.</p>
 
 
 <h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

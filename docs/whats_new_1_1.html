@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -41,22 +41,22 @@
 <p>Since aiohttp 1.1 the library uses <a class="reference internal" href="glossary.html#term-yarl"><span class="xref std std-term">yarl</span></a> for URL processing.</p>
 <div class="section" id="new-api">
 <h3>New API<a class="headerlink" href="#new-api" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> gives handy methods for URL operations etc.</p>
-<p>Client API still accepts <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> everywhere <em>url</em> is used,
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> gives handy methods for URL operations etc.</p>
+<p>Client API still accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> everywhere <em>url</em> is used,
 e.g. <code class="docutils literal notranslate"><span class="pre">session.get('http://example.com')</span></code> works as well as
 <code class="docutils literal notranslate"><span class="pre">session.get(yarl.URL('http://example.com'))</span></code>.</p>
-<p>Internal API has been switched to <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a>.
-<a class="reference internal" href="client_reference.html#aiohttp.CookieJar" title="aiohttp.CookieJar"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.CookieJar</span></code></a> accepts <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code></a> instances only.</p>
+<p>Internal API has been switched to <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code>.
+<a class="reference internal" href="client_reference.html#aiohttp.CookieJar" title="aiohttp.CookieJar"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.CookieJar</span></code></a> accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">URL</span></code> instances only.</p>
 <p>On server side has added <code class="xref py py-class docutils literal notranslate"><span class="pre">web.Request.url</span></code> and
 <code class="xref py py-class docutils literal notranslate"><span class="pre">web.Request.rel_url</span></code> properties for representing relative and
 absolute request’s URL.</p>
 <p>URL using is the recommended way, already existed properties for
 retrieving URL parts are deprecated and will be eventually removed.</p>
-<p>Redirection web exceptions accepts <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> as <em>location</em>
-parameter. <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> is still supported and will be supported forever.</p>
+<p>Redirection web exceptions accepts <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> as <em>location</em>
+parameter. <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> is still supported and will be supported forever.</p>
 <p>Reverse URL processing for <em>router</em> has been changed.</p>
 <p>The main API is <code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Request.url_for(name,</span> <span class="pre">**kwargs)</span></code>
-which returns a <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> instance for named resource. It
+which returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> instance for named resource. It
 does not support <em>query args</em> but adding <em>args</em> is trivial:
 <code class="docutils literal notranslate"><span class="pre">request.url_for('named_resource',</span> <span class="pre">param='a').with_query(arg='val')</span></code>.</p>
 <p>The method returns a <em>relative</em> URL, absolute URL may be constructed by
@@ -64,7 +64,7 @@ does not support <em>query args</em> but adding <em>args</em> is trivial:
 </div>
 <div class="section" id="url-encoding">
 <h3>URL encoding<a class="headerlink" href="#url-encoding" title="Permalink to this headline">¶</a></h3>
-<p>YARL encodes all non-ASCII symbols on <a class="reference external" href="https://yarl.readthedocs.io/en/stable/api.html#yarl.URL" title="(in yarl v1.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code></a> creation.</p>
+<p>YARL encodes all non-ASCII symbols on <code class="xref py py-class docutils literal notranslate"><span class="pre">yarl.URL</span></code> creation.</p>
 <p>Thus <code class="docutils literal notranslate"><span class="pre">URL('https://www.python.org/путь')</span></code> becomes
 <code class="docutils literal notranslate"><span class="pre">'https://www.python.org/%D0%BF%D1%83%D1%82%D1%8C'</span></code>.</p>
 <p>On filling route table it’s possible to use both non-ASCII and percent
@@ -174,6 +174,8 @@ deprecated and will be eventually removed.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

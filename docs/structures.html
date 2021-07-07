@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -40,14 +40,14 @@
 <div class="section" id="frozenlist">
 <h2>FrozenList<a class="headerlink" href="#frozenlist" title="Permalink to this headline">¶</a></h2>
 <p>A list-like structure which implements
-<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableSequence" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableSequence</span></code></a>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableSequence</span></code>.</p>
 <p>The list is <em>mutable</em> unless <a class="reference internal" href="#aiohttp.FrozenList.freeze" title="aiohttp.FrozenList.freeze"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FrozenList.freeze()</span></code></a> is called,
-after that the list modification raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a>.</p>
+after that the list modification raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code>.</p>
 <dl class="class">
 <dt id="aiohttp.FrozenList">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">FrozenList</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="headerlink" href="#aiohttp.FrozenList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct a new <em>non-frozen</em> list from <em>items</em> iterable.</p>
-<p>The list implements all <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableSequence" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableSequence</span></code></a>
+<p>The list implements all <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableSequence</span></code>
 methods plus two additional APIs.</p>
 <dl class="attribute">
 <dt id="aiohttp.FrozenList.frozen">
@@ -67,10 +67,10 @@ methods plus two additional APIs.</p>
 </div>
 <div class="section" id="chainmapproxy">
 <h2>ChainMapProxy<a class="headerlink" href="#chainmapproxy" title="Permalink to this headline">¶</a></h2>
-<p>An <em>immutable</em> version of <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.ChainMap" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.ChainMap</span></code></a>.  Internally
+<p>An <em>immutable</em> version of <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.ChainMap</span></code>.  Internally
 the proxy is a list of mappings (dictionaries), if the requested key
 is not present in the first mapping the second is looked up and so on.</p>
-<p>The class supports <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></a> interface.</p>
+<p>The class supports <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code> interface.</p>
 <dl class="class">
 <dt id="aiohttp.ChainMapProxy">
 <em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">ChainMapProxy</code><span class="sig-paren">(</span><em>maps</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/helpers.html#ChainMapProxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.ChainMapProxy" title="Permalink to this definition">¶</a></dt>
@@ -114,6 +114,8 @@ is not present in the first mapping the second is looked up and so on.</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

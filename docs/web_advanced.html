@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -49,8 +49,8 @@ adding</em> and <em>resolving</em> (internally everything is converted to
 </div>
 <div class="section" id="peer-disconnection">
 <h2>Peer disconnection<a class="headerlink" href="#peer-disconnection" title="Permalink to this headline">¶</a></h2>
-<p>When a client peer is gone a subsequent reading or writing raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#OSError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></a>
-or more specific exception like <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ConnectionResetError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectionResetError</span></code></a>.</p>
+<p>When a client peer is gone a subsequent reading or writing raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code>
+or more specific exception like <code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectionResetError</span></code>.</p>
 <p>The reason for disconnection is vary; it can be a network issue or explicit
 socket closing on the peer side without reading the whole server response.</p>
 <p><em>aiohttp</em> handles disconnection properly but you can handle it explicitly, e.g.:</p>
@@ -169,10 +169,10 @@ the latest version when the file changes:</p>
 <div class="section" id="template-rendering">
 <h2>Template Rendering<a class="headerlink" href="#template-rendering" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> does not support template rendering out-of-the-box.</p>
-<p>However, there is a third-party library, <a class="reference external" href="https://aiohttp-jinja2.readthedocs.io/en/stable/index.html#module-aiohttp_jinja2" title="(in aiohttp_jinja2 v1.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp_jinja2</span></code></a>, which is
+<p>However, there is a third-party library, <code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp_jinja2</span></code>, which is
 supported by the <em>aiohttp</em> authors.</p>
 <p>Using it is rather simple. First, setup a <em>jinja2 environment</em> with a call
-to <a class="reference external" href="https://aiohttp-jinja2.readthedocs.io/en/stable/index.html#aiohttp_jinja2.setup" title="(in aiohttp_jinja2 v1.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.setup()</span></code></a>:</p>
+to <code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.setup()</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
 <span class="n">aiohttp_jinja2</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">app</span><span class="p">,</span>
     <span class="n">loader</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="s1">&#39;/path/to/templates/folder&#39;</span><span class="p">))</span>
@@ -180,7 +180,7 @@ to <a class="reference external" href="https://aiohttp-jinja2.readthedocs.io/en/
 </div>
 <p>After that you may use the template engine in your
 <a class="reference internal" href="web_quickstart.html#aiohttp-web-handler"><span class="std std-ref">handlers</span></a>. The most convenient way is to simply
-wrap your handlers with the  <a class="reference external" href="https://aiohttp-jinja2.readthedocs.io/en/stable/index.html#aiohttp_jinja2.template" title="(in aiohttp_jinja2 v1.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.template()</span></code></a> decorator:</p>
+wrap your handlers with the  <code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.template()</span></code> decorator:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@aiohttp_jinja2</span><span class="o">.</span><span class="n">template</span><span class="p">(</span><span class="s1">&#39;tmpl.jinja2&#39;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Andrew&#39;</span><span class="p">,</span> <span class="s1">&#39;surname&#39;</span><span class="p">:</span> <span class="s1">&#39;Svetlov&#39;</span><span class="p">}</span>
@@ -190,7 +190,7 @@ wrap your handlers with the  <a class="reference external" href="https://aiohttp
 <a class="reference external" href="https://github.com/aio-libs/aiohttp_mako">aiohttp_mako</a> library.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p><a class="reference external" href="https://aiohttp-jinja2.readthedocs.io/en/stable/index.html#aiohttp_jinja2.template" title="(in aiohttp_jinja2 v1.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.template()</span></code></a> should be applied <strong>before</strong>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp_jinja2.template()</span></code> should be applied <strong>before</strong>
 <a class="reference internal" href="web_reference.html#aiohttp.web.RouteTableDef.get" title="aiohttp.web.RouteTableDef.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RouteTableDef.get()</span></code></a> decorator and family, e.g. it must be
 the <em>first</em> (most <em>down</em> decorator in the chain):</p>
 <div class="last highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@routes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/path&#39;</span><span class="p">)</span>
@@ -208,7 +208,7 @@ done inside the request handler <em>task</em>; however, writing
 (<code class="docutils literal notranslate"><span class="pre">ws.send_str(...)</span></code>) to the <em>WebSocket</em>, closing (<code class="docutils literal notranslate"><span class="pre">await</span>
 <span class="pre">ws.close()</span></code>) and canceling the handler task may be delegated to other
 tasks. See also <a class="reference internal" href="faq.html#aiohttp-faq-terminating-websockets"><span class="std std-ref">FAQ section</span></a>.</p>
-<p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> creates an implicit <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Task" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.Task</span></code></a> for
+<p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> creates an implicit <code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio.Task</span></code> for
 handling every incoming request.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -231,7 +231,7 @@ instructions how to solve the problem.</p>
 <p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> discourages the use of <em>global variables</em>, aka <em>singletons</em>.
 Every variable should have its own context that is <em>not global</em>.</p>
 <p>So, <a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">Application</span></code></a> and <a class="reference internal" href="web_reference.html#aiohttp.web.Request" title="aiohttp.web.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code></a>
-support a <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code></a> interface (i.e. they are
+support a <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code> interface (i.e. they are
 dict-like objects), allowing them to be used as data stores.</p>
 <div class="section" id="application-s-config">
 <span id="aiohttp-web-data-sharing-app-config"></span><h3>Application’s config<a class="headerlink" href="#application-s-config" title="Permalink to this headline">¶</a></h3>
@@ -273,7 +273,7 @@ next handlers in the chain.</p>
 <div class="section" id="response-s-storage">
 <h3>Response’s storage<a class="headerlink" href="#response-s-storage" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="web_reference.html#aiohttp.web.StreamResponse" title="aiohttp.web.StreamResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamResponse</span></code></a> and <a class="reference internal" href="web_reference.html#aiohttp.web.Response" title="aiohttp.web.Response"><code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code></a> objects
-also support <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code></a> interface. This is useful
+also support <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.MutableMapping</span></code> interface. This is useful
 when you want to share data with signals and middlewares once all the work in
 the handler is done:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -295,7 +295,7 @@ Otherwise, something based on your company name/url would be satisfactory (i.e.
 </div>
 <div class="section" id="contextvars-support">
 <span id="aiohttp-web-contextvars"></span><h2>ContextVars support<a class="headerlink" href="#contextvars-support" title="Permalink to this headline">¶</a></h2>
-<p>Starting from Python 3.7 asyncio has <a class="reference external" href="https://docs.python.org/3/library/contextvars.html#module-contextvars" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Context</span> <span class="pre">Variables</span></code></a> as a
+<p>Starting from Python 3.7 asyncio has <code class="xref py py-mod docutils literal notranslate"><span class="pre">Context</span> <span class="pre">Variables</span></code> as a
 context-local storage (a generalization of thread-local concept that works with asyncio
 tasks also).</p>
 <p><em>aiohttp</em> server supports it in the following way:</p>
@@ -813,7 +813,7 @@ may be used to send a cancellation to it.</p>
 <div class="section" id="handling-error-pages">
 <h2>Handling error pages<a class="headerlink" href="#handling-error-pages" title="Permalink to this headline">¶</a></h2>
 <p>Pages like <em>404 Not Found</em> and <em>500 Internal Error</em> could be handled
-by custom middleware, see <a class="reference external" href="https://aiohttp-demos.readthedocs.io/en/latest/tutorial.html#aiohttp-demos-polls-middlewares" title="(in aiohttp-demos v0.2)"><span class="xref std std-ref">polls demo</span></a>
+by custom middleware, see <span class="xref std std-ref">polls demo</span>
 for example.</p>
 </div>
 <div class="section" id="deploying-behind-a-proxy">
@@ -924,6 +924,8 @@ locally are available at <a class="reference external" href="https://github.com/
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -92,12 +92,12 @@ size limit and over any available data.</p>
 <dt id="aiohttp.StreamReader.read_nowait">
 <code class="descclassname">StreamReader.</code><code class="descname">read_nowait</code><span class="sig-paren">(</span><em>n=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiohttp/streams.html#StreamReader.read_nowait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader.read_nowait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns data from internal buffer if any, empty bytes object otherwise.</p>
-<p>Raises <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code></a> if other coroutine is waiting for stream.</p>
+<p>Raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code> if other coroutine is waiting for stream.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – how many bytes to read, <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the whole internal
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>int</em>) – how many bytes to read, <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the whole internal
 buffer.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return bytes:</th><td class="field-body">the given data</td>
@@ -114,7 +114,7 @@ buffer.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a>) – data to push back into the stream.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>bytes</em>) – data to push back into the stream.</td>
 </tr>
 </tbody>
 </table>
@@ -159,6 +159,8 @@ buffer.</td>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

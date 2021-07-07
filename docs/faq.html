@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -98,7 +98,7 @@ The third argument is the handler function.</p>
 </div>
 <div class="section" id="where-do-i-put-my-database-connection-so-handlers-can-access-it">
 <h2><a class="toc-backref" href="#id4">Where do I put my database connection so handlers can access it?</a><a class="headerlink" href="#where-do-i-put-my-database-connection-so-handlers-can-access-it" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a> object supports the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>
+<p><a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a> object supports the <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>
 interface and provides a place to store your database connections or any
 other resource you want to share between handlers.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">go</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
@@ -121,7 +121,7 @@ other resource you want to share between handlers.</p>
 <div class="section" id="how-can-middleware-store-data-for-web-handlers-to-use">
 <h2><a class="toc-backref" href="#id5">How can middleware store data for web handlers to use?</a><a class="headerlink" href="#how-can-middleware-store-data-for-web-handlers-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Both <a class="reference internal" href="web_reference.html#aiohttp.web.Request" title="aiohttp.web.Request"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Request</span></code></a>  and <a class="reference internal" href="web_reference.html#aiohttp.web.Application" title="aiohttp.web.Application"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.web.Application</span></code></a>
-support the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> interface.</p>
+support the <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> interface.</p>
 <p>Therefore, data may be stored inside a request object.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">request</span><span class="p">[</span><span class="s1">&#39;unique_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
@@ -249,7 +249,7 @@ be used used to bind a socket locally:</p>
 <h2><a class="toc-backref" href="#id9">What is the API stability and deprecation policy?</a><a class="headerlink" href="#what-is-the-api-stability-and-deprecation-policy" title="Permalink to this headline">¶</a></h2>
 <p><em>aiohttp</em> follows strong <a class="reference external" href="https://semver.org">Semantic Versioning</a> (SemVer).</p>
 <p>Obsolete attributes and methods are marked as <em>deprecated</em> in the
-documentation and raise <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#DeprecationWarning" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecationWarning</span></code></a> upon usage.</p>
+documentation and raise <code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> upon usage.</p>
 <p>Assume aiohttp <code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> where <code class="docutils literal notranslate"><span class="pre">X</span></code> is major version,
 <code class="docutils literal notranslate"><span class="pre">Y</span></code> is minor version and <code class="docutils literal notranslate"><span class="pre">Z</span></code> is bugfix number.</p>
 <p>For example, if the latest released version is <code class="docutils literal notranslate"><span class="pre">aiohttp==3.0.6</span></code>:</p>
@@ -435,6 +435,8 @@ is the hidden global object:</p>
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 

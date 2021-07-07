@@ -13,7 +13,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="shortcut icon" href="_static/teanga-logo.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -36,7 +36,7 @@
             
   <div class="section" id="logging">
 <span id="aiohttp-logging"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
-<p><em>aiohttp</em> uses standard <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> for tracking the
+<p><em>aiohttp</em> uses standard <code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code> for tracking the
 library activity.</p>
 <p>We have the following loggers enumerated by names:</p>
 <ul class="simple">
@@ -49,7 +49,7 @@ library activity.</p>
 </ul>
 <p>You may subscribe to these loggers for getting logging messages.  The
 page does not provide instructions for logging subscribing while the
-most friendly method is <a class="reference external" href="https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">logging.config.dictConfig()</span></code></a> for
+most friendly method is <code class="xref py py-func docutils literal notranslate"><span class="pre">logging.config.dictConfig()</span></code> for
 configuring whole loggers in your application.</p>
 <p>Logging does not work out of the box. It requires at least minimal <code class="docutils literal notranslate"><span class="pre">'logging'</span></code>
 configuration.
@@ -69,12 +69,12 @@ Example of minimal working logger setup:</p>
 <h2>Access logs<a class="headerlink" href="#access-logs" title="Permalink to this headline">¶</a></h2>
 <p>Access logs are enabled by default. If the <cite>debug</cite> flag is set, and the default
 logger <code class="docutils literal notranslate"><span class="pre">'aiohttp.access'</span></code> is used, access logs will be output to
-<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span></code></a> if no handlers are attached.
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span></code> if no handlers are attached.
 Furthermore, if the default logger has no log level set, the log level will be
 set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">logging.DEBUG</span></code>.</p>
 <p>This logging may be controlled by <a class="reference internal" href="web_reference.html#aiohttp.web.AppRunner" title="aiohttp.web.AppRunner"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.AppRunner()</span></code></a> and
 <a class="reference internal" href="web_reference.html#aiohttp.web.run_app" title="aiohttp.web.run_app"><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp.web.run_app()</span></code></a>.</p>
-<p>To override the default logger, pass an instance of <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code></a> to
+<p>To override the default logger, pass an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code> to
 override the default logger.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -199,7 +199,7 @@ access log file upon every startup.</p>
 <p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> uses a logger named <code class="docutils literal notranslate"><span class="pre">'aiohttp.server'</span></code> to store errors
 given on web requests handling.</p>
 <p>This log is enabled by default.</p>
-<p>To use a different logger name, pass <em>logger</em> (<a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code></a>
+<p>To use a different logger name, pass <em>logger</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code>
 instance) to the <a class="reference internal" href="web_reference.html#aiohttp.web.AppRunner" title="aiohttp.web.AppRunner"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.AppRunner()</span></code></a> constructor.</p>
 </div>
 </div>
@@ -235,6 +235,8 @@ instance) to the <a class="reference internal" href="web_reference.html#aiohttp.
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_service.html">How to create a service in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
 
