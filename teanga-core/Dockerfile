@@ -13,4 +13,4 @@ COPY ./ /teanga
 RUN pip3 install -r requirements.txt --no-cache-dir --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
 RUN airflow initdb
 RUN chmod +x /teanga/init.sh
-#CMD ["./init.sh"]  
+CMD ["./init.sh"]  
