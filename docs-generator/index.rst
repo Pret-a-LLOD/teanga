@@ -43,7 +43,7 @@ At the command line
 
 Quick Start
 ================================
-1. Download the workflow `example <http://cnn.com>`_ 
+1. Download the workflow `example <https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/workflows/dkpro_treetagger.json>`_ 
    or Create your own workflow file following :ref:`how to create a workflow in Teanga<create-teanga-workflow>`
 
 2. Run Workflow::
