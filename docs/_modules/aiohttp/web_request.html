@@ -90,7 +90,7 @@
     <span class="kn">from</span> <span class="nn">.web_protocol</span> <span class="k">import</span> <span class="n">RequestHandler</span>  <span class="c1"># noqa</span>
 
 
-<div class="viewcode-block" id="FileField"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.FileField">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="FileField"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.FileField">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">FileField</span><span class="p">:</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -129,7 +129,7 @@
 <span class="c1">############################################################</span>
 
 
-<div class="viewcode-block" id="BaseRequest"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.BaseRequest">[docs]</a><span class="k">class</span> <span class="nc">BaseRequest</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">HeadersMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseRequest"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.BaseRequest">[docs]</a><span class="k">class</span> <span class="nc">BaseRequest</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">HeadersMixin</span><span class="p">):</span>
 
     <span class="n">POST_METHODS</span> <span class="o">=</span> <span class="p">{</span><span class="n">hdrs</span><span class="o">.</span><span class="n">METH_PATCH</span><span class="p">,</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">METH_POST</span><span class="p">,</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">METH_PUT</span><span class="p">,</span>
                     <span class="n">hdrs</span><span class="o">.</span><span class="n">METH_TRACE</span><span class="p">,</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">METH_DELETE</span><span class="p">}</span>
@@ -182,7 +182,7 @@
         <span class="k">if</span> <span class="n">remote</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s1">&#39;remote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">remote</span>
 
-<div class="viewcode-block" id="BaseRequest.clone"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.BaseRequest.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span> <span class="n">rel_url</span><span class="p">:</span> <span class="n">StrOrURL</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span>
+<div class="viewcode-block" id="BaseRequest.clone"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.BaseRequest.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span> <span class="n">rel_url</span><span class="p">:</span> <span class="n">StrOrURL</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span>
               <span class="n">headers</span><span class="p">:</span> <span class="n">LooseHeaders</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span> <span class="n">scheme</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span>
               <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">sentinel</span><span class="p">,</span>
               <span class="n">remote</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">sentinel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BaseRequest&#39;</span><span class="p">:</span>
@@ -722,7 +722,7 @@
         <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="Request"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.Request">[docs]</a><span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="n">BaseRequest</span><span class="p">):</span>
+<div class="viewcode-block" id="Request"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.Request">[docs]</a><span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="n">BaseRequest</span><span class="p">):</span>
 
     <span class="n">ATTRS</span> <span class="o">=</span> <span class="n">BaseRequest</span><span class="o">.</span><span class="n">ATTRS</span> <span class="o">|</span> <span class="nb">frozenset</span><span class="p">([</span><span class="s1">&#39;_match_info&#39;</span><span class="p">])</span>
 
@@ -821,7 +821,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

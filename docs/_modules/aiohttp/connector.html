@@ -228,7 +228,7 @@
         <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="BaseConnector"><a class="viewcode-back" href="../../client_reference.html#aiohttp.BaseConnector">[docs]</a><span class="k">class</span> <span class="nc">BaseConnector</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseConnector"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.BaseConnector">[docs]</a><span class="k">class</span> <span class="nc">BaseConnector</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Base connector class.</span>
 
 <span class="sd">    keepalive_timeout - (optional) Keep-alive timeout.</span>
@@ -723,7 +723,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timestamps</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ttl</span> <span class="o">&lt;</span> <span class="n">monotonic</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="TCPConnector"><a class="viewcode-back" href="../../client_reference.html#aiohttp.TCPConnector">[docs]</a><span class="k">class</span> <span class="nc">TCPConnector</span><span class="p">(</span><span class="n">BaseConnector</span><span class="p">):</span>
+<div class="viewcode-block" id="TCPConnector"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.TCPConnector">[docs]</a><span class="k">class</span> <span class="nc">TCPConnector</span><span class="p">(</span><span class="n">BaseConnector</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TCP connector.</span>
 
 <span class="sd">    verify_ssl - Set to True to check ssl certifications.</span>
@@ -796,7 +796,7 @@
         <span class="sd">&quot;&quot;&quot;True if local DNS caching is enabled.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_dns_cache</span>
 
-<div class="viewcode-block" id="TCPConnector.clear_dns_cache"><a class="viewcode-back" href="../../client_reference.html#aiohttp.TCPConnector.clear_dns_cache">[docs]</a>    <span class="k">def</span> <span class="nf">clear_dns_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="TCPConnector.clear_dns_cache"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.TCPConnector.clear_dns_cache">[docs]</a>    <span class="k">def</span> <span class="nf">clear_dns_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Remove specified host/port or clear all dns local cache.&quot;&quot;&quot;</span>
@@ -1138,7 +1138,7 @@
         <span class="k">return</span> <span class="n">transport</span><span class="p">,</span> <span class="n">proto</span></div>
 
 
-<div class="viewcode-block" id="UnixConnector"><a class="viewcode-back" href="../../client_reference.html#aiohttp.UnixConnector">[docs]</a><span class="k">class</span> <span class="nc">UnixConnector</span><span class="p">(</span><span class="n">BaseConnector</span><span class="p">):</span>
+<div class="viewcode-block" id="UnixConnector"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.UnixConnector">[docs]</a><span class="k">class</span> <span class="nc">UnixConnector</span><span class="p">(</span><span class="n">BaseConnector</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Unix socket connector.</span>
 
 <span class="sd">    path - Unix socket path.</span>
@@ -1260,7 +1260,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

@@ -126,7 +126,7 @@
         <span class="k">return</span> <span class="n">ChunkTupleAsyncStreamIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
 
-<div class="viewcode-block" id="StreamReader"><a class="viewcode-back" href="../../streams.html#aiohttp.StreamReader">[docs]</a><span class="k">class</span> <span class="nc">StreamReader</span><span class="p">(</span><span class="n">AsyncStreamReaderMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamReader"><a class="viewcode-back" href="../../examples/streams.html#aiohttp.StreamReader">[docs]</a><span class="k">class</span> <span class="nc">StreamReader</span><span class="p">(</span><span class="n">AsyncStreamReaderMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An enhancement of asyncio.StreamReader.</span>
 
 <span class="sd">    Supports asynchronous iteration by line, chunk or as available::</span>
@@ -178,7 +178,7 @@
             <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;e=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StreamReader.exception"><a class="viewcode-back" href="../../streams.html#aiohttp.StreamReader.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
+<div class="viewcode-block" id="StreamReader.exception"><a class="viewcode-back" href="../../examples/streams.html#aiohttp.StreamReader.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span></div>
 
     <span class="k">def</span> <span class="nf">set_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -229,7 +229,7 @@
         <span class="sd">&quot;&quot;&quot;Return True if  &#39;feed_eof&#39; was called.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eof</span>
 
-<div class="viewcode-block" id="StreamReader.at_eof"><a class="viewcode-back" href="../../streams.html#aiohttp.StreamReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamReader.at_eof"><a class="viewcode-back" href="../../examples/streams.html#aiohttp.StreamReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return True if the buffer is empty and &#39;feed_eof&#39; was called.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eof</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span></div>
 
@@ -244,7 +244,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_eof_waiter</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="StreamReader.unread_data"><a class="viewcode-back" href="../../streams.html#aiohttp.StreamReader.unread_data">[docs]</a>    <span class="k">def</span> <span class="nf">unread_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamReader.unread_data"><a class="viewcode-back" href="../../examples/streams.html#aiohttp.StreamReader.unread_data">[docs]</a>    <span class="k">def</span> <span class="nf">unread_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; rollback reading some data from stream, inserting it to buffer head.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;unread_data() is deprecated &quot;</span>
@@ -464,7 +464,7 @@
 
         <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StreamReader.read_nowait"><a class="viewcode-back" href="../../streams.html#aiohttp.StreamReader.read_nowait">[docs]</a>    <span class="k">def</span> <span class="nf">read_nowait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamReader.read_nowait"><a class="viewcode-back" href="../../examples/streams.html#aiohttp.StreamReader.read_nowait">[docs]</a>    <span class="k">def</span> <span class="nf">read_nowait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
         <span class="c1"># default was changed to be consistent with .read(-1)</span>
         <span class="c1">#</span>
         <span class="c1"># I believe the most users don&#39;t know about the method and</span>
@@ -701,7 +701,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

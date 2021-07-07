@@ -114,7 +114,7 @@
     <span class="n">_Subapps</span> <span class="o">=</span> <span class="n">List</span>
 
 
-<div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.Application">[docs]</a><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.Application">[docs]</a><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
     <span class="n">ATTRS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
         <span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="s1">&#39;_debug&#39;</span><span class="p">,</span> <span class="s1">&#39;_router&#39;</span><span class="p">,</span> <span class="s1">&#39;_loop&#39;</span><span class="p">,</span> <span class="s1">&#39;_handler_args&#39;</span><span class="p">,</span>
         <span class="s1">&#39;_middlewares&#39;</span><span class="p">,</span> <span class="s1">&#39;_middlewares_handlers&#39;</span><span class="p">,</span> <span class="s1">&#39;_run_middlewares&#39;</span><span class="p">,</span>
@@ -309,7 +309,7 @@
         <span class="n">reg_handler</span><span class="p">(</span><span class="s1">&#39;on_shutdown&#39;</span><span class="p">)</span>
         <span class="n">reg_handler</span><span class="p">(</span><span class="s1">&#39;on_cleanup&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Application.add_subapp"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.Application.add_subapp">[docs]</a>    <span class="k">def</span> <span class="nf">add_subapp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="Application.add_subapp"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.Application.add_subapp">[docs]</a>    <span class="k">def</span> <span class="nf">add_subapp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                    <span class="n">subapp</span><span class="p">:</span> <span class="s1">&#39;Application&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractResource</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Prefix must be str&quot;</span><span class="p">)</span>
@@ -336,7 +336,7 @@
             <span class="n">subapp</span><span class="o">.</span><span class="n">_set_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resource</span>
 
-<div class="viewcode-block" id="Application.add_domain"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.Application.add_domain">[docs]</a>    <span class="k">def</span> <span class="nf">add_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="Application.add_domain"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.Application.add_domain">[docs]</a>    <span class="k">def</span> <span class="nf">add_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                    <span class="n">subapp</span><span class="p">:</span> <span class="s1">&#39;Application&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractResource</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Domain must be str&quot;</span><span class="p">)</span>
@@ -347,7 +347,7 @@
         <span class="n">factory</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">MatchedSubAppResource</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">subapp</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_subapp</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">subapp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Application.add_routes"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.Application.add_routes">[docs]</a>    <span class="k">def</span> <span class="nf">add_routes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">AbstractRouteDef</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Application.add_routes"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.Application.add_routes">[docs]</a>    <span class="k">def</span> <span class="nf">add_routes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">routes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">AbstractRouteDef</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">router</span><span class="o">.</span><span class="n">add_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -581,7 +581,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

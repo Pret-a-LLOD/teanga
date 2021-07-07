@@ -72,7 +72,7 @@
 <span class="n">THRESHOLD_CONNLOST_ACCESS</span> <span class="o">=</span> <span class="mi">5</span>
 
 
-<div class="viewcode-block" id="WebSocketReady"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketReady">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="WebSocketReady"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.WebSocketReady">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">WebSocketReady</span><span class="p">:</span>
     <span class="n">ok</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
     <span class="n">protocol</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span>
@@ -81,7 +81,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok</span></div>
 
 
-<div class="viewcode-block" id="WebSocketResponse"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse">[docs]</a><span class="k">class</span> <span class="nc">WebSocketResponse</span><span class="p">(</span><span class="n">StreamResponse</span><span class="p">):</span>
+<div class="viewcode-block" id="WebSocketResponse"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.WebSocketResponse">[docs]</a><span class="k">class</span> <span class="nc">WebSocketResponse</span><span class="p">(</span><span class="n">StreamResponse</span><span class="p">):</span>
 
     <span class="n">_length_check</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -270,7 +270,7 @@
         <span class="c1"># disable HTTP keepalive for WebSocket</span>
         <span class="n">request</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="WebSocketResponse.can_prepare"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse.can_prepare">[docs]</a>    <span class="k">def</span> <span class="nf">can_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WebSocketReady</span><span class="p">:</span>
+<div class="viewcode-block" id="WebSocketResponse.can_prepare"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.WebSocketResponse.can_prepare">[docs]</a>    <span class="k">def</span> <span class="nf">can_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">BaseRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WebSocketReady</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Already started&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -296,7 +296,7 @@
     <span class="k">def</span> <span class="nf">compress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compress</span>
 
-<div class="viewcode-block" id="WebSocketResponse.exception"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.WebSocketResponse.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
+<div class="viewcode-block" id="WebSocketResponse.exception"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.WebSocketResponse.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -523,7 +523,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

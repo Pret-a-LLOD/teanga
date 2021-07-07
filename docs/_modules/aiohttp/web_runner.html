@@ -64,7 +64,7 @@
     <span class="k">raise</span> <span class="n">GracefulExit</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="BaseSite"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.BaseSite">[docs]</a><span class="k">class</span> <span class="nc">BaseSite</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseSite"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.BaseSite">[docs]</a><span class="k">class</span> <span class="nc">BaseSite</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_runner&#39;</span><span class="p">,</span> <span class="s1">&#39;_shutdown_timeout&#39;</span><span class="p">,</span> <span class="s1">&#39;_ssl_context&#39;</span><span class="p">,</span> <span class="s1">&#39;_backlog&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;_server&#39;</span><span class="p">)</span>
 
@@ -104,7 +104,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_runner</span><span class="o">.</span><span class="n">_unreg_site</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TCPSite"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.TCPSite">[docs]</a><span class="k">class</span> <span class="nc">TCPSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
+<div class="viewcode-block" id="TCPSite"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.TCPSite">[docs]</a><span class="k">class</span> <span class="nc">TCPSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_host&#39;</span><span class="p">,</span> <span class="s1">&#39;_port&#39;</span><span class="p">,</span> <span class="s1">&#39;_reuse_address&#39;</span><span class="p">,</span> <span class="s1">&#39;_reuse_port&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runner</span><span class="p">:</span> <span class="s1">&#39;BaseRunner&#39;</span><span class="p">,</span>
@@ -141,7 +141,7 @@
             <span class="n">reuse_port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reuse_port</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="UnixSite"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.UnixSite">[docs]</a><span class="k">class</span> <span class="nc">UnixSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
+<div class="viewcode-block" id="UnixSite"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.UnixSite">[docs]</a><span class="k">class</span> <span class="nc">UnixSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_path&#39;</span><span class="p">,</span> <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runner</span><span class="p">:</span> <span class="s1">&#39;BaseRunner&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
@@ -167,7 +167,7 @@
             <span class="n">ssl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ssl_context</span><span class="p">,</span> <span class="n">backlog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backlog</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="NamedPipeSite"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.NamedPipeSite">[docs]</a><span class="k">class</span> <span class="nc">NamedPipeSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
+<div class="viewcode-block" id="NamedPipeSite"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.NamedPipeSite">[docs]</a><span class="k">class</span> <span class="nc">NamedPipeSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_path&#39;</span><span class="p">,</span> <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runner</span><span class="p">:</span> <span class="s1">&#39;BaseRunner&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
@@ -194,7 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="n">_server</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="SockSite"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.SockSite">[docs]</a><span class="k">class</span> <span class="nc">SockSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
+<div class="viewcode-block" id="SockSite"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.SockSite">[docs]</a><span class="k">class</span> <span class="nc">SockSite</span><span class="p">(</span><span class="n">BaseSite</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_sock&#39;</span><span class="p">,</span> <span class="s1">&#39;_name&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runner</span><span class="p">:</span> <span class="s1">&#39;BaseRunner&#39;</span><span class="p">,</span> <span class="n">sock</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
@@ -226,7 +226,7 @@
             <span class="n">ssl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ssl_context</span><span class="p">,</span> <span class="n">backlog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backlog</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="BaseRunner"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.BaseRunner">[docs]</a><span class="k">class</span> <span class="nc">BaseRunner</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseRunner"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.BaseRunner">[docs]</a><span class="k">class</span> <span class="nc">BaseRunner</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_handle_signals&#39;</span><span class="p">,</span> <span class="s1">&#39;_kwargs&#39;</span><span class="p">,</span> <span class="s1">&#39;_server&#39;</span><span class="p">,</span> <span class="s1">&#39;_sites&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">handle_signals</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -321,7 +321,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sites</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">site</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ServerRunner"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.ServerRunner">[docs]</a><span class="k">class</span> <span class="nc">ServerRunner</span><span class="p">(</span><span class="n">BaseRunner</span><span class="p">):</span>
+<div class="viewcode-block" id="ServerRunner"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.ServerRunner">[docs]</a><span class="k">class</span> <span class="nc">ServerRunner</span><span class="p">(</span><span class="n">BaseRunner</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Low-level web server runner&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_web_server&#39;</span><span class="p">,)</span>
@@ -341,7 +341,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="AppRunner"><a class="viewcode-back" href="../../web_reference.html#aiohttp.web.AppRunner">[docs]</a><span class="k">class</span> <span class="nc">AppRunner</span><span class="p">(</span><span class="n">BaseRunner</span><span class="p">):</span>
+<div class="viewcode-block" id="AppRunner"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.AppRunner">[docs]</a><span class="k">class</span> <span class="nc">AppRunner</span><span class="p">(</span><span class="n">BaseRunner</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Web Application runner&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_app&#39;</span><span class="p">,)</span>
@@ -404,7 +404,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

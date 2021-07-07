@@ -83,7 +83,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="TraceConfig"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConfig">[docs]</a><span class="k">class</span> <span class="nc">TraceConfig</span><span class="p">:</span>
+<div class="viewcode-block" id="TraceConfig"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConfig">[docs]</a><span class="k">class</span> <span class="nc">TraceConfig</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;First-class used to trace requests launched via ClientSession</span>
 <span class="sd">    objects.&quot;&quot;&quot;</span>
 
@@ -109,7 +109,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_trace_config_ctx_factory</span> <span class="o">=</span> <span class="n">trace_config_ctx_factory</span>  <span class="c1"># type: Type[SimpleNamespace] # noqa</span>
 
-<div class="viewcode-block" id="TraceConfig.trace_config_ctx"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConfig.trace_config_ctx">[docs]</a>    <span class="k">def</span> <span class="nf">trace_config_ctx</span><span class="p">(</span>
+<div class="viewcode-block" id="TraceConfig.trace_config_ctx"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConfig.trace_config_ctx">[docs]</a>    <span class="k">def</span> <span class="nf">trace_config_ctx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">trace_request_ctx</span><span class="p">:</span> <span class="n">SimpleNamespace</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimpleNamespace</span><span class="p">:</span>  <span class="c1"># noqa</span>
@@ -195,7 +195,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_dns_cache_miss</span></div>
 
 
-<div class="viewcode-block" id="TraceRequestStartParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceRequestStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceRequestStartParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceRequestStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceRequestStartParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_request_start` signal&quot;&quot;&quot;</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -203,7 +203,7 @@
     <span class="n">headers</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;CIMultiDict[str]&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceRequestChunkSentParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceRequestChunkSentParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceRequestChunkSentParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceRequestChunkSentParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceRequestChunkSentParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_request_chunk_sent` signal&quot;&quot;&quot;</span>
     <span class="n">chunk</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">bytes</span><span class="p">)</span></div>
@@ -215,7 +215,7 @@
     <span class="n">chunk</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">bytes</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TraceRequestEndParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceRequestEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceRequestEndParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceRequestEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceRequestEndParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_request_end` signal&quot;&quot;&quot;</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -224,7 +224,7 @@
     <span class="n">response</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ClientResponse</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceRequestExceptionParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceRequestExceptionParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceRequestExceptionParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceRequestExceptionParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceRequestExceptionParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_request_exception` signal&quot;&quot;&quot;</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -233,7 +233,7 @@
     <span class="n">exception</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="ne">BaseException</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceRequestRedirectParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceRequestRedirectParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceRequestRedirectParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceRequestRedirectParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceRequestRedirectParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_request_redirect` signal&quot;&quot;&quot;</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -242,50 +242,50 @@
     <span class="n">response</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ClientResponse</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceConnectionQueuedStartParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConnectionQueuedStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceConnectionQueuedStartParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConnectionQueuedStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceConnectionQueuedStartParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_connection_queued_start` signal&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TraceConnectionQueuedEndParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConnectionQueuedEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceConnectionQueuedEndParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConnectionQueuedEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceConnectionQueuedEndParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_connection_queued_end` signal&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TraceConnectionCreateStartParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConnectionCreateStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceConnectionCreateStartParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConnectionCreateStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceConnectionCreateStartParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_connection_create_start` signal&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TraceConnectionCreateEndParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConnectionCreateEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceConnectionCreateEndParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConnectionCreateEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceConnectionCreateEndParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_connection_create_end` signal&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TraceConnectionReuseconnParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceConnectionReuseconnParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceConnectionReuseconnParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceConnectionReuseconnParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceConnectionReuseconnParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_connection_reuseconn` signal&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TraceDnsResolveHostStartParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceDnsResolveHostStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceDnsResolveHostStartParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceDnsResolveHostStartParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceDnsResolveHostStartParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_dns_resolvehost_start` signal&quot;&quot;&quot;</span>
     <span class="n">host</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceDnsResolveHostEndParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceDnsResolveHostEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceDnsResolveHostEndParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceDnsResolveHostEndParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceDnsResolveHostEndParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_dns_resolvehost_end` signal&quot;&quot;&quot;</span>
     <span class="n">host</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceDnsCacheHitParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceDnsCacheHitParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceDnsCacheHitParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceDnsCacheHitParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceDnsCacheHitParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_dns_cache_hit` signal&quot;&quot;&quot;</span>
     <span class="n">host</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraceDnsCacheMissParams"><a class="viewcode-back" href="../../tracing_reference.html#aiohttp.TraceDnsCacheMissParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TraceDnsCacheMissParams"><a class="viewcode-back" href="../../examples/tracing_reference.html#aiohttp.TraceDnsCacheMissParams">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TraceDnsCacheMissParams</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Parameters sent by the `on_dns_cache_miss` signal&quot;&quot;&quot;</span>
     <span class="n">host</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div>
@@ -454,7 +454,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

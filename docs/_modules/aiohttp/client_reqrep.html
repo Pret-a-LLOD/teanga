@@ -127,7 +127,7 @@
     <span class="n">filename</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>  <span class="c1"># type: Optional[str]</span>
 
 
-<div class="viewcode-block" id="RequestInfo"><a class="viewcode-back" href="../../client_reference.html#aiohttp.RequestInfo">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="RequestInfo"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.RequestInfo">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">RequestInfo</span><span class="p">:</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">URL</span><span class="p">)</span>
     <span class="n">method</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
@@ -139,7 +139,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span></div>
 
 
-<div class="viewcode-block" id="Fingerprint"><a class="viewcode-back" href="../../client_reference.html#aiohttp.Fingerprint">[docs]</a><span class="k">class</span> <span class="nc">Fingerprint</span><span class="p">:</span>
+<div class="viewcode-block" id="Fingerprint"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.Fingerprint">[docs]</a><span class="k">class</span> <span class="nc">Fingerprint</span><span class="p">:</span>
     <span class="n">HASHFUNC_BY_DIGESTLEN</span> <span class="o">=</span> <span class="p">{</span>
         <span class="mi">16</span><span class="p">:</span> <span class="n">md5</span><span class="p">,</span>
         <span class="mi">20</span><span class="p">:</span> <span class="n">sha1</span><span class="p">,</span>
@@ -697,7 +697,7 @@
             <span class="k">await</span> <span class="n">trace</span><span class="o">.</span><span class="n">send_request_chunk_sent</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ClientResponse"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientResponse">[docs]</a><span class="k">class</span> <span class="nc">ClientResponse</span><span class="p">(</span><span class="n">HeadersMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="ClientResponse"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientResponse">[docs]</a><span class="k">class</span> <span class="nc">ClientResponse</span><span class="p">(</span><span class="n">HeadersMixin</span><span class="p">):</span>
 
     <span class="c1"># from the Status-Line of the response</span>
     <span class="n">version</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># HTTP-Version</span>
@@ -941,7 +941,7 @@
     <span class="k">def</span> <span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span>
 
-<div class="viewcode-block" id="ClientResponse.close"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientResponse.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ClientResponse.close"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientResponse.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_released</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_notify_content</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
@@ -970,7 +970,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cleanup_writer</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">noop</span><span class="p">()</span>
 
-<div class="viewcode-block" id="ClientResponse.raise_for_status"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientResponse.raise_for_status">[docs]</a>    <span class="k">def</span> <span class="nf">raise_for_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ClientResponse.raise_for_status"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientResponse.raise_for_status">[docs]</a>    <span class="k">def</span> <span class="nf">raise_for_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="mi">400</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
             <span class="c1"># reason should always be not None for a started response</span>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">reason</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -1018,7 +1018,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_body</span>
 
-<div class="viewcode-block" id="ClientResponse.get_encoding"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientResponse.get_encoding">[docs]</a>    <span class="k">def</span> <span class="nf">get_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="ClientResponse.get_encoding"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientResponse.get_encoding">[docs]</a>    <span class="k">def</span> <span class="nf">get_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">ctype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_TYPE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">mimetype</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">parse_mimetype</span><span class="p">(</span><span class="n">ctype</span><span class="p">)</span>
 
@@ -1119,7 +1119,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

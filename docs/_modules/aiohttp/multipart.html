@@ -275,7 +275,7 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">resp</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="BodyPartReader"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.BodyPartReader">[docs]</a><span class="k">class</span> <span class="nc">BodyPartReader</span><span class="p">:</span>
+<div class="viewcode-block" id="BodyPartReader"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.BodyPartReader">[docs]</a><span class="k">class</span> <span class="nc">BodyPartReader</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Multipart reader for single body part.&quot;&quot;&quot;</span>
 
     <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">8192</span>
@@ -461,11 +461,11 @@
                          <span class="n">keep_blank_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                          <span class="n">encoding</span><span class="o">=</span><span class="n">real_encoding</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BodyPartReader.at_eof"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.BodyPartReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="BodyPartReader.at_eof"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.BodyPartReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns True if the boundary was reached or False otherwise.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_at_eof</span></div>
 
-<div class="viewcode-block" id="BodyPartReader.decode"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.BodyPartReader.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<div class="viewcode-block" id="BodyPartReader.decode"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.BodyPartReader.decode">[docs]</a>    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Decodes data according the specified Content-Encoding</span>
 <span class="sd">        or Content-Transfer-Encoding headers value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -500,7 +500,7 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;unknown content transfer encoding: </span><span class="si">{}</span><span class="s1">&#39;</span>
                                <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">encoding</span><span class="p">))</span>
 
-<div class="viewcode-block" id="BodyPartReader.get_charset"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.BodyPartReader.get_charset">[docs]</a>    <span class="k">def</span> <span class="nf">get_charset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="BodyPartReader.get_charset"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.BodyPartReader.get_charset">[docs]</a>    <span class="k">def</span> <span class="nf">get_charset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns charset parameter from Content-Type header or default.&quot;&quot;&quot;</span>
         <span class="n">ctype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">CONTENT_TYPE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">mimetype</span> <span class="o">=</span> <span class="n">parse_mimetype</span><span class="p">(</span><span class="n">ctype</span><span class="p">)</span>
@@ -550,7 +550,7 @@
             <span class="n">chunk</span> <span class="o">=</span> <span class="k">await</span> <span class="n">field</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">16</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="MultipartReader"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartReader">[docs]</a><span class="k">class</span> <span class="nc">MultipartReader</span><span class="p">:</span>
+<div class="viewcode-block" id="MultipartReader"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartReader">[docs]</a><span class="k">class</span> <span class="nc">MultipartReader</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Multipart body reader.&quot;&quot;&quot;</span>
 
     <span class="c1">#: Response wrapper, used when multipart readers constructs from response.</span>
@@ -582,7 +582,7 @@
             <span class="k">raise</span> <span class="n">StopAsyncIteration</span>  <span class="c1"># NOQA</span>
         <span class="k">return</span> <span class="n">part</span>
 
-<div class="viewcode-block" id="MultipartReader.from_response"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartReader.from_response">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="MultipartReader.from_response"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartReader.from_response">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_response</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">response</span><span class="p">:</span> <span class="s1">&#39;ClientResponse&#39;</span><span class="p">,</span>
@@ -595,7 +595,7 @@
                                                      <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="MultipartReader.at_eof"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="MultipartReader.at_eof"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartReader.at_eof">[docs]</a>    <span class="k">def</span> <span class="nf">at_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns True if the final boundary was reached or</span>
 <span class="sd">        False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -737,7 +737,7 @@
 <span class="n">_Part</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Payload</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="MultipartWriter"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartWriter">[docs]</a><span class="k">class</span> <span class="nc">MultipartWriter</span><span class="p">(</span><span class="n">Payload</span><span class="p">):</span>
+<div class="viewcode-block" id="MultipartWriter"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartWriter">[docs]</a><span class="k">class</span> <span class="nc">MultipartWriter</span><span class="p">(</span><span class="n">Payload</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multipart body writer.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subtype</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;mixed&#39;</span><span class="p">,</span>
@@ -817,7 +817,7 @@
     <span class="k">def</span> <span class="nf">boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_boundary</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MultipartWriter.append"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartWriter.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
+<div class="viewcode-block" id="MultipartWriter.append"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartWriter.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
             <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MultiMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span>
@@ -836,7 +836,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MultipartWriter.append_payload"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartWriter.append_payload">[docs]</a>    <span class="k">def</span> <span class="nf">append_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Payload</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Payload</span><span class="p">:</span>
+<div class="viewcode-block" id="MultipartWriter.append_payload"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartWriter.append_payload">[docs]</a>    <span class="k">def</span> <span class="nf">append_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Payload</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Payload</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Adds a new body part to multipart writer.&quot;&quot;&quot;</span>
         <span class="c1"># compression</span>
         <span class="n">encoding</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -867,7 +867,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">payload</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">te_encoding</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
         <span class="k">return</span> <span class="n">payload</span></div>
 
-<div class="viewcode-block" id="MultipartWriter.append_json"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartWriter.append_json">[docs]</a>    <span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span>
+<div class="viewcode-block" id="MultipartWriter.append_json"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartWriter.append_json">[docs]</a>    <span class="k">def</span> <span class="nf">append_json</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
             <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MultiMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span>
@@ -878,7 +878,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_payload</span><span class="p">(</span><span class="n">JsonPayload</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MultipartWriter.append_form"><a class="viewcode-back" href="../../multipart_reference.html#aiohttp.MultipartWriter.append_form">[docs]</a>    <span class="k">def</span> <span class="nf">append_form</span><span class="p">(</span>
+<div class="viewcode-block" id="MultipartWriter.append_form"><a class="viewcode-back" href="../../examples/multipart_reference.html#aiohttp.MultipartWriter.append_form">[docs]</a>    <span class="k">def</span> <span class="nf">append_form</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
                        <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
@@ -1026,7 +1026,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

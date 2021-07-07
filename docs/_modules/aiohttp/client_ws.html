@@ -62,7 +62,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="ClientWebSocketResponse"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientWebSocketResponse">[docs]</a><span class="k">class</span> <span class="nc">ClientWebSocketResponse</span><span class="p">:</span>
+<div class="viewcode-block" id="ClientWebSocketResponse"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientWebSocketResponse">[docs]</a><span class="k">class</span> <span class="nc">ClientWebSocketResponse</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">reader</span><span class="p">:</span> <span class="s1">&#39;FlowControlDataQueue[WSMessage]&#39;</span><span class="p">,</span>
@@ -159,7 +159,7 @@
     <span class="k">def</span> <span class="nf">client_notakeover</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_notakeover</span>
 
-<div class="viewcode-block" id="ClientWebSocketResponse.get_extra_info"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientWebSocketResponse.get_extra_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_extra_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<div class="viewcode-block" id="ClientWebSocketResponse.get_extra_info"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientWebSocketResponse.get_extra_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_extra_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;extra info from connection transport&quot;&quot;&quot;</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">connection</span>
         <span class="k">if</span> <span class="n">conn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -169,7 +169,7 @@
             <span class="k">return</span> <span class="n">default</span>
         <span class="k">return</span> <span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ClientWebSocketResponse.exception"><a class="viewcode-back" href="../../client_reference.html#aiohttp.ClientWebSocketResponse.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
+<div class="viewcode-block" id="ClientWebSocketResponse.exception"><a class="viewcode-back" href="../../examples/client_reference.html#aiohttp.ClientWebSocketResponse.exception">[docs]</a>    <span class="k">def</span> <span class="nf">exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -368,7 +368,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

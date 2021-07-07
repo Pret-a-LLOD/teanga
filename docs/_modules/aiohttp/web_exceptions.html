@@ -108,7 +108,7 @@
 <span class="c1"># HTTP Exceptions</span>
 <span class="c1">############################################################</span>
 
-<div class="viewcode-block" id="HTTPException"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPException">[docs]</a><span class="k">class</span> <span class="nc">HTTPException</span><span class="p">(</span><span class="n">Response</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPException"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPException">[docs]</a><span class="k">class</span> <span class="nc">HTTPException</span><span class="p">(</span><span class="n">Response</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
 
     <span class="c1"># You should set in subclasses:</span>
     <span class="c1"># status = 200</span>
@@ -143,41 +143,41 @@
     <span class="sd">&quot;&quot;&quot;Base class for exceptions with status codes in the 400s and 500s.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="HTTPRedirection"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRedirection">[docs]</a><span class="k">class</span> <span class="nc">HTTPRedirection</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRedirection"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRedirection">[docs]</a><span class="k">class</span> <span class="nc">HTTPRedirection</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for exceptions with status codes in the 300s.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="HTTPSuccessful"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPSuccessful">[docs]</a><span class="k">class</span> <span class="nc">HTTPSuccessful</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPSuccessful"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPSuccessful">[docs]</a><span class="k">class</span> <span class="nc">HTTPSuccessful</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for exceptions with status codes in the 200s.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="HTTPOk"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPOk">[docs]</a><span class="k">class</span> <span class="nc">HTTPOk</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPOk"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPOk">[docs]</a><span class="k">class</span> <span class="nc">HTTPOk</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span></div>
 
 
-<div class="viewcode-block" id="HTTPCreated"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPCreated">[docs]</a><span class="k">class</span> <span class="nc">HTTPCreated</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPCreated"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPCreated">[docs]</a><span class="k">class</span> <span class="nc">HTTPCreated</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">201</span></div>
 
 
-<div class="viewcode-block" id="HTTPAccepted"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPAccepted">[docs]</a><span class="k">class</span> <span class="nc">HTTPAccepted</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPAccepted"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPAccepted">[docs]</a><span class="k">class</span> <span class="nc">HTTPAccepted</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">202</span></div>
 
 
-<div class="viewcode-block" id="HTTPNonAuthoritativeInformation"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNonAuthoritativeInformation">[docs]</a><span class="k">class</span> <span class="nc">HTTPNonAuthoritativeInformation</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNonAuthoritativeInformation"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNonAuthoritativeInformation">[docs]</a><span class="k">class</span> <span class="nc">HTTPNonAuthoritativeInformation</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">203</span></div>
 
 
-<div class="viewcode-block" id="HTTPNoContent"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNoContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPNoContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNoContent"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNoContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPNoContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">204</span>
     <span class="n">empty_body</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="HTTPResetContent"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPResetContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPResetContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPResetContent"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPResetContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPResetContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">205</span>
     <span class="n">empty_body</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="HTTPPartialContent"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPPartialContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPPartialContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPPartialContent"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPPartialContent">[docs]</a><span class="k">class</span> <span class="nc">HTTPPartialContent</span><span class="p">(</span><span class="n">HTTPSuccessful</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">206</span></div>
 
 
@@ -204,40 +204,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
 
 
-<div class="viewcode-block" id="HTTPMultipleChoices"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPMultipleChoices">[docs]</a><span class="k">class</span> <span class="nc">HTTPMultipleChoices</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPMultipleChoices"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPMultipleChoices">[docs]</a><span class="k">class</span> <span class="nc">HTTPMultipleChoices</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">300</span></div>
 
 
-<div class="viewcode-block" id="HTTPMovedPermanently"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPMovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">HTTPMovedPermanently</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPMovedPermanently"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPMovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">HTTPMovedPermanently</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">301</span></div>
 
 
-<div class="viewcode-block" id="HTTPFound"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPFound">[docs]</a><span class="k">class</span> <span class="nc">HTTPFound</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPFound"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPFound">[docs]</a><span class="k">class</span> <span class="nc">HTTPFound</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">302</span></div>
 
 
 <span class="c1"># This one is safe after a POST (the redirected location will be</span>
 <span class="c1"># retrieved with GET):</span>
-<div class="viewcode-block" id="HTTPSeeOther"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPSeeOther">[docs]</a><span class="k">class</span> <span class="nc">HTTPSeeOther</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPSeeOther"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPSeeOther">[docs]</a><span class="k">class</span> <span class="nc">HTTPSeeOther</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">303</span></div>
 
 
-<div class="viewcode-block" id="HTTPNotModified"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNotModified">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotModified</span><span class="p">(</span><span class="n">HTTPRedirection</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNotModified"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNotModified">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotModified</span><span class="p">(</span><span class="n">HTTPRedirection</span><span class="p">):</span>
     <span class="c1"># FIXME: this should include a date or etag header</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">304</span>
     <span class="n">empty_body</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="HTTPUseProxy"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUseProxy">[docs]</a><span class="k">class</span> <span class="nc">HTTPUseProxy</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUseProxy"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUseProxy">[docs]</a><span class="k">class</span> <span class="nc">HTTPUseProxy</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="c1"># Not a move, but looks a little like one</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">305</span></div>
 
 
-<div class="viewcode-block" id="HTTPTemporaryRedirect"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPTemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">HTTPTemporaryRedirect</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPTemporaryRedirect"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPTemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">HTTPTemporaryRedirect</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">307</span></div>
 
 
-<div class="viewcode-block" id="HTTPPermanentRedirect"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPPermanentRedirect">[docs]</a><span class="k">class</span> <span class="nc">HTTPPermanentRedirect</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPPermanentRedirect"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPPermanentRedirect">[docs]</a><span class="k">class</span> <span class="nc">HTTPPermanentRedirect</span><span class="p">(</span><span class="n">_HTTPMove</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">308</span></div>
 
 
@@ -246,31 +246,31 @@
 <span class="c1">############################################################</span>
 
 
-<div class="viewcode-block" id="HTTPClientError"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPClientError">[docs]</a><span class="k">class</span> <span class="nc">HTTPClientError</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPClientError"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPClientError">[docs]</a><span class="k">class</span> <span class="nc">HTTPClientError</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="HTTPBadRequest"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPBadRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadRequest</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPBadRequest"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPBadRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadRequest</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">400</span></div>
 
 
-<div class="viewcode-block" id="HTTPUnauthorized"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUnauthorized">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnauthorized</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUnauthorized"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUnauthorized">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnauthorized</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">401</span></div>
 
 
-<div class="viewcode-block" id="HTTPPaymentRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPPaymentRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPPaymentRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPPaymentRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPPaymentRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPPaymentRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">402</span></div>
 
 
-<div class="viewcode-block" id="HTTPForbidden"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPForbidden">[docs]</a><span class="k">class</span> <span class="nc">HTTPForbidden</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPForbidden"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPForbidden">[docs]</a><span class="k">class</span> <span class="nc">HTTPForbidden</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">403</span></div>
 
 
-<div class="viewcode-block" id="HTTPNotFound"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNotFound">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotFound</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNotFound"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNotFound">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotFound</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">404</span></div>
 
 
-<div class="viewcode-block" id="HTTPMethodNotAllowed"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPMethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">HTTPMethodNotAllowed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPMethodNotAllowed"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPMethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">HTTPMethodNotAllowed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">405</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -290,35 +290,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="HTTPNotAcceptable"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNotAcceptable">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotAcceptable</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNotAcceptable"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNotAcceptable">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotAcceptable</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">406</span></div>
 
 
-<div class="viewcode-block" id="HTTPProxyAuthenticationRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPProxyAuthenticationRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPProxyAuthenticationRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPProxyAuthenticationRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPProxyAuthenticationRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPProxyAuthenticationRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">407</span></div>
 
 
-<div class="viewcode-block" id="HTTPRequestTimeout"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRequestTimeout">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestTimeout</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRequestTimeout"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRequestTimeout">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestTimeout</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">408</span></div>
 
 
-<div class="viewcode-block" id="HTTPConflict"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPConflict">[docs]</a><span class="k">class</span> <span class="nc">HTTPConflict</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPConflict"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPConflict">[docs]</a><span class="k">class</span> <span class="nc">HTTPConflict</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">409</span></div>
 
 
-<div class="viewcode-block" id="HTTPGone"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPGone">[docs]</a><span class="k">class</span> <span class="nc">HTTPGone</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPGone"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPGone">[docs]</a><span class="k">class</span> <span class="nc">HTTPGone</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">410</span></div>
 
 
-<div class="viewcode-block" id="HTTPLengthRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPLengthRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPLengthRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPLengthRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPLengthRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPLengthRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">411</span></div>
 
 
-<div class="viewcode-block" id="HTTPPreconditionFailed"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPPreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPPreconditionFailed"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPPreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">HTTPPreconditionFailed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">412</span></div>
 
 
-<div class="viewcode-block" id="HTTPRequestEntityTooLarge"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRequestEntityTooLarge">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestEntityTooLarge</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRequestEntityTooLarge"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRequestEntityTooLarge">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestEntityTooLarge</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">413</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -333,51 +333,51 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="HTTPRequestURITooLong"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRequestURITooLong">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestURITooLong</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRequestURITooLong"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRequestURITooLong">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestURITooLong</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">414</span></div>
 
 
-<div class="viewcode-block" id="HTTPUnsupportedMediaType"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUnsupportedMediaType">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnsupportedMediaType</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUnsupportedMediaType"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUnsupportedMediaType">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnsupportedMediaType</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">415</span></div>
 
 
-<div class="viewcode-block" id="HTTPRequestRangeNotSatisfiable"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRequestRangeNotSatisfiable"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">416</span></div>
 
 
-<div class="viewcode-block" id="HTTPExpectationFailed"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPExpectationFailed">[docs]</a><span class="k">class</span> <span class="nc">HTTPExpectationFailed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPExpectationFailed"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPExpectationFailed">[docs]</a><span class="k">class</span> <span class="nc">HTTPExpectationFailed</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">417</span></div>
 
 
-<div class="viewcode-block" id="HTTPMisdirectedRequest"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPMisdirectedRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPMisdirectedRequest</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPMisdirectedRequest"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPMisdirectedRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPMisdirectedRequest</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">421</span></div>
 
 
-<div class="viewcode-block" id="HTTPUnprocessableEntity"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUnprocessableEntity">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnprocessableEntity</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUnprocessableEntity"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUnprocessableEntity">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnprocessableEntity</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span></div>
 
 
-<div class="viewcode-block" id="HTTPFailedDependency"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPFailedDependency">[docs]</a><span class="k">class</span> <span class="nc">HTTPFailedDependency</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPFailedDependency"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPFailedDependency">[docs]</a><span class="k">class</span> <span class="nc">HTTPFailedDependency</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">424</span></div>
 
 
-<div class="viewcode-block" id="HTTPUpgradeRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUpgradeRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPUpgradeRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUpgradeRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUpgradeRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPUpgradeRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">426</span></div>
 
 
-<div class="viewcode-block" id="HTTPPreconditionRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPPreconditionRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPPreconditionRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPPreconditionRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPPreconditionRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPPreconditionRequired</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">428</span></div>
 
 
-<div class="viewcode-block" id="HTTPTooManyRequests"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPTooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">HTTPTooManyRequests</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPTooManyRequests"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPTooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">HTTPTooManyRequests</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">429</span></div>
 
 
-<div class="viewcode-block" id="HTTPRequestHeaderFieldsTooLarge"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPRequestHeaderFieldsTooLarge">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestHeaderFieldsTooLarge</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPRequestHeaderFieldsTooLarge"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPRequestHeaderFieldsTooLarge">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequestHeaderFieldsTooLarge</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">431</span></div>
 
 
-<div class="viewcode-block" id="HTTPUnavailableForLegalReasons"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPUnavailableForLegalReasons">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnavailableForLegalReasons</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPUnavailableForLegalReasons"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPUnavailableForLegalReasons">[docs]</a><span class="k">class</span> <span class="nc">HTTPUnavailableForLegalReasons</span><span class="p">(</span><span class="n">HTTPClientError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">451</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -406,47 +406,47 @@
 <span class="c1">#  codes are applicable to any request method.</span>
 
 
-<div class="viewcode-block" id="HTTPServerError"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPServerError">[docs]</a><span class="k">class</span> <span class="nc">HTTPServerError</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPServerError"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPServerError">[docs]</a><span class="k">class</span> <span class="nc">HTTPServerError</span><span class="p">(</span><span class="n">HTTPError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="HTTPInternalServerError"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPInternalServerError">[docs]</a><span class="k">class</span> <span class="nc">HTTPInternalServerError</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPInternalServerError"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPInternalServerError">[docs]</a><span class="k">class</span> <span class="nc">HTTPInternalServerError</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span></div>
 
 
-<div class="viewcode-block" id="HTTPNotImplemented"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNotImplemented">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotImplemented</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNotImplemented"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNotImplemented">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotImplemented</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">501</span></div>
 
 
-<div class="viewcode-block" id="HTTPBadGateway"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPBadGateway">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadGateway</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPBadGateway"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPBadGateway">[docs]</a><span class="k">class</span> <span class="nc">HTTPBadGateway</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">502</span></div>
 
 
-<div class="viewcode-block" id="HTTPServiceUnavailable"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">HTTPServiceUnavailable</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPServiceUnavailable"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">HTTPServiceUnavailable</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">503</span></div>
 
 
-<div class="viewcode-block" id="HTTPGatewayTimeout"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPGatewayTimeout">[docs]</a><span class="k">class</span> <span class="nc">HTTPGatewayTimeout</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPGatewayTimeout"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPGatewayTimeout">[docs]</a><span class="k">class</span> <span class="nc">HTTPGatewayTimeout</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">504</span></div>
 
 
-<div class="viewcode-block" id="HTTPVersionNotSupported"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPVersionNotSupported">[docs]</a><span class="k">class</span> <span class="nc">HTTPVersionNotSupported</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPVersionNotSupported"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPVersionNotSupported">[docs]</a><span class="k">class</span> <span class="nc">HTTPVersionNotSupported</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">505</span></div>
 
 
-<div class="viewcode-block" id="HTTPVariantAlsoNegotiates"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPVariantAlsoNegotiates">[docs]</a><span class="k">class</span> <span class="nc">HTTPVariantAlsoNegotiates</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPVariantAlsoNegotiates"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPVariantAlsoNegotiates">[docs]</a><span class="k">class</span> <span class="nc">HTTPVariantAlsoNegotiates</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">506</span></div>
 
 
-<div class="viewcode-block" id="HTTPInsufficientStorage"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPInsufficientStorage">[docs]</a><span class="k">class</span> <span class="nc">HTTPInsufficientStorage</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPInsufficientStorage"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPInsufficientStorage">[docs]</a><span class="k">class</span> <span class="nc">HTTPInsufficientStorage</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">507</span></div>
 
 
-<div class="viewcode-block" id="HTTPNotExtended"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNotExtended">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotExtended</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNotExtended"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNotExtended">[docs]</a><span class="k">class</span> <span class="nc">HTTPNotExtended</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">510</span></div>
 
 
-<div class="viewcode-block" id="HTTPNetworkAuthenticationRequired"><a class="viewcode-back" href="../../web_exceptions.html#aiohttp.web.HTTPNetworkAuthenticationRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPNetworkAuthenticationRequired</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPNetworkAuthenticationRequired"><a class="viewcode-back" href="../../examples/web_exceptions.html#aiohttp.web.HTTPNetworkAuthenticationRequired">[docs]</a><span class="k">class</span> <span class="nc">HTTPNetworkAuthenticationRequired</span><span class="p">(</span><span class="n">HTTPServerError</span><span class="p">):</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">511</span></div>
 </pre></div>
 
@@ -480,7 +480,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 

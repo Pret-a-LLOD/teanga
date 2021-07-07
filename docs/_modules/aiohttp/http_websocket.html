@@ -58,7 +58,7 @@
            <span class="s1">&#39;WebSocketError&#39;</span><span class="p">,</span> <span class="s1">&#39;WSMsgType&#39;</span><span class="p">,</span> <span class="s1">&#39;WSCloseCode&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="WSCloseCode"><a class="viewcode-back" href="../../websocket_utilities.html#aiohttp.WSCloseCode">[docs]</a><span class="k">class</span> <span class="nc">WSCloseCode</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="WSCloseCode"><a class="viewcode-back" href="../../examples/websocket_utilities.html#aiohttp.WSCloseCode">[docs]</a><span class="k">class</span> <span class="nc">WSCloseCode</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">OK</span> <span class="o">=</span> <span class="mi">1000</span>
     <span class="n">GOING_AWAY</span> <span class="o">=</span> <span class="mi">1001</span>
     <span class="n">PROTOCOL_ERROR</span> <span class="o">=</span> <span class="mi">1002</span>
@@ -75,7 +75,7 @@
 <span class="n">ALLOWED_CLOSE_CODES</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">WSCloseCode</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="WSMsgType"><a class="viewcode-back" href="../../websocket_utilities.html#aiohttp.WSMsgType">[docs]</a><span class="k">class</span> <span class="nc">WSMsgType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="WSMsgType"><a class="viewcode-back" href="../../examples/websocket_utilities.html#aiohttp.WSMsgType">[docs]</a><span class="k">class</span> <span class="nc">WSMsgType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="c1"># websocket spec types</span>
     <span class="n">CONTINUATION</span> <span class="o">=</span> <span class="mh">0x0</span>
     <span class="n">TEXT</span> <span class="o">=</span> <span class="mh">0x1</span>
@@ -117,9 +117,9 @@
                                         <span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;extra&#39;</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="WSMessage"><a class="viewcode-back" href="../../websocket_utilities.html#aiohttp.WSMessage">[docs]</a><span class="k">class</span> <span class="nc">WSMessage</span><span class="p">(</span><span class="n">_WSMessageBase</span><span class="p">):</span>
+<div class="viewcode-block" id="WSMessage"><a class="viewcode-back" href="../../examples/websocket_utilities.html#aiohttp.WSMessage">[docs]</a><span class="k">class</span> <span class="nc">WSMessage</span><span class="p">(</span><span class="n">_WSMessageBase</span><span class="p">):</span>
 
-<div class="viewcode-block" id="WSMessage.json"><a class="viewcode-back" href="../../websocket_utilities.html#aiohttp.WSMessage.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+<div class="viewcode-block" id="WSMessage.json"><a class="viewcode-back" href="../../examples/websocket_utilities.html#aiohttp.WSMessage.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
              <span class="n">loads</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return parsed JSON data.</span>
 
@@ -726,7 +726,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../create_service.html">How to create a service in Teanga</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
 </ul>
 
