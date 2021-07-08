@@ -38,7 +38,48 @@
             
   <div class="section" id="how-to-create-a-service-in-teanga">
 <span id="create-teanga-service"></span><h1>How to create a service in Teanga<a class="headerlink" href="#how-to-create-a-service-in-teanga" title="Permalink to this headline">¶</a></h1>
-<p>this tutorial will be available soon</p>
+<p>Teanga is a workflow manager and service  in a Teanga workflow is a dockerized application which Teanga can make requests to in some port.</p>
+<p>Services in Teanga must be a REST API that returns JSON-LD outputs.
+There are 4 essential steps to make a rest api to work in Teanga:</p>
+<ol class="arabic">
+<li><p class="first">Creating a Rest API app</p>
+<blockquote>
+<div><ul class="simple">
+<li>Create an application that receives http requests</li>
+<li>Expose your application in some port (8080 is recommended)</li>
+<li>Return a valid json format as output</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Describing the Rest API with OpenAPI specification</p>
+<blockquote>
+<div><ul class="simple">
+<li>Inform the port of the application in the info section of the file</li>
+<li>Describe all your endpoints in the paths section of the file</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Dockerizing your api</p>
+<blockquote>
+<div><ul class="simple">
+<li>Copy the openapi.yaml file to the root of the docker container “/openapi.yaml”</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Publishing the Docker Image on Docker Hub</p>
+<blockquote>
+<div><ul class="simple">
+<li>create an account in Docker Hub</li>
+<li>upload docker image</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<p>As an pratical example we will go through a step by step process to how to make one python application you might have suitable for running in Teanga.</p>
+<p>In the end of the tutorial our service will be published in docker hub and have a folder with the following files :</p>
+<img alt="_images/servicefolder.png" src="_images/servicefolder.png" />
+<p>The whole code is the Teanga official repository here</p>
+<p>Where app.py is a simple application that will run on port 8080 inside of the docker image we will create using a Dockerfile and described with the openapi.yaml file.</p>
 </div>
 
 
