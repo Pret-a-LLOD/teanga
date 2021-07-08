@@ -112,7 +112,7 @@ html_theme_options = {
 html_title = "Teanga"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = "Teanga is a open-source tool"
+html_short_title = "Teanga, a Workflow manager command line tool"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
