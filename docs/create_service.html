@@ -75,11 +75,85 @@ There are 4 essential steps to make a rest api to work in Teanga:</p>
 </div></blockquote>
 </li>
 </ol>
-<p>As an pratical example we will go through a step by step process to how to make one python application you might have suitable for running in Teanga.</p>
-<p>In the end of the tutorial our service will be published in docker hub and have a folder with the following files :</p>
-<img alt="_images/servicefolder.png" src="_images/servicefolder.png" />
-<p>The whole code is the Teanga official repository here</p>
+<p>As an pratical example we will go through a step by step process to how to make one python application you might have suitable for running in Teanga.
+In the end of the tutorial our service will be published in docker hub and have a folder with the following files :</p>
+<a class="reference internal image-reference" href="_images/servicefolder.png"><img alt="_images/servicefolder.png" class="align-center" src="_images/servicefolder.png" style="width: 300px;" /></a>
+<p>The whole code is the Teanga official repository <a class="reference external" href="https://github.com/Pret-a-LLOD/teanga/tree/master/teanga-services">here</a></p>
 <p>Where app.py is a simple application that will run on port 8080 inside of the docker image we will create using a Dockerfile and described with the openapi.yaml file.</p>
+<div class="section" id="creating-a-rest-api">
+<h2>1. Creating a Rest API<a class="headerlink" href="#creating-a-rest-api" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="docutils">
+<dt>Requirements:</dt>
+<dd><ul class="first last simple">
+<li>Expose your application in some port (8080 is recommended)</li>
+<li>Return a valid json format as output</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>We will create a dummy application that will have one endpoint for each of the possible output Teanga can handle.
+We will be creating a very simple Rest API in python using the flask framework. Each step of our application will be an endpoint of our Rest API.
+For instance:</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service Endpoint</th>
+<th class="head">Inputs</th>
+<th class="head">Output</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>“single_value/&lt;value&gt;”</td>
+<td>value_type: Integer, String</td>
+<td>Random value of given type</td>
+</tr>
+<tr class="row-odd"><td>“arrayof/&lt;value&gt;”</td>
+<td>value_type(Integer, String), N</td>
+<td>An array of random values of given type</td>
+</tr>
+<tr class="row-even"><td>“schema_instance/&lt;schema_name&gt;”</td>
+<td>Schema_name(Person, Animal)</td>
+<td>One random instance of the schema</td>
+</tr>
+<tr class="row-odd"><td>“arrayof_schema_instances/&lt;schema_name&gt;”</td>
+<td>Schema_name(Person, Animal), N</td>
+<td>An array of instances of the given schema</td>
+</tr>
+</tbody>
+</table>
+<p>Inside app.py we will create a Flask app adding the code available in this link. I will not go in details of the implementation as it is not the goal of this tutorial but the full code is available <a class="reference external" href="https://github.com/Pret-a-LLOD/teanga/blob/master/teanga-services/dummy_teanga_service_python/app.py">here</a></p>
+</div>
+<div class="section" id="describing-the-api-with-openapi-specification">
+<h2>2. Describing the API with openapi specification<a class="headerlink" href="#describing-the-api-with-openapi-specification" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="docutils">
+<dt>Requirements:</dt>
+<dd><ul class="first last simple">
+<li>Inform the port of the application in the info section of the file</li>
+<li>Describe all your endpoints in the paths section of the file</li>
+</ul>
+</dd>
+</dl>
+<p>Creating an openapi specification is very flexible, so I will follow the basic structure suggested in their documentation as a guideline. We will create an openapi.yaml file having an info section about general information of our application and a paths section describing each endpoint.</p>
+</div></blockquote>
+<a class="reference internal image-reference" href="_images/service-openapi.png"><img alt="_images/service-openapi.png" class="align-center" src="_images/service-openapi.png" style="width: 600px;" /></a>
+<p>Inside the openapi.yaml you should use openapi version 3.0.0 and have an info section describing your service :</p>
+<a class="reference internal image-reference" href="_images/info-openapi.png"><img alt="_images/info-openapi.png" class="align-center" src="_images/info-openapi.png" style="width: 600px;" /></a>
+<p>Describing the endpoints:</p>
+<p>“/value/{value_type}”</p>
+<a class="reference internal image-reference" href="_images/value_valuetype.png"><img alt="_images/value_valuetype.png" class="align-center" src="_images/value_valuetype.png" style="width: 600px;" /></a>
+<p>“/value/arrayof/{number_of_instances}/{value_type}”</p>
+<a class="reference internal image-reference" href="_images/array_values.png"><img alt="_images/array_values.png" class="align-center" src="_images/array_values.png" style="width: 600px;" /></a>
+<p>“/schema/{schema_name}”</p>
+<a class="reference internal image-reference" href="_images/schema_value.png"><img alt="_images/schema_value.png" class="align-center" src="_images/schema_value.png" style="width: 600px;" /></a>
+<p>“schema/arrayof/{number_of_instances}/{schema_name}”</p>
+<a class="reference internal image-reference" href="_images/array_schema.png"><img alt="_images/array_schema.png" class="align-center" src="_images/array_schema.png" style="width: 600px;" /></a>
+</div>
 </div>
 
 
