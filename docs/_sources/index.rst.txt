@@ -28,6 +28,7 @@ Others
    create_workflow
    create_service
    run_workflow
+   linking_services
 
 Installation
 ============
