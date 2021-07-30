@@ -1,0 +1,12 @@
+.. _create-teanga-workflow:
+
+Linking Services
+======
+
+.. currentmodule:: teanga-workflow
+
+The different linking services linked here have been developed to work both as stand-alone components or interacting with other Prêt-à-LLOD components in an NLP workflow.
+To that end, they have been developed as Docker components compatible with Teanga (see deliverable D3.5).
+This will allow seamless interaction between the Prêt-à-LLOD Transformation, Prêt-à-LLOD Link, and Prêt-à-LLOD Workflow components.
+
+
