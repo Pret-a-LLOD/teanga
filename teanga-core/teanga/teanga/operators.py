@@ -91,16 +91,17 @@ def generate_setupOperator_rqService(): #{{
         return operators
     #}}
 
-def generate_stop_operators(unique_services): #{{
+def generate_stop_operators(unique_services, dag): #{{
     """
     """
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
+        to_stop = f'$(docker ps -a | awk "/teanga/ {{ print $1}}")'
         airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
-        setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
+        # setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
         task_id=f"stop-{airflow_imageName}--{d['host_port']}"
-        command=f'docker stop {{{{ task_instance.xcom_pull(task_ids="{setup_task_id}") }}}}'
+        command=f'docker stop echo {to_stop}'
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -108,7 +109,7 @@ def generate_stop_operators(unique_services): #{{
                 dag=dag,
         )
     return operators
-#}}
+
 
 def flatten_operator(airflowOperator_id, dag):#{{
     operators = {}    
