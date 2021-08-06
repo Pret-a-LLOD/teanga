@@ -1,0 +1,582 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tracing Reference &#8212; Teanga</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/teanga-logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/examples/tracing_reference.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tracing-reference">
+<span id="aiohttp-client-tracing-reference"></span><h1>Tracing Reference<a class="headerlink" href="#tracing-reference" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.0.</span></p>
+</div>
+<p>A reference for client tracing API.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="client_advanced.html#aiohttp-client-tracing"><span class="std std-ref">Client Tracing</span></a> for tracing usage instructions.</p>
+</div>
+<div class="section" id="request-life-cycle">
+<h2>Request life cycle<a class="headerlink" href="#request-life-cycle" title="Permalink to this headline">¶</a></h2>
+<p>A request goes through the following stages and corresponding fallbacks.</p>
+<div class="section" id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="connection-acquiring">
+<h3>Connection acquiring<a class="headerlink" href="#connection-acquiring" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="dns-resolving">
+<h3>DNS resolving<a class="headerlink" href="#dns-resolving" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="traceconfig">
+<h2>TraceConfig<a class="headerlink" href="#traceconfig" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConfig">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConfig</code><span class="sig-paren">(</span><em>trace_config_ctx_factory=SimpleNamespace</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trace config is the configuration object used to trace requests
+launched by a <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code> object using different events
+related to different parts of the request flow.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace_config_ctx_factory</strong> – factory used to create trace contexts,
+default class used <code class="xref py py-class docutils literal notranslate"><span class="pre">types.SimpleNamespace</span></code></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="aiohttp.TraceConfig.trace_config_ctx">
+<code class="descname">trace_config_ctx</code><span class="sig-paren">(</span><em>trace_request_ctx=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConfig.trace_config_ctx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConfig.trace_config_ctx" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace_request_ctx</strong> – Will be used to pass as a kw for the
+<code class="docutils literal notranslate"><span class="pre">trace_config_ctx_factory</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Build a new trace context from the config.</p>
+</dd></dl>
+
+<p>Every signal handler should have the following signature:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">on_signal</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">session</span></code> is <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientSession</span></code> instance, <code class="docutils literal notranslate"><span class="pre">context</span></code> is an
+object returned by <a class="reference internal" href="#aiohttp.TraceConfig.trace_config_ctx" title="aiohttp.TraceConfig.trace_config_ctx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trace_config_ctx()</span></code></a> call and <code class="docutils literal notranslate"><span class="pre">params</span></code> is a
+data class with signal parameters. The type of <code class="docutils literal notranslate"><span class="pre">params</span></code> depends on
+subscribed signal and described below.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_request_start">
+<code class="descname">on_request_start</code><a class="headerlink" href="#aiohttp.TraceConfig.on_request_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed
+when a request starts.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceRequestStartParams" title="aiohttp.TraceRequestStartParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceRequestStartParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_request_chunk_sent">
+<code class="descname">on_request_chunk_sent</code><a class="headerlink" href="#aiohttp.TraceConfig.on_request_chunk_sent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed
+when a chunk of request body is sent.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceRequestChunkSentParams" title="aiohttp.TraceRequestChunkSentParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceRequestChunkSentParams</span></code></a> instance.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_response_chunk_received">
+<code class="descname">on_response_chunk_received</code><a class="headerlink" href="#aiohttp.TraceConfig.on_response_chunk_received" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed
+when a chunk of response body is received.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceResponseChunkReceivedParams</span></code> instance.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 3.1.</span></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_request_redirect">
+<code class="descname">on_request_redirect</code><a class="headerlink" href="#aiohttp.TraceConfig.on_request_redirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+redirect happens during a request flow.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceRequestRedirectParams" title="aiohttp.TraceRequestRedirectParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceRequestRedirectParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_request_end">
+<code class="descname">on_request_end</code><a class="headerlink" href="#aiohttp.TraceConfig.on_request_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request ends.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceRequestEndParams" title="aiohttp.TraceRequestEndParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceRequestEndParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_request_exception">
+<code class="descname">on_request_exception</code><a class="headerlink" href="#aiohttp.TraceConfig.on_request_exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request finishes with an exception.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceRequestExceptionParams" title="aiohttp.TraceRequestExceptionParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceRequestExceptionParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_connection_queued_start">
+<code class="descname">on_connection_queued_start</code><a class="headerlink" href="#aiohttp.TraceConfig.on_connection_queued_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request has been queued waiting for an available connection.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceConnectionQueuedStartParams" title="aiohttp.TraceConnectionQueuedStartParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceConnectionQueuedStartParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_connection_queued_end">
+<code class="descname">on_connection_queued_end</code><a class="headerlink" href="#aiohttp.TraceConfig.on_connection_queued_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request that was queued already has an available connection.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceConnectionQueuedEndParams" title="aiohttp.TraceConnectionQueuedEndParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceConnectionQueuedEndParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_connection_create_start">
+<code class="descname">on_connection_create_start</code><a class="headerlink" href="#aiohttp.TraceConfig.on_connection_create_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request creates a new connection.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceConnectionCreateStartParams" title="aiohttp.TraceConnectionCreateStartParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceConnectionCreateStartParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_connection_create_end">
+<code class="descname">on_connection_create_end</code><a class="headerlink" href="#aiohttp.TraceConfig.on_connection_create_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request that created a new connection finishes its creation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceConnectionCreateEndParams" title="aiohttp.TraceConnectionCreateEndParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceConnectionCreateEndParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_connection_reuseconn">
+<code class="descname">on_connection_reuseconn</code><a class="headerlink" href="#aiohttp.TraceConfig.on_connection_reuseconn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request reuses a connection.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceConnectionReuseconnParams" title="aiohttp.TraceConnectionReuseconnParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceConnectionReuseconnParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_dns_resolvehost_start">
+<code class="descname">on_dns_resolvehost_start</code><a class="headerlink" href="#aiohttp.TraceConfig.on_dns_resolvehost_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request starts to resolve the domain related with the request.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceDnsResolveHostStartParams" title="aiohttp.TraceDnsResolveHostStartParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceDnsResolveHostStartParams</span></code></a>
+instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_dns_resolvehost_end">
+<code class="descname">on_dns_resolvehost_end</code><a class="headerlink" href="#aiohttp.TraceConfig.on_dns_resolvehost_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request finishes to resolve the domain related with the request.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceDnsResolveHostEndParams" title="aiohttp.TraceDnsResolveHostEndParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceDnsResolveHostEndParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_dns_cache_hit">
+<code class="descname">on_dns_cache_hit</code><a class="headerlink" href="#aiohttp.TraceConfig.on_dns_cache_hit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request was able to use a cached DNS resolution for the domain related
+with the request.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceDnsCacheHitParams" title="aiohttp.TraceDnsCacheHitParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceDnsCacheHitParams</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceConfig.on_dns_cache_miss">
+<code class="descname">on_dns_cache_miss</code><a class="headerlink" href="#aiohttp.TraceConfig.on_dns_cache_miss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that gives access to the signals that will be executed when a
+request was not able to use a cached DNS resolution for the domain related
+with the request.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> is <a class="reference internal" href="#aiohttp.TraceDnsCacheMissParams" title="aiohttp.TraceDnsCacheMissParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.TraceDnsCacheMissParams</span></code></a> instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracerequeststartparams">
+<h2>TraceRequestStartParams<a class="headerlink" href="#tracerequeststartparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceRequestStartParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceRequestStartParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceRequestStartParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceRequestStartParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_request_start" title="aiohttp.TraceConfig.on_request_start"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_request_start</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestStartParams.method">
+<code class="descname">method</code><a class="headerlink" href="#aiohttp.TraceRequestStartParams.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that will be used  to make the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestStartParams.url">
+<code class="descname">url</code><a class="headerlink" href="#aiohttp.TraceRequestStartParams.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL that will be used  for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestStartParams.headers">
+<code class="descname">headers</code><a class="headerlink" href="#aiohttp.TraceRequestStartParams.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers that will be used for the request, can be mutated.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracerequestchunksentparams">
+<h2>TraceRequestChunkSentParams<a class="headerlink" href="#tracerequestchunksentparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceRequestChunkSentParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceRequestChunkSentParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceRequestChunkSentParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceRequestChunkSentParams" title="Permalink to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified">New in version 3.1.</span></p>
+</div>
+<p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_request_chunk_sent" title="aiohttp.TraceConfig.on_request_chunk_sent"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_request_chunk_sent</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestChunkSentParams.chunk">
+<code class="descname">chunk</code><a class="headerlink" href="#aiohttp.TraceRequestChunkSentParams.chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bytes of chunk sent</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="traceresponsechunksentparams">
+<h2>TraceResponseChunkSentParams<a class="headerlink" href="#traceresponsechunksentparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceResponseChunkSentParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceResponseChunkSentParams</code><a class="headerlink" href="#aiohttp.TraceResponseChunkSentParams" title="Permalink to this definition">¶</a></dt>
+<dd><div class="versionadded">
+<p><span class="versionmodified">New in version 3.1.</span></p>
+</div>
+<p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_response_chunk_received" title="aiohttp.TraceConfig.on_response_chunk_received"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_response_chunk_received</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceResponseChunkSentParams.chunk">
+<code class="descname">chunk</code><a class="headerlink" href="#aiohttp.TraceResponseChunkSentParams.chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bytes of chunk received</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracerequestendparams">
+<h2>TraceRequestEndParams<a class="headerlink" href="#tracerequestendparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceRequestEndParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceRequestEndParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceRequestEndParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceRequestEndParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_request_end" title="aiohttp.TraceConfig.on_request_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_request_end</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestEndParams.method">
+<code class="descname">method</code><a class="headerlink" href="#aiohttp.TraceRequestEndParams.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used to make the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestEndParams.url">
+<code class="descname">url</code><a class="headerlink" href="#aiohttp.TraceRequestEndParams.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL used for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestEndParams.headers">
+<code class="descname">headers</code><a class="headerlink" href="#aiohttp.TraceRequestEndParams.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers used for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestEndParams.response">
+<code class="descname">response</code><a class="headerlink" href="#aiohttp.TraceRequestEndParams.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response <a class="reference internal" href="client_reference.html#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracerequestexceptionparams">
+<h2>TraceRequestExceptionParams<a class="headerlink" href="#tracerequestexceptionparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceRequestExceptionParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceRequestExceptionParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceRequestExceptionParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceRequestExceptionParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_request_exception" title="aiohttp.TraceConfig.on_request_exception"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_request_exception</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestExceptionParams.method">
+<code class="descname">method</code><a class="headerlink" href="#aiohttp.TraceRequestExceptionParams.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used to make the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestExceptionParams.url">
+<code class="descname">url</code><a class="headerlink" href="#aiohttp.TraceRequestExceptionParams.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL used for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestExceptionParams.headers">
+<code class="descname">headers</code><a class="headerlink" href="#aiohttp.TraceRequestExceptionParams.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers used for the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestExceptionParams.exception">
+<code class="descname">exception</code><a class="headerlink" href="#aiohttp.TraceRequestExceptionParams.exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised during the request.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracerequestredirectparams">
+<h2>TraceRequestRedirectParams<a class="headerlink" href="#tracerequestredirectparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceRequestRedirectParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceRequestRedirectParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceRequestRedirectParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceRequestRedirectParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_request_redirect" title="aiohttp.TraceConfig.on_request_redirect"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_request_redirect</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestRedirectParams.method">
+<code class="descname">method</code><a class="headerlink" href="#aiohttp.TraceRequestRedirectParams.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used to get this redirect request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestRedirectParams.url">
+<code class="descname">url</code><a class="headerlink" href="#aiohttp.TraceRequestRedirectParams.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL used for this redirect request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestRedirectParams.headers">
+<code class="descname">headers</code><a class="headerlink" href="#aiohttp.TraceRequestRedirectParams.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers used for this redirect.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aiohttp.TraceRequestRedirectParams.response">
+<code class="descname">response</code><a class="headerlink" href="#aiohttp.TraceRequestRedirectParams.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response <a class="reference internal" href="client_reference.html#aiohttp.ClientResponse" title="aiohttp.ClientResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClientResponse</span></code></a> got from the redirect.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="traceconnectionqueuedstartparams">
+<h2>TraceConnectionQueuedStartParams<a class="headerlink" href="#traceconnectionqueuedstartparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConnectionQueuedStartParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConnectionQueuedStartParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConnectionQueuedStartParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConnectionQueuedStartParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_connection_queued_start" title="aiohttp.TraceConfig.on_connection_queued_start"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_connection_queued_start</span></code></a> for details.</p>
+<p>There are no attributes right now.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="traceconnectionqueuedendparams">
+<h2>TraceConnectionQueuedEndParams<a class="headerlink" href="#traceconnectionqueuedendparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConnectionQueuedEndParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConnectionQueuedEndParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConnectionQueuedEndParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConnectionQueuedEndParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_connection_queued_end" title="aiohttp.TraceConfig.on_connection_queued_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_connection_queued_end</span></code></a> for details.</p>
+<p>There are no attributes right now.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="traceconnectioncreatestartparams">
+<h2>TraceConnectionCreateStartParams<a class="headerlink" href="#traceconnectioncreatestartparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConnectionCreateStartParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConnectionCreateStartParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConnectionCreateStartParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConnectionCreateStartParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_connection_create_start" title="aiohttp.TraceConfig.on_connection_create_start"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_connection_create_start</span></code></a> for details.</p>
+<p>There are no attributes right now.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="traceconnectioncreateendparams">
+<h2>TraceConnectionCreateEndParams<a class="headerlink" href="#traceconnectioncreateendparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConnectionCreateEndParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConnectionCreateEndParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConnectionCreateEndParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConnectionCreateEndParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_connection_create_end" title="aiohttp.TraceConfig.on_connection_create_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_connection_create_end</span></code></a> for details.</p>
+<p>There are no attributes right now.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="traceconnectionreuseconnparams">
+<h2>TraceConnectionReuseconnParams<a class="headerlink" href="#traceconnectionreuseconnparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceConnectionReuseconnParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceConnectionReuseconnParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceConnectionReuseconnParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceConnectionReuseconnParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_connection_reuseconn" title="aiohttp.TraceConfig.on_connection_reuseconn"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_connection_reuseconn</span></code></a> for details.</p>
+<p>There are no attributes right now.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="tracednsresolvehoststartparams">
+<h2>TraceDnsResolveHostStartParams<a class="headerlink" href="#tracednsresolvehoststartparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceDnsResolveHostStartParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceDnsResolveHostStartParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceDnsResolveHostStartParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceDnsResolveHostStartParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_dns_resolvehost_start" title="aiohttp.TraceConfig.on_dns_resolvehost_start"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_dns_resolvehost_start</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceDnsResolveHostStartParams.Host">
+<code class="descname">Host</code><a class="headerlink" href="#aiohttp.TraceDnsResolveHostStartParams.Host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host that will be resolved.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracednsresolvehostendparams">
+<h2>TraceDnsResolveHostEndParams<a class="headerlink" href="#tracednsresolvehostendparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceDnsResolveHostEndParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceDnsResolveHostEndParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceDnsResolveHostEndParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceDnsResolveHostEndParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_dns_resolvehost_end" title="aiohttp.TraceConfig.on_dns_resolvehost_end"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_dns_resolvehost_end</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceDnsResolveHostEndParams.Host">
+<code class="descname">Host</code><a class="headerlink" href="#aiohttp.TraceDnsResolveHostEndParams.Host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host that has been resolved.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracednscachehitparams">
+<h2>TraceDnsCacheHitParams<a class="headerlink" href="#tracednscachehitparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceDnsCacheHitParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceDnsCacheHitParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceDnsCacheHitParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceDnsCacheHitParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_dns_cache_hit" title="aiohttp.TraceConfig.on_dns_cache_hit"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_dns_cache_hit</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceDnsCacheHitParams.Host">
+<code class="descname">Host</code><a class="headerlink" href="#aiohttp.TraceDnsCacheHitParams.Host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host found in the cache.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tracednscachemissparams">
+<h2>TraceDnsCacheMissParams<a class="headerlink" href="#tracednscachemissparams" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="aiohttp.TraceDnsCacheMissParams">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">TraceDnsCacheMissParams</code><a class="reference internal" href="../_modules/aiohttp/tracing.html#TraceDnsCacheMissParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.TraceDnsCacheMissParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#aiohttp.TraceConfig.on_dns_cache_miss" title="aiohttp.TraceConfig.on_dns_cache_miss"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TraceConfig.on_dns_cache_miss</span></code></a> for details.</p>
+<dl class="attribute">
+<dt id="aiohttp.TraceDnsCacheMissParams.Host">
+<code class="descname">Host</code><a class="headerlink" href="#aiohttp.TraceDnsCacheMissParams.Host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host didn’t find the cache.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run_workflow.html">How to run a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/examples/tracing_reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
