@@ -1,0 +1,453 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>aiohttp.web_fileresponse &#8212; Teanga</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/teanga-logo.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/_modules/aiohttp/web_fileresponse.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for aiohttp.web_fileresponse</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
+    <span class="n">IO</span><span class="p">,</span>
+    <span class="n">TYPE_CHECKING</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Awaitable</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">hdrs</span>
+<span class="kn">from</span> <span class="nn">.abc</span> <span class="k">import</span> <span class="n">AbstractStreamWriter</span>
+<span class="kn">from</span> <span class="nn">.base_protocol</span> <span class="k">import</span> <span class="n">BaseProtocol</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">set_exception</span><span class="p">,</span> <span class="n">set_result</span>
+<span class="kn">from</span> <span class="nn">.http_writer</span> <span class="k">import</span> <span class="n">StreamWriter</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">server_logger</span>
+<span class="kn">from</span> <span class="nn">.typedefs</span> <span class="k">import</span> <span class="n">LooseHeaders</span>
+<span class="kn">from</span> <span class="nn">.web_exceptions</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">HTTPNotModified</span><span class="p">,</span>
+    <span class="n">HTTPPartialContent</span><span class="p">,</span>
+    <span class="n">HTTPPreconditionFailed</span><span class="p">,</span>
+    <span class="n">HTTPRequestRangeNotSatisfiable</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.web_response</span> <span class="k">import</span> <span class="n">StreamResponse</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;FileResponse&#39;</span><span class="p">,)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">from</span> <span class="nn">.web_request</span> <span class="k">import</span> <span class="n">BaseRequest</span>  <span class="c1"># noqa</span>
+
+
+<span class="n">_T_OnChunkSent</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]]]</span>
+
+
+<span class="n">NOSENDFILE</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AIOHTTP_NOSENDFILE&quot;</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">SendfileStreamWriter</span><span class="p">(</span><span class="n">StreamWriter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">protocol</span><span class="p">:</span> <span class="n">BaseProtocol</span><span class="p">,</span>
+                 <span class="n">loop</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">AbstractEventLoop</span><span class="p">,</span>
+                 <span class="n">fobj</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+                 <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">on_chunk_sent</span><span class="p">:</span> <span class="n">_T_OnChunkSent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">on_chunk_sent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendfile_buffer</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[bytes]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fobj</span> <span class="o">=</span> <span class="n">fobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">fobj</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_fd</span> <span class="o">=</span> <span class="n">fobj</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># we overwrite StreamWriter._write, so nothing can be appended to</span>
+        <span class="c1"># _buffer, and nothing is written to the transport directly by the</span>
+        <span class="c1"># parent class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sendfile_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_sendfile_cb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fut</span><span class="p">:</span> <span class="s1">&#39;asyncio.Future[None]&#39;</span><span class="p">,</span> <span class="n">out_fd</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fut</span><span class="o">.</span><span class="n">cancelled</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_sendfile</span><span class="p">(</span><span class="n">out_fd</span><span class="p">):</span>
+                <span class="n">set_result</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">set_exception</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_do_sendfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_fd</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sendfile</span><span class="p">(</span><span class="n">out_fd</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_in_fd</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># in_fd EOF reached</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">BlockingIOError</span><span class="p">,</span> <span class="ne">InterruptedError</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span> <span class="o">+=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">+=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">-=</span> <span class="n">n</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_done_fut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_fd</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fut</span><span class="p">:</span> <span class="s1">&#39;asyncio.Future[None]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">remove_writer</span><span class="p">(</span><span class="n">out_fd</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">sendfile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">out_socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;socket&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dup</span><span class="p">()</span>
+        <span class="n">out_socket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">out_fd</span> <span class="o">=</span> <span class="n">out_socket</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+
+        <span class="n">loop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loop</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sendfile_buffer</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_sendall</span><span class="p">(</span><span class="n">out_socket</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_sendfile</span><span class="p">(</span><span class="n">out_fd</span><span class="p">):</span>
+                <span class="n">fut</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">create_future</span><span class="p">()</span>
+                <span class="n">fut</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_done_fut</span><span class="p">,</span> <span class="n">out_fd</span><span class="p">))</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">add_writer</span><span class="p">(</span><span class="n">out_fd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendfile_cb</span><span class="p">,</span> <span class="n">fut</span><span class="p">,</span> <span class="n">out_fd</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">fut</span>
+        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">server_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Socket error&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">out_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">write_eof</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">write_eof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">:</span> <span class="nb">bytes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="FileResponse"><a class="viewcode-back" href="../../examples/web_reference.html#aiohttp.web.FileResponse">[docs]</a><span class="k">class</span> <span class="nc">FileResponse</span><span class="p">(</span><span class="n">StreamResponse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A response object can be used to send files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+                 <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">256</span><span class="o">*</span><span class="mi">1024</span><span class="p">,</span>
+                 <span class="n">status</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                 <span class="n">reason</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LooseHeaders</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_sendfile_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s1">&#39;BaseRequest&#39;</span><span class="p">,</span>
+                               <span class="n">fobj</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+                               <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractStreamWriter</span><span class="p">:</span>
+        <span class="c1"># Write count bytes of fobj to resp using</span>
+        <span class="c1"># the os.sendfile system call.</span>
+        <span class="c1">#</span>
+        <span class="c1"># For details check</span>
+        <span class="c1"># https://github.com/KeepSafe/aiohttp/issues/1177</span>
+        <span class="c1"># See https://github.com/KeepSafe/aiohttp/issues/958 for details</span>
+        <span class="c1">#</span>
+        <span class="c1"># request should be an aiohttp.web.Request instance.</span>
+        <span class="c1"># fobj should be an open file object.</span>
+        <span class="c1"># count should be an integer &gt; 0.</span>
+
+        <span class="n">transport</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">transport</span>
+        <span class="k">assert</span> <span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s2">&quot;sslcontext&quot;</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">compression</span><span class="p">):</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendfile_fallback</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">SendfileStreamWriter</span><span class="p">(</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">_loop</span><span class="p">,</span>
+                <span class="n">fobj</span><span class="p">,</span>
+                <span class="n">count</span>
+            <span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">_payload_writer</span> <span class="o">=</span> <span class="n">writer</span>
+
+            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">sendfile</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">writer</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_sendfile_fallback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="s1">&#39;BaseRequest&#39;</span><span class="p">,</span>
+                                 <span class="n">fobj</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+                                 <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AbstractStreamWriter</span><span class="p">:</span>
+        <span class="c1"># Mimic the _sendfile_system() method, but without using the</span>
+        <span class="c1"># os.sendfile() system call. This should be used on systems</span>
+        <span class="c1"># that don&#39;t support the os.sendfile().</span>
+
+        <span class="c1"># To keep memory usage low,fobj is transferred in chunks</span>
+        <span class="c1"># controlled by the constructor&#39;s chunk_size argument.</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">writer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+        <span class="n">chunk</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">fobj</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">chunk</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="n">chunk_size</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+                <span class="kc">None</span><span class="p">,</span> <span class="n">fobj</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">await</span> <span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">writer</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">os</span><span class="p">,</span> <span class="s2">&quot;sendfile&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">NOSENDFILE</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">_sendfile</span> <span class="o">=</span> <span class="n">_sendfile_system</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">_sendfile</span> <span class="o">=</span> <span class="n">_sendfile_fallback</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">request</span><span class="p">:</span> <span class="s1">&#39;BaseRequest&#39;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AbstractStreamWriter</span><span class="p">]:</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+        <span class="n">gzip</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="s1">&#39;gzip&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hdrs</span><span class="o">.</span><span class="n">ACCEPT_ENCODING</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">gzip_path</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">gzip_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">gzip_path</span>
+                <span class="n">gzip</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">filepath</span><span class="o">.</span><span class="n">stat</span><span class="p">)</span>
+
+        <span class="n">modsince</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">if_modified_since</span>
+        <span class="k">if</span> <span class="n">modsince</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&lt;=</span> <span class="n">modsince</span><span class="o">.</span><span class="n">timestamp</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">HTTPNotModified</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_length_check</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Delete any Content-Length headers provided by user. HTTP 304</span>
+            <span class="c1"># should always have empty response body</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="n">unmodsince</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">if_unmodified_since</span>
+        <span class="k">if</span> <span class="n">unmodsince</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&gt;</span> <span class="n">unmodsince</span><span class="o">.</span><span class="n">timestamp</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">HTTPPreconditionFailed</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+            <span class="n">ct</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ct</span><span class="p">:</span>
+                <span class="n">ct</span> <span class="o">=</span> <span class="s1">&#39;application/octet-stream&#39;</span>
+            <span class="n">should_set_ct</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;gzip&#39;</span> <span class="k">if</span> <span class="n">gzip</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">should_set_ct</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span>
+        <span class="n">file_size</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">st_size</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">file_size</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">ifrange</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">if_range</span>
+        <span class="k">if</span> <span class="n">ifrange</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">st</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&lt;=</span> <span class="n">ifrange</span><span class="o">.</span><span class="n">timestamp</span><span class="p">():</span>
+            <span class="c1"># If-Range header check:</span>
+            <span class="c1"># condition = cached date &gt;= last modification date</span>
+            <span class="c1"># return 206 if True else 200.</span>
+            <span class="c1"># if False:</span>
+            <span class="c1">#   Range header would not be processed, return 200</span>
+            <span class="c1"># if True but Range header missing</span>
+            <span class="c1">#   return 200</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rng</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">http_range</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">start</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">stop</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="c1"># https://tools.ietf.org/html/rfc7233:</span>
+                <span class="c1"># A server generating a 416 (Range Not Satisfiable) response to</span>
+                <span class="c1"># a byte-range request SHOULD send a Content-Range header field</span>
+                <span class="c1"># with an unsatisfied-range value.</span>
+                <span class="c1"># The complete-length in a 416 response indicates the current</span>
+                <span class="c1"># length of the selected representation.</span>
+                <span class="c1">#</span>
+                <span class="c1"># Will do the same below. Many servers ignore this and do not</span>
+                <span class="c1"># send a Content-Range header with HTTP 416</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_RANGE</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bytes */</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">file_size</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">HTTPRequestRangeNotSatisfiable</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+            <span class="c1"># If a range request has been made, convert start, end slice</span>
+            <span class="c1"># notation into file pointer offset and count</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># return tail of file</span>
+                    <span class="n">start</span> <span class="o">+=</span> <span class="n">file_size</span>
+                    <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># if Range:bytes=-1000 in request header but file size</span>
+                        <span class="c1"># is only 200, there would be trouble without this</span>
+                        <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="n">file_size</span> <span class="o">-</span> <span class="n">start</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># rfc7233:If the last-byte-pos value is</span>
+                    <span class="c1"># absent, or if the value is greater than or equal to</span>
+                    <span class="c1"># the current length of the representation data,</span>
+                    <span class="c1"># the byte range is interpreted as the remainder</span>
+                    <span class="c1"># of the representation (i.e., the server replaces the</span>
+                    <span class="c1"># value of last-byte-pos with a value that is one less than</span>
+                    <span class="c1"># the current length of the selected representation).</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span> <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">file_size</span><span class="p">,</span>
+                                <span class="n">file_size</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span>
+
+                <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">file_size</span><span class="p">:</span>
+                    <span class="c1"># HTTP 416 should be returned in this case.</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># According to https://tools.ietf.org/html/rfc7233:</span>
+                    <span class="c1"># If a valid byte-range-set includes at least one</span>
+                    <span class="c1"># byte-range-spec with a first-byte-pos that is less than</span>
+                    <span class="c1"># the current length of the representation, or at least one</span>
+                    <span class="c1"># suffix-byte-range-spec with a non-zero suffix-length,</span>
+                    <span class="c1"># then the byte-range-set is satisfiable. Otherwise, the</span>
+                    <span class="c1"># byte-range-set is unsatisfiable.</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_RANGE</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bytes */</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">file_size</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">HTTPRequestRangeNotSatisfiable</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+                <span class="n">status</span> <span class="o">=</span> <span class="n">HTTPPartialContent</span><span class="o">.</span><span class="n">status_code</span>
+                <span class="c1"># Even though you are sending the whole file, you should still</span>
+                <span class="c1"># return a HTTP 206 for a Range request.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">should_set_ct</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="n">ct</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_ENCODING</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="k">if</span> <span class="n">gzip</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">VARY</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdrs</span><span class="o">.</span><span class="n">ACCEPT_ENCODING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">st_mtime</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content_length</span> <span class="o">=</span> <span class="n">count</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">ACCEPT_RANGES</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bytes&#39;</span>
+
+        <span class="n">real_start</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="n">HTTPPartialContent</span><span class="o">.</span><span class="n">status_code</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">hdrs</span><span class="o">.</span><span class="n">CONTENT_RANGE</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bytes </span><span class="si">{0}</span><span class="s1">-</span><span class="si">{1}</span><span class="s1">/</span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">real_start</span><span class="p">,</span> <span class="n">real_start</span> <span class="o">+</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">file_size</span><span class="p">)</span>
+
+        <span class="n">fobj</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">filepath</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span><span class="p">:</span>  <span class="c1"># be aware that start could be None or int=0 here.</span>
+            <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">fobj</span><span class="o">.</span><span class="n">seek</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sendfile</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">fobj</span><span class="o">.</span><span class="n">close</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../run_workflow.html">How to run a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

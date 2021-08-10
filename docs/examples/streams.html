@@ -1,0 +1,202 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Streaming API &#8212; Teanga</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/teanga-logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/examples/streams.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="streaming-api">
+<span id="aiohttp-streams"></span><h1>Streaming API<a class="headerlink" href="#streaming-api" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">aiohttp</span></code> uses streams for retrieving <em>BODIES</em>:
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">aiohttp.web.Request.content</span></code> and
+<a class="reference internal" href="client_reference.html#aiohttp.ClientResponse.content" title="aiohttp.ClientResponse.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">aiohttp.ClientResponse.content</span></code></a> are properties with stream API.</p>
+<dl class="class">
+<dt id="aiohttp.StreamReader">
+<em class="property">class </em><code class="descclassname">aiohttp.</code><code class="descname">StreamReader</code><a class="reference internal" href="../_modules/aiohttp/streams.html#StreamReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reader from incoming stream.</p>
+<p>User should never instantiate streams manually but use existing
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">aiohttp.web.Request.content</span></code> and
+<a class="reference internal" href="client_reference.html#aiohttp.ClientResponse.content" title="aiohttp.ClientResponse.content"><code class="xref py py-attr docutils literal notranslate"><span class="pre">aiohttp.ClientResponse.content</span></code></a> properties for accessing raw
+BODY data.</p>
+</dd></dl>
+
+<div class="section" id="reading-methods">
+<h2>Reading Methods<a class="headerlink" href="#reading-methods" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="asynchronous-iteration-support">
+<h2>Asynchronous Iteration Support<a class="headerlink" href="#asynchronous-iteration-support" title="Permalink to this headline">¶</a></h2>
+<p>Stream reader supports asynchronous iteration over BODY.</p>
+<p>By default it iterates over lines:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also there are methods for iterating over data chunks with maximum
+size limit and over any available data.</p>
+</div>
+<div class="section" id="helpers">
+<h2>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="aiohttp.StreamReader.exception">
+<code class="descclassname">StreamReader.</code><code class="descname">exception</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/streams.html#StreamReader.exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader.exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the exception occurred on data reading.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp.is_eof">
+<code class="descclassname">aiohttp.</code><code class="descname">is_eof</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#aiohttp.is_eof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if EOF was reached.</p>
+<p>Internal buffer may be not empty at the moment.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#aiohttp.StreamReader.at_eof" title="aiohttp.StreamReader.at_eof"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StreamReader.at_eof()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp.StreamReader.at_eof">
+<code class="descclassname">StreamReader.</code><code class="descname">at_eof</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/streams.html#StreamReader.at_eof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader.at_eof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the buffer is empty and EOF was reached.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp.StreamReader.read_nowait">
+<code class="descclassname">StreamReader.</code><code class="descname">read_nowait</code><span class="sig-paren">(</span><em>n=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/streams.html#StreamReader.read_nowait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader.read_nowait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns data from internal buffer if any, empty bytes object otherwise.</p>
+<p>Raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code> if other coroutine is waiting for stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>int</em>) – how many bytes to read, <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the whole internal
+buffer.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return bytes:</th><td class="field-body">the given data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiohttp.StreamReader.unread_data">
+<code class="descclassname">StreamReader.</code><code class="descname">unread_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/aiohttp/streams.html#StreamReader.unread_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiohttp.StreamReader.unread_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rollback reading some data from stream, inserting it to buffer head.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>bytes</em>) – data to push back into the stream.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>The method does not wake up waiters.</p>
+<p class="last">E.g. <code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code> will not be resumed.</p>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run_workflow.html">How to run a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/examples/streams.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,278 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Logging &#8212; Teanga</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/teanga-logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+    <link rel="canonical" href="http://pret-a-llod.github.io/teanga/examples/logging.html"/>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="logging">
+<span id="aiohttp-logging"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
+<p><em>aiohttp</em> uses standard <code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code> for tracking the
+library activity.</p>
+<p>We have the following loggers enumerated by names:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.access'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.client'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.internal'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.server'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.web'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">'aiohttp.websocket'</span></code></li>
+</ul>
+<p>You may subscribe to these loggers for getting logging messages.  The
+page does not provide instructions for logging subscribing while the
+most friendly method is <code class="xref py py-func docutils literal notranslate"><span class="pre">logging.config.dictConfig()</span></code> for
+configuring whole loggers in your application.</p>
+<p>Logging does not work out of the box. It requires at least minimal <code class="docutils literal notranslate"><span class="pre">'logging'</span></code>
+configuration.
+Example of minimal working logger setup:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="k">import</span> <span class="n">web</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">web</span><span class="o">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 4.0.0.</span></p>
+</div>
+<div class="section" id="access-logs">
+<h2>Access logs<a class="headerlink" href="#access-logs" title="Permalink to this headline">¶</a></h2>
+<p>Access logs are enabled by default. If the <cite>debug</cite> flag is set, and the default
+logger <code class="docutils literal notranslate"><span class="pre">'aiohttp.access'</span></code> is used, access logs will be output to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span></code> if no handlers are attached.
+Furthermore, if the default logger has no log level set, the log level will be
+set to <code class="xref py py-obj docutils literal notranslate"><span class="pre">logging.DEBUG</span></code>.</p>
+<p>This logging may be controlled by <a class="reference internal" href="web_reference.html#aiohttp.web.AppRunner" title="aiohttp.web.AppRunner"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.AppRunner()</span></code></a> and
+<a class="reference internal" href="web_reference.html#aiohttp.web.run_app" title="aiohttp.web.run_app"><code class="xref py py-func docutils literal notranslate"><span class="pre">aiohttp.web.run_app()</span></code></a>.</p>
+<p>To override the default logger, pass an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code> to
+override the default logger.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use <code class="docutils literal notranslate"><span class="pre">web.run_app(app,</span> <span class="pre">access_log=None)</span></code> to disable access logs.</p>
+</div>
+<p>In addition, <em>access_log_format</em> may be used to specify the log format.</p>
+<div class="section" id="format-specification">
+<span id="aiohttp-logging-access-log-format-spec"></span><h3>Format specification<a class="headerlink" href="#format-specification" title="Permalink to this headline">¶</a></h3>
+<p>The library provides custom micro-language to specifying info about
+request and response:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Option</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%%</span></code></td>
+<td>The percent sign</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%a</span></code></td>
+<td>Remote IP-address
+(IP-address of proxy if using reverse proxy)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%t</span></code></td>
+<td>Time when the request was started to process</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%P</span></code></td>
+<td>The process ID of the child that serviced the request</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%r</span></code></td>
+<td>First line of request</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%s</span></code></td>
+<td>Response status code</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%b</span></code></td>
+<td>Size of response in bytes, including HTTP headers</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%T</span></code></td>
+<td>The time taken to serve the request, in seconds</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%Tf</span></code></td>
+<td>The time taken to serve the request, in seconds
+with fraction in %.06f format</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%D</span></code></td>
+<td>The time taken to serve the request, in microseconds</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%{FOO}i</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">request.headers['FOO']</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%{FOO}o</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">response.headers['FOO']</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The default access log format is:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;%a %t &quot;</span><span class="si">%r</span><span class="s1">&quot; </span><span class="si">%s</span><span class="s1"> %b &quot;%</span><span class="si">{Referer}</span><span class="s1">i&quot; &quot;%{User-Agent}i&quot;&#39;</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.3.0.</span></p>
+</div>
+<p><em>access_log_class</em> introduced.</p>
+<p>Example of a drop-in replacement for the default access logger:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiohttp.abc</span> <span class="k">import</span> <span class="n">AbstractAccessLogger</span>
+
+<span class="k">class</span> <span class="nc">AccessLogger</span><span class="p">(</span><span class="n">AbstractAccessLogger</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{request.remote}</span><span class="s1"> &#39;</span>
+                         <span class="n">f</span><span class="s1">&#39;&quot;</span><span class="si">{request.method}</span><span class="s1"> </span><span class="si">{request.path}</span><span class="s1"> &#39;</span>
+                         <span class="n">f</span><span class="s1">&#39;done in </span><span class="si">{time}</span><span class="s1">s: </span><span class="si">{response.status}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 4.0.0.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">AccessLogger.log()</span></code> can now access any exception raised while processing
+the request with <code class="docutils literal notranslate"><span class="pre">sys.exc_info()</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 4.0.0.</span></p>
+</div>
+<p>If your logging needs to perform IO you can instead inherit from
+<code class="xref py py-class docutils literal notranslate"><span class="pre">aiohttp.abc.AbstractAsyncAccessLogger</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aiohttp.abc</span> <span class="k">import</span> <span class="n">AbstractAsyncAccessLogger</span>
+
+<span class="k">class</span> <span class="nc">AccessLogger</span><span class="p">(</span><span class="n">AbstractAsyncAccessLogger</span><span class="p">):</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="n">logging_service</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;logging_service&#39;</span><span class="p">]</span>
+        <span class="k">await</span> <span class="n">logging_service</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{request.remote}</span><span class="s1"> &#39;</span>
+                                  <span class="n">f</span><span class="s1">&#39;&quot;</span><span class="si">{request.method}</span><span class="s1"> </span><span class="si">{request.path}</span><span class="s1"> &#39;</span>
+                                  <span class="n">f</span><span class="s1">&#39;done in </span><span class="si">{time}</span><span class="s1">s: </span><span class="si">{response.status}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This also allows access to the results of coroutines on the <code class="docutils literal notranslate"><span class="pre">request</span></code> and
+<code class="docutils literal notranslate"><span class="pre">response</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">request.text()</span></code>.</p>
+</div>
+<div class="section" id="gunicorn-access-logs">
+<span id="gunicorn-accesslog"></span><h3>Gunicorn access logs<a class="headerlink" href="#gunicorn-access-logs" title="Permalink to this headline">¶</a></h3>
+<p>When <a class="reference external" href="http://docs.gunicorn.org/en/latest/index.html">Gunicorn</a> is used for
+<a class="reference internal" href="deployment.html#aiohttp-deployment-gunicorn"><span class="std std-ref">deployment</span></a>, its default access log format
+will be automatically replaced with the default aiohttp’s access log format.</p>
+<p>If Gunicorn’s option <a class="reference external" href="http://docs.gunicorn.org/en/stable/settings.html#access-log-format">access_logformat</a> is
+specified explicitly, it should use aiohttp’s format specification.</p>
+<p>Gunicorn’s access log works only if <a class="reference external" href="http://docs.gunicorn.org/en/stable/settings.html#accesslog">accesslog</a> is specified explicitly in your
+config or as a command line option.
+This configuration can be either a path or <code class="docutils literal notranslate"><span class="pre">'-'</span></code>. If the application uses
+a custom logging setup intercepting the <code class="docutils literal notranslate"><span class="pre">'gunicorn.access'</span></code> logger,
+<a class="reference external" href="http://docs.gunicorn.org/en/stable/settings.html#accesslog">accesslog</a> should be set to <code class="docutils literal notranslate"><span class="pre">'-'</span></code> to prevent Gunicorn to create an empty
+access log file upon every startup.</p>
+</div>
+</div>
+<div class="section" id="error-logs">
+<h2>Error logs<a class="headerlink" href="#error-logs" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="web.html#module-aiohttp.web" title="aiohttp.web"><code class="xref py py-mod docutils literal notranslate"><span class="pre">aiohttp.web</span></code></a> uses a logger named <code class="docutils literal notranslate"><span class="pre">'aiohttp.server'</span></code> to store errors
+given on web requests handling.</p>
+<p>This log is enabled by default.</p>
+<p>To use a different logger name, pass <em>logger</em> (<code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code>
+instance) to the <a class="reference internal" href="web_reference.html#aiohttp.web.AppRunner" title="aiohttp.web.AppRunner"><code class="xref py py-meth docutils literal notranslate"><span class="pre">aiohttp.web.AppRunner()</span></code></a> constructor.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/teanga-logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=pret-a-llod&repo=teanga&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../create_workflow.html">How to create a workflow in Teanga</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../run_workflow.html">How to run a workflow in Teanga</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, teanga maintainers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/examples/logging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/pret-a-llod/teanga" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
