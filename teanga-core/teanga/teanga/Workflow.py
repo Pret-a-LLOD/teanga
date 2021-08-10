@@ -220,17 +220,22 @@ class Workflow:
                        compose_operator_ >> pre_operator 
                 #}}
 
-        for workflow_step, step_description in list(self.workflow.items()):        
-            if not step_description["dependencies"]: 
-                for rq_operators_instances in rq_operators_instances:  
-                        rq_operators_instances >> stop_operators_instances 
+        #for workflow_step, step_description in list(self.workflow.items()):        
+        #   if not step_description["dependencies"]: 
+        #        for rq_operators_instances in rq_operators_instances:  
+        #                rq_operators_instances >> stop_operators_instances 
                 
-            
-        pre_operator.op_kwargs.update({"given_inputs":given_inputs,
+
+           pre_operator.op_kwargs.update({"given_inputs":given_inputs,
                                           "expected_parameters":expected_parameters,
                                           "expected_requestBody":expected_requestBody
                                         })
         #}}
+        
+        for workflow_step, step_description in list(self.workflow.items()):
+            if not step_description["dependencies"]: 
+                for rq_operators_instances in rq_operators_instances: 
+                    rq_operators_instances >> stop_operators_instances
 
         print(self.dag.tree_view())
         return self.dag
