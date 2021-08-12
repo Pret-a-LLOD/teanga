@@ -228,10 +228,10 @@ class Workflow:
                                         })
         #}}
         
-        for workflow_step, step_description in list(self.workflow.items()):
-            if not step_description["dependencies"]: 
-                for rq_operators_instances in rq_operators_instances: 
-                    rq_operators_instances >> stop_operators_instances
+        #for workflow_step, step_description in list(self.workflow.items()):
+            #if not step_description["dependencies"]: 
+        for rq_operators_instances in rq_operators_instances: 
+            rq_operators_instances >> stop_operators_instances
 
         print(self.dag.tree_view())
         return self.dag
