@@ -1,0 +1,59 @@
+swagger: "2.0"
+info:
+  title: Entity Extraction
+  description: Entity recognition and linking with Wikipedia entities.
+  version: "0.1"
+  termsOfService: https://nlp.insight-centre.org
+  contact:
+    name: Nitish Agrawal
+    url: https://nlp.insight-centre.org
+    email: firstname.lastname@insight-centre.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+host: 140.203.155.26:8010
+basePath: /
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /entitylinking-api/api/nel/linking/:
+    x-swagger-router-controller: entity_extraction
+    get:
+      description: Return the results
+      parameters:
+      - name: text
+        in: query
+        description: The text input for the service
+        required: true
+        type: string
+
+      responses:
+        '200':
+          description: Result response
+          schema:
+            $ref: '#/definitions/EEResponse'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+# complex objects have schema definitions
+definitions:
+  EEResponse:
+    required:
+    - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+    - message
+    properties:
+      message:
+        type: string
+

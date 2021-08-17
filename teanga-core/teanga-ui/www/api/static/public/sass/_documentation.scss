@@ -1,0 +1,56 @@
+
+#documentation-menu {
+	list-style: none;
+	padding-left: 0;
+
+	a {
+		color: $textDarkSilver;
+		display: block;
+		border-left: 4px solid transparent;
+
+		&:hover, &:focus{
+			color: $textSpecial
+		}
+	}
+
+	li.active > a{
+		border-left: 4px solid $textSpecial !important;
+		color: $textSpecial;
+		font-weight: bold
+	}
+
+	& > li {
+		margin-bottom: 5px;
+	}
+
+	& > li > a {
+		padding: 5px 15px;
+	}
+
+	& ul {
+		padding-left: 0;
+
+		& > li:first-child {
+			padding-top: 5px;
+		}
+
+		& > li {
+			margin-bottom: 10px;
+			font-size: 12px;
+			display: block;
+		}
+
+		& > li > a {
+			padding: 0 0 0 34px;
+		}
+	}
+}
+
+.affix{
+	position: fixed;
+	top:20px
+}
+
+.documentation-holder > div {
+	margin-bottom:40px
+}
