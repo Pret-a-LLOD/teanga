@@ -91,24 +91,58 @@ def generate_setupOperator_rqService(): #{{
         return operators
     #}}
 
-def generate_stop_operators(unique_services, dag): #{{
+def generate_stop_operators(unique_services, dag, workflow,operators_instances ): #{{
     """
     """
+
     operators = {}
-    for full_imagePath, services_instances in unique_services.items():
-        d = services_instances[0][1]
-        to_stop = f'$(docker ps -a | awk "/teanga/ {{ print $1}}")'
-        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
-        # setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
-        task_id=f"stop-{airflow_imageName}--{d['host_port']}"
-        command=f'docker stop echo {to_stop}'
-        print(command);
-        operators[task_id] = BashOperator(
-                task_id=task_id,
-                bash_command=command,
-                dag=dag,
-        )
-    return operators
+    stop_operators_flags= {}
+
+    for workflow_step, step_description in workflow.items():
+        for full_imagePath, services_instances in unique_services.items():
+                    d = services_instances[0][1]
+
+        full_imagePath = f'{d["repo"]}/{d["image_id"]}:{d["image_tag"]}'\
+                            if d['repo'] else f'{d["image_id"]}:{d["image_tag"]}'
+        if step_description["stop_container"] == "yes":
+            if stop_operators_flags.get(full_imagePath,False) and stop_operators_flags[full_imagePath]["stop"] == "no": 
+                pass
+            else:
+                stop_operators_flags[full_imagePath] = {"stop":"yes"}
+        elif step_description["stop_container"] == "no": 
+            stop_operators_flags[full_imagePath]= {"stop":"no"}
+        
+    res = True 
+    test_val = "yes"
+    
+    for ele in stop_operators_flags:
+        if stop_operators_flags[ele]["stop"] != test_val:
+            res = False 
+  
+    if res == True:
+        for full_imagePath, services_instances in unique_services.items():
+                        d = services_instances[0][1]
+                        to_stop = f'$(docker ps -a | awk "/teanga/ {{ print $1}}")'
+                        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+                        # setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
+                        task_id=f"stop-{airflow_imageName}--{d['host_port']}"
+                        command=f'docker stop echo {to_stop}'
+                        print(command);
+                        operators[task_id] = BashOperator(
+                                task_id=task_id,
+                                bash_command=command,
+                                dag=dag,
+                                xcom_push =True,
+                                
+                        )            
+                        return operators
+    else:
+        #pass
+        stop_operators_instances  =   {}
+        return stop_operators_instances 
+
+    
+    
 
 
 def flatten_operator(airflowOperator_id, dag):#{{
