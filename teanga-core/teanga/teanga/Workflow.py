@@ -117,7 +117,7 @@ class Workflow:
             # 'dag': dag,
             # 'sla': timedelta(hours=2),
             # 'execution_timeout': timedelta(seconds=300),
-            # 'on_failure_callback': some_function,
+            #'on_failure_callback':on_failure,
             # 'on_success_callback': some_other_function,
             # 'on_retry_callback': another_function,
             # 'sla_miss_callback': yet_another_function,
@@ -138,15 +138,14 @@ class Workflow:
     def description_to_dag(self):#{{
         self.dag, self.operators_instances = self.init_dag()
         self.operators_instances["pull_operators_instances"] = generate_pull_operators(self.services, self.dag)
-        self.operators_instances["stop_operators_instances"] = generate_stop_operators(self.services, self.dag)
-
+        self.operators_instances["stop_operators_instances"] = generate_stop_operators(self.services, self.dag,self.workflow,self.operators_instances)
 
         # services setup operators_instances
         self.operators_instances["setup_operators_instances"] = generate_setup_operators(self.services, self.dag)
         self.operators_instances[f"generate_endpointRequest_operator"] = []
         for workflow_step, step_description in self.workflow.items():
             self.operators_instances[f"generate_endpointRequest_operator"].append(generate_endpointRequest_operator(workflow_step, step_description["operation_id"], step_description, self.dag))
-
+            
 
         pull_operators_instances  =    [operator for operator in self.operators_instances["pull_operators_instances"].values()]
         setup_operators_instances =    [operator for operator in self.operators_instances["setup_operators_instances"].values()]
@@ -161,7 +160,7 @@ class Workflow:
         for workflow_step, step_description in list(self.workflow.items()):#{{
            print(f'{workflow_step}:{step_description["dependencies"]}')
            pre_operator = matching_operator(f'step-{workflow_step}', self.dag)
-           pre_operator >> rq_operators_instances[int(workflow_step)-1]
+           pre_operator >> rq_operators_instances[int(workflow_step)-1] 
            pre_operator.op_kwargs.update(step_description)
            rq_operators_instances[int(workflow_step)-1].op_kwargs.update({"step_description":step_description})
            given_inputs = [self.workflow[str(workflow_step)].get('input',{})]
@@ -218,20 +217,19 @@ class Workflow:
                        for dependency_step in dependency["steps"]:
                            rq_operators_instances[int(dependency_step)-1] >> compose_operator_
                        compose_operator_ >> pre_operator 
-                #}}
 
-                
+                    #}}
 
+         
            pre_operator.op_kwargs.update({"given_inputs":given_inputs,
                                           "expected_parameters":expected_parameters,
                                           "expected_requestBody":expected_requestBody
                                         })
         #}}
-        
-      
-        for rq_operators_instances in rq_operators_instances: 
-            rq_operators_instances >> stop_operators_instances
+        for rq_operators_instances in rq_operators_instances:
+                    rq_operators_instances >> stop_operators_instances    
 
+    
         print(self.dag.tree_view())
         return self.dag
 #}}
