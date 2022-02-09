@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: pos tagger from sentence
+  description: Tree tagger
+  version: 1.0.0-oas3
+paths:
+  '/postagger':
+    post:
+      operationId: postagger   
+      endpoint: postagger   
+      summary: Returns a part of speech for given sentences on a blob file
+      parameters:
+        - in: path
+          name: filepath
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: An array of  values
+          content:
+            application/json:
+              schema:
+                  type: string
