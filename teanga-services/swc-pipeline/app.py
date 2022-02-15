@@ -112,4 +112,4 @@ def value_generator():
 
     return json.dumps(parsed_sentences)
 
-webserver.run(host="0.0.0.0",port=8080)
+webserver.run(host="0.0.0.0",port=8082)
