@@ -1,7 +1,7 @@
 import requests
 pload = open("sample_sentences.txt").read() 
 r = requests.post(
-        'http://localhost:8080/postagger/sample_sentences.txt',
+        'http://localhost:8081/postagger/',
         data=pload
                  )
 

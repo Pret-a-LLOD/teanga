@@ -1,2 +1,1 @@
 In natural language processing , linguistics , and neighboring fields , Linguistic Linked Open Data ( LLOD ) describes a method and an interdisciplinary community concerned with creating , sharing , and ( re- ) using language resources in accordance with Linked Data principles .
-The Linguistic Linked Open Data Cloud was conceived and is being maintained by the Open Linguistics Working Group ( OWLG ) of the Open Knowledge Foundation , but has been a point of focal activity for several W3C community groups , research projects , and infrastructure efforts since then .
