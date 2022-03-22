@@ -23,7 +23,7 @@ docs = FlaskApiSpec(webserver)
 @use_kwargs({'sentences': fields.List(fields.Str()) })
 @marshal_with(None, code=200)
 def sentences_pos_tagger(**kwargs):
-#    '''
+#   '''
 #        ID (token number in sentence)
 #        WORD (string form)
 #        LEMMA (or _)
@@ -34,10 +34,12 @@ def sentences_pos_tagger(**kwargs):
 #        EDGE (here: _)
 #        DEPS (here: _)
 #        MISC (here: _)
-#    '''
+#   '''
     sentences_data = []
+    idx_count = 0
     for (sent_idx, sentence) in enumerate(kwargs['sentences']):
         tokens = word_tokenize(sentence) 
+        sentence_data = []
         for (token_idx, (token, tag)) in enumerate(nltk.pos_tag(tokens)):
             lemma = "_"
             upostag = tag
@@ -48,10 +50,11 @@ def sentences_pos_tagger(**kwargs):
             deps = "_"
             misc = "_"
             formatted_output = \
-                    f'{token_idx}\t{token}\t{lemma}\t{upostag}\t{xpostag}\t{feats}\t{head}\t{edge}\t{deps}\t{misc}\n'
-            sentences_data.append(formatted_output)
+                    f'{token_idx}\t{token}\t{lemma}\t{upostag}\t{xpostag}\t{feats}\t{head}\t{edge}\t{deps}\t{misc}'
+            sentence_data.append(formatted_output)
+        if sentence_data:
+            sentences_data.append("\n".join(sentence_data)+"\n")
     return jsonify("\n".join(sentences_data))
-
 
 docs.register(sentences_pos_tagger)
 

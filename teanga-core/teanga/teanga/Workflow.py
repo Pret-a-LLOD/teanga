@@ -7,8 +7,8 @@ import tarfile
 import json
 import yaml
 from teanga.operators import *
-from airflow.utils.dates import days_ago
 from datetime import timedelta
+from airflow.utils.dates import days_ago
 from airflow import DAG
 
 class Workflow:
@@ -37,7 +37,11 @@ class Workflow:
                 else:
                        unique_services[service_id] = [[workflow_id, d]]  
 
+            used_ports = set()
             for service_id in unique_services.keys():
+                while(unique_services[service_id][0][1]['host_port'] in used_ports):
+                    unique_services[service_id][0][1]['host_port'] = str(int(unique_services[service_id][0][1]['host_port'])+1) 
+                used_ports.add(unique_services[service_id][0][1]['host_port'])
                 for workflow_id, instance_info in unique_services[service_id]:
                     workflow[workflow_id]['host_port'] = unique_services[service_id][0][1]['host_port'] 
                     workflow[workflow_id]['container_port'] = unique_services[service_id][0][1]['container_port'] 
@@ -163,7 +167,7 @@ class Workflow:
            given_inputs = [self.workflow[str(workflow_step)].get('input',{})]
            expected_parameters =  dict([(d['name'],d) 
                                for d in 
-                               self.workflow[str(workflow_step)]['operation_spec'].get('parameters',[])])
+                               self.workflow[str(workflow_step)]['operation_spec'].get('parameters',{})])
            expected_requestBody =  self.workflow[str(workflow_step)]['operation_spec'].get('requestBody',None)
            if not step_description["dependencies"]:
                setup_operators_instances >> pre_operator 
@@ -225,3 +229,72 @@ class Workflow:
         print(self.dag.tree_view())
         return self.dag
 #}}
+
+class TestingWorkflow:
+    def __init__(self, workflow_filepath, openapi_filepaths_dict):#{{
+        #self.base_folder=    base_folder#os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+        self.workflow_filename = workflow_filepath#os.environ['TARGET_WORKFLOW'] 
+        self.today_date =    datetime.datetime.now().strftime("%d%m%Y")
+
+        self.workflow_filepath = workflow_filepath
+        self.workflow_creation_timeStr = datetime.datetime.now().strftime("%d_%m_%Y_%H-%M-%S")
+
+        self.openapi_filepaths_dict = openapi_filepaths_dict
+
+        self.workflow, self.services = self.load_workflow()
+        self.load_services_description()
+        #}}
+
+    def load_workflow(self):#{
+        with open(self.workflow_filepath) as workflow_input:
+            workflow = json.load(workflow_input)
+            unique_services = {}
+            for workflow_id, d in workflow.items():
+                service_id = f'{d["repo"]}/{d["image_id"]}:{d["image_tag"]}'\
+                             if d['repo'] else f'{d["image_id"]}:{d["image_tag"]}'
+                if unique_services.get(service_id, False):
+                       unique_services[service_id].append([workflow_id, d])  
+                else:
+                       unique_services[service_id] = [[workflow_id, d]]  
+
+            for service_id in unique_services.keys():
+                for workflow_id, instance_info in unique_services[service_id]:
+                    workflow[workflow_id]['host_port'] = unique_services[service_id][0][1]['host_port'] 
+                    workflow[workflow_id]['container_port'] = unique_services[service_id][0][1]['container_port'] 
+        return workflow, unique_services# #}
+
+    def load_services_description(self):#{{
+        for service_id, steps_using_service in self.services.items():
+            service_openapi_spec = yaml.load(open(self.openapi_filepaths_dict[service_id]),Loader=yaml.FullLoader)
+            for (workflow_id, d) in steps_using_service:
+                operation_id  = d["operation_id"]
+                self.workflow[workflow_id]["operation_spec"] = self.get_spec_from_operationId(service_openapi_spec, operation_id) 
+    #}}
+
+    def get_spec_from_operationId(self, OAS, operationId):#{
+        flatten = {}
+        for url in OAS['paths'].keys():
+            for request_method in OAS['paths'][url].keys():
+                operation_data=OAS['paths'][url][request_method]
+                if operation_data["operationId"] == operationId:
+                    flatten["operation_id"] = operationId
+                    flatten["endpoint"] = url
+                    flatten["request_method"] = request_method
+                    flatten["parameters"] =  {d["name"]:d for d in operation_data.get("parameters",[])}
+                    flatten["requestBody"] =  operation_data.get("requestBody",{})
+                    flatten["sucess_response"] = operation_data["responses"].get("200",operation_data["responses"].get(200,None))
+                    if not flatten["sucess_response"]: raise Error("Missing sucess response schema") 
+
+                    flatten["response_schema"] = \
+                            flatten["sucess_response"]['content']['application/json']['schema']\
+                            if flatten["sucess_response"].get('content',False) else None
+                    if flatten["response_schema"]:
+                        if flatten["response_schema"].get("type",False) == "array":
+                            flatten["response_schema_item_name"] = \
+                                    flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]
+                        elif flatten["response_schema"].get("$ref",False):
+                            flatten["response_schema_name"] = \
+                                    flatten["sucess_response"]['content']['application/json']['schema']["$ref"].split("/")[-1]
+        flatten["schemas"] = OAS.get('components',{}).get('schemas',{})
+        return flatten 
+    #}
