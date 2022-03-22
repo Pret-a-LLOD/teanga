@@ -156,7 +156,12 @@ function convertSecsToHumanReadable(seconds) {
       <div class="collapse navbar-collapse" id="admin-navbar-collapse">
         {% block main_menu %}
         <ul class="nav navbar-nav">
+
           {{ layout.menu() }}
+
+          <li class="">
+              <a href="/admin/workflow/build">Build New Workflow</a>
+          </li>
         </ul>
         {% endblock %}
 

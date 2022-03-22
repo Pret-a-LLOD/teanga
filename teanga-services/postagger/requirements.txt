@@ -1,0 +1,4 @@
+nltk
+flask
+webargs
+flask_apispec

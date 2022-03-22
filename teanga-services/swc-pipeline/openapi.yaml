@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: chunker
+  description: SWC replicating cunker 
+  version: 1.0.0-oas3
+paths:
+  '/postagger':
+    post:
+      operationId:  swcchunker  
+      endpoint: swcchunker   
+      summary: Returns a tree format chunkerized text
+      parameters:
+        - in: path
+          name: parser
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                  type: string
+      responses:
+        '200':
+          description: An array of  values
+          content:
+            application/json:
+              schema:
+                  type: string
+

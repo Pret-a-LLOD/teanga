@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: chunker
+  description: SWC replicating cunker 
+  version: 1.0.0-oas3
+paths:
+  '/postagger':
+    post:
+      operationId:  swcchunker  
+      endpoint: swcchunker   
+      summary: Returns a tree format chunkerized text
+      parameters:
+        - in: path
+          name: parser
+          schema:
+            type: string
+        - in: query
+          name: vocabulary
+          required: false
+          schema:
+            type: string
+            format: uri
+            pattern: '^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?'  # RFC3986 Appendix B
+        - in: query
+          name: lang
+          required: false
+          schema:
+            type: string
+            format: bcp47
+            pattern: '[a-z]{1,3}(-\w+)?'  # Too permissive but it's fine
+        - in: query
+          name: target_vocabulary
+          required: false
+          schema:
+            type: string
+            format: uri
+            pattern: '^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?'  # RFC3986 Appendix B
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: An array of values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vocabulary:
+                    type: string
+                    format: uri
+                    pattern: '^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?'  # RFC3986 Appendix B
+                  lang:
+                    type: string
+                    format: bcp47
+                    pattern: '[a-z]{1,3}(-\w+)?'  # Too permissive but it's fine

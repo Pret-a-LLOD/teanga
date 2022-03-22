@@ -117,3 +117,6 @@ teanga-core/files/
 teanga-core/workflows/
 teanga-core/OAS/
 ./teanga-ui/
+testing/
+teanga-ui/
+teanga-services/

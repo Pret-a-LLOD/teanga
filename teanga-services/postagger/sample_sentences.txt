@@ -1,0 +1,1 @@
+In natural language processing , linguistics , and neighboring fields , Linguistic Linked Open Data ( LLOD ) describes a method and an interdisciplinary community concerned with creating , sharing , and ( re- ) using language resources in accordance with Linked Data principles .

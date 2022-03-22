@@ -181,15 +181,11 @@ def flatten_function(*args,**kwargs):
             for list_ in kwargs['task_instance'].xcom_pull(task_ids=input_source):
                 kwargs['given_inputs'].append(list_)
 
-    logging.info(f"kwargs: {kwargs['given_inputs']}")
     flattened_elements = []
     for idx, schema_dict in enumerate(kwargs['given_inputs']):
-            logging.info(schema_dict.items())
             for schema_name, schema_info in schema_dict.items():
                 if not isinstance(schema_info, dict):
                    continue 
-                logging.info(schema_info)
-                logging.info(schema_info.keys())
                 schema = schema_info["schema"]
                 list_of_objects = schema_info["value"]
                 for object in list_of_objects:
@@ -237,7 +233,7 @@ def matching_function(*args, **kwargs):
     #{{
     # if input is dictionary, it's a name -> value pair
     # if is a string, it's a reference for another airflow operator output
-    logging.info(f"given inputs: {kwargs['given_inputs']}")
+    logging.info(kwargs['given_inputs'])
     for idx, input_source in enumerate(kwargs['given_inputs']):
         if isinstance(input_source,dict):
             if input_source.get("requestBody", False):
@@ -247,29 +243,34 @@ def matching_function(*args, **kwargs):
 
         elif isinstance(input_source,str):
             kwargs['given_inputs'].pop(idx)
-
-            logging.info(f"input source: {input_source}")
-            abc = kwargs['task_instance'].xcom_pull(task_ids=input_source)
-            logging.info(f"pull: {abc}")
-            for dict_ in abc:
-                logging.info(f"XCOM DICT: {dict_}")
-                kwargs['given_inputs'].append(dict_)
+            abc = kwargs['ti'].xcom_pull(task_ids=input_source)
+            if isinstance(abc, str):
+                kwargs['given_inputs'].append({"requestBody":abc})
+            if isinstance(abc, dict):
+                pass
+            #for dict_ in abc:
 
     expected_inputs = kwargs["expected_parameters"]
     # check if file is required
     if kwargs.get("expected_requestBody", False):
         rqB =  kwargs["expected_requestBody"]
         if rqB["content"].get("application/json",False):
-            expected_schema_name  = rqB["content"]["application/json"]["schema"]["$ref"].split("/")[-1]
-            expected_inputs[expected_schema_name] = rqB["content"]["application/json"]["schema"]
+            expected_schema = rqB["content"]["application/json"]["schema"]
+            header = {'Content-Type': 'application/json'}
+            if expected_schema.get("$ref",False):
+                expected_schema_name = expected_schema["$ref"].split("/")[-1]
+                expected_inputs[expected_schema_name] = rqB["content"]["application/json"]["schema"]
+            elif expected_schema.get("type",False):
+                expected_schema_name = expected_schema["type"]
+                expected_inputs["requestBody"] = rqB["content"]["application/json"]["schema"]
+
             if source_idx:
-                kwargs['given_inputs'][source_idx][expected_schema_name] = kwargs['given_inputs'][source_idx]["requestBody"] 
-                del kwargs['given_inputs'][source_idx]["requestBody"]
+                pass
+                #kwargs['given_inputs'][source_idx][expected_schema_name] = kwargs['given_inputs'][source_idx]["requestBody"] 
+                #del kwargs['given_inputs'][source_idx]["requestBody"]
         else: 
             expected_inputs['files'] = kwargs["expected_requestBody"] 
 
-    # creating given inputs to have given values from user and dependencies
-    # but also the information from the OAS description
     given_inputs_dict = {}
     for inputs_dict in kwargs['given_inputs']:
         for input_key, input_value in inputs_dict.items():
@@ -285,13 +286,8 @@ def matching_function(*args, **kwargs):
     
     missing_expected_inputs = {}
     isCollection = False 
-    logging.info(expected_inputs)
     for expected_input, expected_details in expected_inputs.items():
         if given_inputs_dict.get(expected_input,False):
-            logging.info(f"EI: expected input {expected_input}")
-            logging.info(f"ED: expected details {expected_details}")
-            logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].keys()}")
-            logging.info(f"GIVEN: expected details {given_inputs_dict[expected_input].get('schema',None)}")
             if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array": 
                 isCollection = expected_input
             else:
@@ -315,30 +311,25 @@ def matching_function(*args, **kwargs):
             for filename in files_name:
                 file_content = open(f'/teanga/files/{filename}')
                 files.append(file_content) 
-    logging.info(f"Iscollection: {isCollection}")
 
 
     if missing_expected_inputs:
-        logging.info("Missing")
         for expected_input, expected_details in missing_expected_inputs.items():
             if expected_details.get("required",None) != None:
                 if expected_details["required"] == True:
-                    logging.info(expected_details)
                     raise Exception("Missing inputs")
                 else:
                     continue
             else:
-                logging.info(expected_details)
                 raise Exception("Missing inputs")
+        print("matching with missing inputs", given_inputs_dict)
         return {
             "header": {'Content-Type': 'application/json'},
             "inputs":given_inputs_dict
             }
     elif isCollection:
         given_inputs_per_item = [] 
-        logging.info(f"Is collection! {given_inputs_dict[isCollection]['value']}")
         for item in given_inputs_dict[isCollection]["value"]: 
-            logging.info(item)
             given_inputs_per_item.append(
                     dict({k:v for k,v in  given_inputs_dict.items()},
                         **{isCollection:{"value": {k:v for k,v in  item.items()}}})
@@ -349,7 +340,9 @@ def matching_function(*args, **kwargs):
                 "inputs":given_inputs_per_item 
                 }
     else:
+        header = locals().get("header", None)
         return {
+            "header" : header,
             "inputs":given_inputs_dict
             }
 #}}
@@ -366,84 +359,108 @@ def generate_endpointRequest_operator(workflow_step, endpoint_name,endpoint_info
     )
     return operator 
 
+def setup_request(named_inputs,#{{
+                endpoint,
+                request_method,
+                host_port,
+                header=None,
+                testing=False
+                ):
+    #remaining_inputs = {k: d["value"] for k,d in named_inputs.copy().items() if d.get("value",False)}
+    remaining_inputs = {k: d["value"] if d.get("value",False) else d for k,d in named_inputs.copy().items() }
+    for name, input_dict in named_inputs.items():
+        if input_dict.get("name",False) and  f'{{{input_dict["name"]}}}' in endpoint:
+            endpoint = endpoint.replace(f'{{{input_dict["name"]}}}',str(input_dict["value"]))
+            remaining_inputs.pop(input_dict["name"],None);
+    url = f'http://host.docker.internal:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
+    if named_inputs.get("files",False):
+        data =  remaining_inputs.pop("files",None)
+        if isinstance(data,dict) or isinstance(data,list) :
+            headers= {'Content-Type': 'application/json'}
+            request_ = requests.Request(
+                          method=request_method.upper(),
+                          headers=headers,
+                          url=url,
+                          params=remaining_inputs,
+                          data=data['value'])#json.dumps(data))
+        else:
+            headers= {'Content-Type': 'application/rdf+xml'}
+            request_ = requests.Request(
+                          method=request_method.upper(),
+                          headers=headers,
+                          url=url,
+                          params=remaining_inputs,
+                          data=data)
+    else:
+        if header:
+            #data = remaining_inputs.pop(matching_output["json_input"]) 
+            if len(remaining_inputs.keys()) == 1:
+                data = remaining_inputs[list(remaining_inputs.keys())[0]]
+            else:
+                raise Exception("more than one remaining input to attach in request body")
+            request_ = requests.Request(
+                          method=request_method.upper(),
+                          headers=header,
+                          url=url,
+                          params=remaining_inputs,
+                          data=json.dumps(data))
+        else:
+            request_ = requests.Request(
+                    method=request_method.upper(),
+                    params=remaining_inputs,
+                          url=url)
+    request_ = request_.prepare()
+    return request_ 
+    #}}
+
+
 def endpointRequest_function(*args, **kwargs):
         #{{
-        step, operation_id = kwargs['task_instance'].task_id.split("-endpoint")
-        matching_operator_id =  f'{step}-matching'
-        matching_output = kwargs['task_instance'].xcom_pull(task_ids=matching_operator_id)
-        inputs = matching_output.get('inputs', None)
-        header = matching_output.get('header', None)
-        logging.info(inputs)
-        def setup_request(named_inputs,#{{
-                        endpoint,
-                        request_method,
-                        host_port):
-            #remaining_inputs = {k: d["value"] for k,d in named_inputs.copy().items() if d.get("value",False)}
-            remaining_inputs = {k: d["value"] if d.get("value",False) else d for k,d in named_inputs.copy().items() }
-            for name, input_dict in named_inputs.items():
-                if input_dict.get("name",False) and  f'{{{input_dict["name"]}}}' in endpoint:
-                    endpoint = endpoint.replace(f'{{{input_dict["name"]}}}',str(input_dict["value"]))
-                    remaining_inputs.pop(input_dict["name"],None);
-            url = f'http://host.docker.internal:{host_port}{endpoint}'
-            logging.info(url)
-            if named_inputs.get("files",False):
-                data =  remaining_inputs.pop("files",None)
-                if isinstance(data,dict) or isinstance(data,list) :
-                    headers= {'Content-Type': 'application/json'}
-                    request_ = requests.Request(
-                                  method=request_method.upper(),
-                                  headers=headers,
-                                  url=url,
-                                  params=remaining_inputs,
-                                  data=data['value'])#json.dumps(data))
-                else:
-                    headers= {'Content-Type': 'application/rdf+xml'}
-                    request_ = requests.Request(
-                                  method=request_method.upper(),
-                                  headers=headers,
-                                  url=url,
-                                  params=remaining_inputs,
-                                  data=data)
-            else:
-                if header:
-                    #data = remaining_inputs.pop(matching_output["json_input"]) 
-                    if len(remaining_inputs.keys()) == 1:
-                        data = remaining_inputs[list(remaining_inputs.keys())[0]]
-                    else:
-                        logging.info(remaining_inputs)
-                        raise Exception("more than one remaining input to attach in request body")
-                    request_ = requests.Request(
-                                  method=request_method.upper(),
-                                  headers=header,
-                                  url=url,
-                                  params=remaining_inputs,
-                                  data=json.dumps(data))
-                else:
-                    request_ = requests.Request(
-                            method=request_method.upper(),
-                            params=remaining_inputs,
-                                  url=url)
-            request_ = request_.prepare()
-            return request_ 
-            #}}
+        if kwargs.get("testing",False) == True:
+            inputs = kwargs["inputs"]
+            header = kwargs.get("header", None)
+        else:
+            step, operation_id = kwargs['task_instance'].task_id.split("-endpoint")
+            matching_operator_id =  f'{step}-matching'
+            matching_output = kwargs['task_instance'].xcom_pull(task_ids=matching_operator_id)
+            inputs = matching_output.get('inputs', None)
+            header = matching_output.get('header', None)
 
         if isinstance(inputs,list):
             requests_ = [setup_request(inputs_dict,
                                      kwargs['step_description']['operation_spec']["endpoint"],
                                      kwargs['step_description']['operation_spec']["request_method"],
-                                     kwargs['step_description']["host_port"])
+                                     kwargs['step_description']["host_port"],
+                                     testing=kwargs.get("testing",False)
+                                     )
                                      for inputs_dict in inputs ]
 
         elif isinstance(inputs,dict): 
             requests_ = [setup_request(inputs,
                                      kwargs['step_description']['operation_spec']["endpoint"],
                                      kwargs['step_description']['operation_spec']["request_method"],
-                                     kwargs['step_description']["host_port"])]
+                                     kwargs['step_description']["host_port"],
+                                     testing=kwargs.get("testing",False),
+                                     header=header
+                                     )]
 
         session = requests.Session()
         session.trust_env = False
         responses = []
+        if len(requests_) == 1:
+            response = session.send(requests_[0]).text
+            if kwargs['step_description']['operation_spec']["sucess_response"].get("content", False):
+                expected_content = kwargs['step_description']['operation_spec']["sucess_response"]["content"]
+                if expected_content.get("application/json",False):
+                    json_description = expected_content["application/json"]
+                    if json_description.get("schema",False):
+                        json_schema = json_description["schema"]
+                        if json_schema.get("type",False):
+                            expected_type = json_schema["type"] 
+                            if expected_type == "string":
+                                response = response.strip()
         for request_ in requests_:
+            '''
             if kwargs['step_description']['operation_spec']["sucess_response"].get("content", False):
                 content = kwargs['step_description']['operation_spec']["sucess_response"].get("content")
                 if content.get("application/json", {}).get("schema",{}).get("type",None) == "array":
@@ -471,7 +488,9 @@ def endpointRequest_function(*args, **kwargs):
             else:
                 response = session.send(request_).text.encode("utf-8")
             responses.append(response)
-        return responses   
+            '''
+            pass
+        return response  
     #}}
 #}
 
