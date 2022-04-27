@@ -117,6 +117,7 @@ teanga-core/files/
 teanga-core/workflows/
 teanga-core/OAS/
 ./teanga-ui/node_modules
+./teanga_ui/node_modules
 testing/
 teanga-ui/node_modules
 teanga-services/
