@@ -1,0 +1,96 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+#chart_area {
+    margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto; 
+    width: 80%; 
+    height: 600px; 
+	position: relative;
+	background-color: #efefef;
+	background-image: linear-gradient(white 2px, transparent 2px), linear-gradient(90deg, white 2px, transparent 2px), linear-gradient(rgba(255, 255, 255, .5) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .5) 1px, transparent 1px);
+	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+	background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+	text-transform: capitalize;
+}
+
+.flowchart-operator-new {
+      height: 110px;
+      width: 110px;
+      background: #9CA8B3;
+      color: #FFF;
+      padding: 15px;
+      border: 1px solid black;
+      border-radius: 70px;
+}
+
+.selected-node {
+    background: red;
+}
+.handle-title {
+    font-size: 15px; 
+    margin-top: 15%;
+}
+.handle-left {
+      background: #F0AD4E !important;
+      margin-left: -60% !important;
+      border-radius: 80px !important; 
+      height:30px !important;
+      width: 80px !important;
+}
+
+.handle-right {
+      background: #337ab7 !important; 
+      margin-right: -60% !important;
+      border-radius: 80px !important; 
+      height:30px !important;
+      width: 80px !important;
+}
+
+.service-leftbar-group {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.service-leftbar-button{
+    margin-left: 150px;
+}

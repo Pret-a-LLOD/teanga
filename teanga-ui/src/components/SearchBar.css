@@ -1,0 +1,31 @@
+.menu-item {
+  padding: 0 40px;
+  margin: 5px 10px 5px 10px;
+  user-select: none;
+  cursor: pointer;
+  border: none;
+}
+.menu-item-wrapper.active {
+  border: 1px blue solid;
+}
+.menu-item.active {
+  border: 1px green solid;
+}
+
+.mb-3 {
+    margin-left: auto;
+    margin-right: auto;
+}
+.mb-3 .searchbar-input {
+    border: 2px solid black !important;
+}
+
+.arrow-prev {
+    margin-left: auto;
+}
+.arrow-next {
+    margin-left: 5vw;
+}
+.horizontal-menu {
+    margin-left: 10%
+}
