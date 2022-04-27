@@ -1,0 +1,6 @@
+site_name: Teanga
+nav: 
+    - Home: index.md
+    - Teanga UI: teanga_ui.md
+    - Run Existing Workflow: run_existing_workflow.md
+    - Create new Workflow: create_new_workflow.md
