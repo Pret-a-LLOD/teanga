@@ -1,8 +1,20 @@
 #!/bin/bash
+# $# is the number of given spaced inputs
+# we want to convert spaced inputs into a matched scenario (the first 1 or 2 inputs should dtermine it
+# and a list of given parameters)
 
-AVAILABLE_SERVICES=("service" "workflow")
-AVAILABLE_WORKFLOW_COMMANDS=("run" "create" "visualize")
+default_option=FAIL
+
+AVAILABLE_SERVICES=("service" "workflow" "global")
+AVAILABLE_GLOBAL_COMMANDS=("start" "stop" "run")
 AVAILABLE_FLAGS=("-f" "-p" "--output-dir")
+AVAILABLE_START_GLOBAL_FLAGS=("-f" "-p" "--output-dir")
+OPENAPI_FOLDERNAME="openapi-specifications"
+WORKFLOWS_FOLDERNAME="workflows"
+FILES_FOLDERNAME="files"
+OUTPUT_FOLDERNAME="outputs"
+REQUIRED_FOLDERS=("workflows","files","openapi-specifications","outputs")
+DEFAULT_PORT=5000
 show_usage () {
     USAGE="Usage: $0 [COMMAND] [SERVICE]  [PARAMETERS] "
     echo $USAGE
@@ -16,6 +28,7 @@ check_if_in_list () {
     shift 1
     for AVAILABLE_COMMAND in "$@";
     do
+        #echo $AVAILABLE_COMMAND
         if [[ "$INPUT" == "$AVAILABLE_COMMAND" ]];
         then
             VALID_COMMAND=1
@@ -29,32 +42,45 @@ check_if_in_list () {
     fi
 }
 
-if [ "$#" -lt "2" ]; then
-    show_usage
-fi
 
 INPUT_COMMAND=$1
 INPUT_COMMAND_UPPER=$(echo "$1" | tr '[:lower:]' '[:upper:]')
-shift 1
-INPUT_SERVICE=$1
-INPUT_SERVICE_UPPER=$(echo "$1" | tr '[:lower:]' '[:upper:]')
-shift 1
+shift 1;
+check_if_in_list $INPUT_COMMAND ${AVAILABLE_GLOBAL_COMMANDS[@]} 
+if [ "$#" -eq "0" ]; 
+then
+    INPUT_SERVICE_UPPER="GLOBAL"
+    AVAILABLE_COMMANDS_FOR_SERVICE="AVAILABLE_GLOBAL_COMMANDS[@]"
+    SCENARIO_NAME="${INPUT_COMMAND_UPPER}_${INPUT_SERVICE_UPPER}"
+    CALLED_FUNCTION=$SCENARIO_NAME
+    VALID_PARAMS=();
+else 
+    if [[ $1 == -* ]] ;
+    then
+        INPUT_SERVICE="global"
+        INPUT_SERVICE_UPPER="GLOBAL"
+        AVAILABLE_COMMANDS_FOR_SERVICE="AVAILABLE_GLOBAL_COMMANDS[@]"
+    else
+        INPUT_SERVICE=$1
+        INPUT_SERVICE_UPPER=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+        shift 1
+    fi
+    SCENARIO_NAME="${INPUT_COMMAND_UPPER}_${INPUT_SERVICE_UPPER}"
+    CALLED_FUNCTION=$SCENARIO_NAME
+    VALID_PARAMS=();
+    while [[ -n "$@" ]];
+    do
+        INPUT_FLAG=$1
+        shift 1;
+        FLAGS_ARR="AVAILABLE_"$SCENARIO_NAME"_FLAGS[@]"
+        check_if_in_list $INPUT_FLAG ${!FLAGS_ARR} 
+        INPUT_PARAMETER=$1
+        shift 1;
+        VALID_PARAMS+=("${INPUT_FLAG}=${INPUT_PARAMETER}")
+    done
+    check_if_in_list $INPUT_SERVICE ${AVAILABLE_SERVICES[@]} 
+fi
 
-AVAILABLE_COMMANDS_FOR_SERVICE="AVAILABLE_"$INPUT_SERVICE_UPPER"_COMMANDS[@]"
-check_if_in_list $INPUT_COMMAND ${!AVAILABLE_COMMANDS_FOR_SERVICE} 
-echo "  "
-check_if_in_list $INPUT_SERVICE ${AVAILABLE_SERVICES[@]} 
-
-VALID_PARAMS=();
-while [[ -n "$@" ]];
-do
-    INPUT_FLAG=$1
-    shift 1;
-    check_if_in_list $INPUT_FLAG ${AVAILABLE_FLAGS[@]} 
-    INPUT_PARAMETER=$1
-    shift 1;
-    VALID_PARAMS+=("${INPUT_FLAG}=${INPUT_PARAMETER}")
-done
 
 RUN_WORKFLOW () {
     for str_PAIR in "$@";
@@ -69,7 +95,6 @@ RUN_WORKFLOW () {
         elif [ "$FLAG" = "-p" ];
         then
             PORT=$PARAMETER;
-            echo $PORT;
         else
             show_usage;
         fi
@@ -82,9 +107,10 @@ RUN_WORKFLOW () {
     else
           echo "\$PWD is ${PWD}, so using it as base_folder"
     fi
-    mkdir -p IO
-    mkdir -p OAS
-    mkdir -p workflows
+    mkdir -p $PWD/$WORKFLOWS_FOLDERNAME
+    mkdir -p $PWD/$OPENAPI_FOLDERNAME
+    mkdir -p $PWD/$FILES_FOLDERNAME
+    mkdir -p $PWD/$OUTPUT_FOLDERNAME
     cp $WORKFLOW_FILEPATH ./workflows/$FILENAME
     docker run -t --rm --name teanga_backend \
                -v /var/run/docker.sock:/var/run/docker.sock \
@@ -98,5 +124,59 @@ RUN_WORKFLOW () {
                pretallod/teanga-core:`date +"%m%Y"`
 }
 
-CALLED_FUNCTION="${INPUT_COMMAND_UPPER}_${INPUT_SERVICE_UPPER}"
+
+START_GLOBAL () {
+    if [[ -z $(docker ps | awk '/teanga/ {print $1}') ]];
+    then
+        echo "Starting Teanga";
+    else
+        echo "Teanga is already running";
+        exit
+    fi
+    for str_PAIR in "$@";
+    do
+        arr_PAIR=(${str_PAIR//=/ })
+        FLAG=${arr_PAIR[0]};
+        PARAMETER=${arr_PAIR[1]};
+        if [ "$FLAG" = "-p" ];
+        then
+                PORT=$PARAMETER;
+        else
+            show_usage;
+        fi
+    done
+
+    if [ -z "$PORT" ];
+    then
+        PORT=$DEFAULT_PORT;
+    fi
+
+    mkdir -p $PWD/$WORKFLOWS_FOLDERNAME
+    mkdir -p $PWD/$OPENAPI_FOLDERNAME
+    mkdir -p $PWD/$FILES_FOLDERNAME
+    mkdir -p $PWD/$OUTPUT_FOLDERNAME
+    docker run -dt --rm --name teanga_backend \
+               -v /var/run/docker.sock:/var/run/docker.sock \
+               -v $PWD/$WORKFLOWS_FOLDERNAME:/teanga/workflows \
+               -v $PWD/$OPENAPI_FOLDERNAME:/teanga/OAS \
+               -v $PWD/$FILES_FOLDERNAME:/teanga/files \
+               -v $PWD/$OUTPUT_FOLDERNAME:/teanga/outputs \
+               -e TEANGA_DIR=$PWD \
+               -p $PORT:8080 \
+               pretallod/teanga-core:`date +"%m%Y"`
+    echo "Teanga UI is running in port: $PORT"
+}
+
+STOP_GLOBAL () {
+    if [[ -z $(docker ps | awk '/teanga/ {print $1}') ]];
+    then
+        echo "Teanga is not running";
+        exit
+    else
+        echo "Shutting down teanga";
+        docker stop $(docker ps | awk '/teanga/ {print $1}')
+        echo "Teanga is shutdown"
+    fi
+}
+
 $CALLED_FUNCTION ${VALID_PARAMS[@]}
