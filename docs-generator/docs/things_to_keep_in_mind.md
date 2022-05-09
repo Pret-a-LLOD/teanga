@@ -1,0 +1,6 @@
+- teanga assumes you are running the commands from the root folder of the project 
+- Teanga use the default folders openapi-specifications, workflows, files, outputs
+- Teanga use the pretallod docker hub repo, using the month tag -> i will change to a latest tag
+- the cli assumes all parameters are given in the format -p value , -p2 value2
+- the cli assumes that two first parameters are [COMMAND] and [SERVICE] if num of params is 1 it is a command
+- start command is only valid without params
