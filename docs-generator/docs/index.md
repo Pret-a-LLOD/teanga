@@ -35,10 +35,10 @@ If you have curl command installed in your terminal:
 
 ## Tutorials
 
-* [Teanga Start UI](/teanga_ui) - Start Teanga backend and UI.
-* [Teanga Run Existing Workflow](/run_existing_workflow) - Start Teanga backend and UI.
-* [Creating a new Workflow in Teanga](/create_new_workflow) - Start Teanga backend and UI.
-* [Creating a new Service in Teanga](/create_new_workflow) - Start Teanga backend and UI.
-* [List of available services in teanga](/create_new_workflow) - Start Teanga backend and UI.
-* [List of example Workflows](/create_new_workflow) - Start Teanga backend and UI.
-* [Shutdown Teanga](/stop_teanga) - Stop Teanga backend and UI.
+* [Teanga Start UI](/teanga_ui/) - Start Teanga backend and UI.
+* [Teanga Run Existing Workflow](/run_existing_workflow/) - Start Teanga backend and UI.
+* [Creating a new Workflow in Teanga](/create_new_workflow/) - Start Teanga backend and UI.
+* [Creating a new Service in Teanga](/create_new_workflow/) - Start Teanga backend and UI.
+* [List of available services in teanga](/create_new_workflow/) - Start Teanga backend and UI.
+* [List of example Workflows](/create_new_workflow/) - Start Teanga backend and UI.
+* [Shutdown Teanga](/stop_teanga/) - Stop Teanga backend and UI.
