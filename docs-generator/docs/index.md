@@ -1,6 +1,6 @@
 # Welcome to Teanga
 Teanga is a command-line tool that automates and facilitates using sequences of containerized rest api as a workflow. It aims at creation of complex Natural Language Processing workflows using Airflow, OpenAPI specification and docker.
-[GitHub](https://github.com/pret-a-llod/teanga)
+Our code is open-source and available in [GitHub](https://github.com/pret-a-llod/teanga).
 
 ## Installation
 
