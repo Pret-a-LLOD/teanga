@@ -15,15 +15,14 @@ If you have curl command installed in your terminal:
     sudo curl https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/CLI/install.sh | sudo bash
 
 ## Quick Start
-1. Download the workflow [example](https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/workflows/dkpro_treetagger.json) 
+1.Download the workflow [example](https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/workflows/dkpro_treetagger.json) 
    or Create your own workflow file following [Teanga Run Existing Workflow Tutorial](/run_existing_workflow).
 
-2. Start Teanga and Run Workflow:
+2.Start Teanga and Run Workflow:
 
-    `
     teanga start
+
     teanga run workflow -f ./workflows/my_teanga_workflow.json
-    `
 
 
 ## Commands
