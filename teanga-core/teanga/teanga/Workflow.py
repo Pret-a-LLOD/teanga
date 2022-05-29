@@ -142,7 +142,7 @@ class Workflow:
     def description_to_dag(self):#{{
         self.dag, self.operators_instances = self.init_dag()
         self.operators_instances["pull_operators_instances"] = generate_pull_operators(self.services, self.dag)
-        self.operators_instances["stop_operators_instances"] = generate_stop_operators(self.services, self.dag,self.workflow,self.operators_instances)
+        #self.operators_instances["stop_operators_instances"] = generate_stop_operators(self.services, self.dag,self.workflow,self.operators_instances)
 
         # services setup operators_instances
         self.operators_instances["setup_operators_instances"] = generate_setup_operators(self.services, self.dag)
@@ -154,7 +154,7 @@ class Workflow:
         pull_operators_instances  =    [operator for operator in self.operators_instances["pull_operators_instances"].values()]
         setup_operators_instances =    [operator for operator in self.operators_instances["setup_operators_instances"].values()]
         rq_operators_instances    =    [operator for operator in self.operators_instances["generate_endpointRequest_operator"]]
-        stop_operators_instances  =    [operator for operator in self.operators_instances["stop_operators_instances"].values()]
+        #stop_operators_instances  =    [operator for operator in self.operators_instances["stop_operators_instances"].values()]
 
 
         for pull_operators_instance in pull_operators_instances:
@@ -230,8 +230,8 @@ class Workflow:
                                           "expected_requestBody":expected_requestBody
                                         })
         #}}
-        for rq_operators_instances in rq_operators_instances:
-                    rq_operators_instances >> stop_operators_instances    
+        #for rq_operators_instances in rq_operators_instances:
+        #           rq_operators_instances >> stop_operators_instances    
 
     
         print(self.dag.tree_view())

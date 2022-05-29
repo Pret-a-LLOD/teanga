@@ -7,7 +7,20 @@ import os
 from os.path import abspath, dirname
 from teanga.operators import *
 from teanga import Workflow 
+import pickle
 
-workflow = Workflow(workflow_filename="created_teanga_workflow.json",
-                    base_folder="/teanga")
-globals()["teanga"] = workflow.description_to_dag()
+workflow_filepath="{{workflow_filepath}}"
+if os.path.exists(workflow_filepath):
+    base_folder = dirname(dirname(abspath(__file__)))
+    workflow_filename = workflow_filepath.split(os.sep)[-1]
+    workflow_pickle_filepath = workflow_filepath.replace(".json",".pickle")
+    if os.path.exists(workflow_pickle_filepath):
+        with open(workflow_pickle_filepath,"rb") as inpf:
+            dag = pickle.load(inpf)
+    else:
+        workflow = Workflow(workflow_filename=workflow_filename,
+                            base_folder=base_folder)
+        dag = workflow.description_to_dag()
+        with open(workflow_pickle_filepath,"wb") as outf:
+            pickle.dump(dag, outf)
+    globals()["teanga_ui"] = dag 

@@ -9,8 +9,10 @@ WORKDIR /teanga
 ENV AIRFLOW_HOME /teanga
 RUN chmod +x /teanga
 COPY ./requirements.txt /teanga/requirements.txt
-COPY ./ /teanga
 RUN pip3 install -r requirements.txt --no-cache-dir --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-1.10.12/constraints-3.7.txt"
+COPY ./teanga /teanga/teanga
+RUN pip3 install ./teanga --no-cache-dir
+COPY ./ /teanga
 RUN airflow initdb
 RUN chmod +x /teanga/init.sh
 CMD ["./init.sh"]  
