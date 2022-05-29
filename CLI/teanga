@@ -168,7 +168,7 @@ CREATE_WORKFLOW () {
     # need to check if file exists
     # need to check if teanga container id exists
     docker cp  $WORKFLOW_FILEPATH $TEANGA_BACKEND_CONTAINER_ID:/teanga/workflows/$WORKFLOW_TEANGA_FILENAME\_$FILENAME 
-    docker exec teanga_backend python3 /teanga/test.py /teanga/workflows/$WORKFLOW_TEANGA_FILENAME\_$FILENAME
+    docker exec teanga_backend python3 /teanga/create_dag.py /teanga/workflows/$WORKFLOW_TEANGA_FILENAME\_$FILENAME
 }
 
 
