@@ -1,0 +1,14 @@
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from airflow.operators.bash_operator import PythonOperator
+
+with DAG('my_dag', start_date=datetime(2016, 1, 1)) as dag:
+    (
+        DummyOperator(task_id='dummy_1')
+        >> BashOperator(
+            task_id='bash_1',
+            bash_command='echo "HELLO!"')
+        >> PythonOperator(
+            task_id='python_1',
+            python_callable=lambda: print("GOODBYE!"))
+    )

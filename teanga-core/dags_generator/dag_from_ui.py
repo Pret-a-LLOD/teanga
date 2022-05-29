@@ -9,9 +9,9 @@ from teanga.operators import *
 from teanga import Workflow 
 import pickle
 
-workflow_filename = "{{workflow_filename}}"
-if os.path.exists(f"/teanga/workflows/{workflow_filename}"):
+if os.path.exists("/teanga/workflows/teanga_ui.json"):
     base_folder = dirname(dirname(abspath(__file__)))
+    workflow_filename = "teanga_ui.json"
     workflow_pickle_filepath = f'/teanga/workflows/{workflow_filename}'.replace(".json",".pickle")
     if os.path.exists(workflow_pickle_filepath):
         with open(workflow_pickle_filepath,"rb") as inpf:
