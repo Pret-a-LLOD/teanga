@@ -6,3 +6,5 @@
 - start command is only valid without params
 - teanga stop command should be idempotent running more than once does not anything
 - teanga start command should be idempotent running more than once does not anything
+- if you create two workflow with the same filename it will overwrite the first one
+- 
