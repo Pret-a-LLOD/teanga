@@ -163,12 +163,13 @@ CREATE_WORKFLOW () {
     done
     WORKFLOW_TEANGA_FILENAME=`date +"%Y%m%d%H%M%S"`
     get_teanga_backend_container_id 
-    echo $TEANGA_BACKEND_CONTAINER_ID
+    #echo $TEANGA_BACKEND_CONTAINER_ID
     #cp $WORKFLOW_FILEPATH ./workflows/$FILENAME
     # need to check if file exists
     # need to check if teanga container id exists
     docker cp  $WORKFLOW_FILEPATH $TEANGA_BACKEND_CONTAINER_ID:/teanga/workflows/$WORKFLOW_TEANGA_FILENAME\_$FILENAME 
     docker exec teanga_backend python3 /teanga/create_dag.py /teanga/workflows/$WORKFLOW_TEANGA_FILENAME\_$FILENAME
+    echo Workflow id is : $WORKFLOW_TEANGA_FILENAME\_$FILENAME
 }
 
 
