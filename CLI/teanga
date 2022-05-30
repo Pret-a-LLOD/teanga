@@ -14,6 +14,7 @@ AVAILABLE_STOP_SERVICES=("global")
 AVAILABLE_FLAGS=("-f" "-p" "--output-dir")
 AVAILABLE_START_GLOBAL_FLAGS=("-f" "-p" "--output-dir")
 AVAILABLE_CREATE_WORKFLOW_FLAGS=("-f")
+AVAILABLE_RUN_WORKFLOW_FLAGS=("--id")
 
 OPENAPI_FOLDERNAME="openapi-specifications"
 WORKFLOWS_FOLDERNAME="workflows"
@@ -104,47 +105,7 @@ else
 fi
 
 
-RUN_WORKFLOW () {
-    for str_PAIR in "$@";
-    do
-        arr_PAIR=(${str_PAIR//=/ })
-        FLAG=${arr_PAIR[0]};
-        PARAMETER=${arr_PAIR[1]};
-        if [ "$FLAG" = "-f" ];
-        then
-            WORKFLOW_FILEPATH=$PARAMETER;
-            FILENAME="${WORKFLOW_FILEPATH##*\/}"
-        elif [ "$FLAG" = "-p" ];
-        then
-            PORT=$PARAMETER;
-        else
-            show_usage;
-        fi
-        echo "-------";
-    done
-    if [ -z "$PWD" ]
-    then
-          echo "\$PWD is empty, trying to set $PWD with $(pwd)"
-          PWD=$(pwd)
-    else
-          echo "\$PWD is ${PWD}, so using it as base_folder"
-    fi
-    mkdir -p $PWD/$WORKFLOWS_FOLDERNAME
-    mkdir -p $PWD/$OPENAPI_FOLDERNAME
-    mkdir -p $PWD/$FILES_FOLDERNAME
-    mkdir -p $PWD/$OUTPUT_FOLDERNAME
-    cp $WORKFLOW_FILEPATH ./workflows/$FILENAME
-    docker run -t --rm --name $TEANGA_CONTAINER_NAME \
-               -v /var/run/docker.sock:/var/run/docker.sock \
-               -v $PWD/workflows:/teanga/workflows \
-               -v $PWD/OAS:/teanga/OAS \
-               -v $PWD/files:/teanga/files \
-               -e TEANGA_DIR=$PWD \
-               -e TARGET_WORKFLOW=$FILENAME \
-               -e RUN_DAG=true \
-               -p $PORT:8080 \
-               $IMAGE_NAME:$IMAGE_TAG
-}
+
 
 CREATE_WORKFLOW () {
     for str_PAIR in "$@";
@@ -172,6 +133,24 @@ CREATE_WORKFLOW () {
     echo Workflow id is : $WORKFLOW_TEANGA_FILENAME\_$FILENAME
 }
 
+
+RUN_WORKFLOW () {
+    for str_PAIR in "$@";
+    do
+        arr_PAIR=(${str_PAIR//=/ })
+        FLAG=${arr_PAIR[0]};
+        PARAMETER=${arr_PAIR[1]};
+        if [ "$FLAG" = "--id" ];
+        then
+            WORKFLOW_ID=$PARAMETER;
+        else
+            show_usage;
+        fi
+        echo "-------";
+    done
+    get_teanga_backend_container_id 
+    docker exec $TEANGA_BACKEND_CONTAINER_ID airflow trigger_dag $WORKFLOW_ID 
+}
 
 START_GLOBAL () {
     if [[ -z $(docker ps | awk '/teanga/ {print $1}') ]];
