@@ -1,4 +1,4 @@
-# Welcome to Teanga
+# ![image](/assets/teanga-logo.png)  Welcome to Teanga
 Teanga is a command-line tool that automates and facilitates using sequences of containerized rest api as a workflow. It aims at creation of complex Natural Language Processing workflows using Airflow, OpenAPI specification and docker.
 Our code is open-source and available in [GitHub](https://github.com/pret-a-llod/teanga).
 
@@ -34,10 +34,10 @@ If you have curl command installed in your terminal:
 
 ## Tutorials
 
-* [Teanga Start UI](/teanga/teanga_ui/) - Start Teanga backend and UI.
-* [Teanga Run Existing Workflow](/teanga/run_existing_workflow/) - Start Teanga backend and UI.
-* [Creating a new Workflow in Teanga](/teanga/create_new_workflow/) - Start Teanga backend and UI.
-* [Creating a new Service in Teanga](/teanga/create_new_workflow/) - Start Teanga backend and UI.
-* [List of available services in teanga](/teanga/create_new_workflow/) - Start Teanga backend and UI.
-* [List of example Workflows](/teanga/create_new_workflow/) - Start Teanga backend and UI.
+* [Teanga Start UI](/teanga/start_teanga/) - Start Teanga backend and UI.
 * [Shutdown Teanga](/teanga/stop_teanga/) - Stop Teanga backend and UI.
+* [Teanga Run Existing Workflow](/teanga/run_existing_workflow/) - Start Teanga backend and UI.
+* [Creating a new Workflow in Teanga](/teanga/create_new_workflow/) - Create a workflow from a workflow description json file.
+* [Creating a new Service in Teanga](/teanga/create_new_service/) - Step by step for developers create a rest api for teanga.
+* [List of available services in teanga](/teanga/available_services/) - Existing teanga services.
+* [List of example Workflows](/teanga/available_workflows/) - Start Teanga backend and UI.
