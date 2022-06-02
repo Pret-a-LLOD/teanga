@@ -1,4 +1,4 @@
-# ![image](/assets/teanga-logo.png)  Welcome to Teanga
+# ![image](/teanga/assets/teanga-logo.png)  Welcome to Teanga
 Teanga is a command-line tool that automates and facilitates using sequences of containerized rest api as a workflow. It aims at creation of complex Natural Language Processing workflows using Airflow, OpenAPI specification and docker.
 Our code is open-source and available in [GitHub](https://github.com/pret-a-llod/teanga).
 
@@ -32,7 +32,7 @@ If you have curl command installed in your terminal:
 * `teanga run workflow -f {filepath}` -  Runs a workflow through the command line
 
 
-## Tutorials
+## Tutorials (Under construction, Most tutorials are empty)
 
 * [Teanga Start UI](/teanga/start_teanga/) - Start Teanga backend and UI.
 * [Shutdown Teanga](/teanga/stop_teanga/) - Stop Teanga backend and UI.
