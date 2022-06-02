@@ -459,6 +459,8 @@ def endpointRequest_function(*args, **kwargs):
                             expected_type = json_schema["type"] 
                             if expected_type == "string":
                                 response = response.strip()
+                elif expected_content.get("text/plain",False):
+                    response = response.strip()
         for request_ in requests_:
             '''
             if kwargs['step_description']['operation_spec']["sucess_response"].get("content", False):

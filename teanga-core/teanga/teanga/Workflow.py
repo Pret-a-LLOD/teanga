@@ -13,6 +13,7 @@ from airflow import DAG
 
 class Workflow:
     def __init__(self, workflow_filename, base_folder):#{{
+        self.openapi_folder = "openapi-specifications"
         self.docker_client = docker.from_env()
         self.base_folder=    base_folder#os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
         self.workflow_filename = workflow_filename#os.environ['TARGET_WORKFLOW'] 
@@ -62,12 +63,12 @@ class Workflow:
                     file_obj.write(i)
                 file_obj.seek(0)
                 tar = tarfile.open(mode='r', fileobj=file_obj)
-                tar.extractall("/teanga/OAS")
+                tar.extractall(f"/teanga/{self.openapi_folder}")
                 tar.close()
-                os.rename("/teanga/OAS/openapi.yaml",f'/teanga/OAS/{openapi_filename}')
+                os.rename(f"/teanga/{self.openapi_folder}/openapi.yaml",f'/teanga/{self.openapi_folder}/{openapi_filename}')
                 container.stop()
                 container.remove()
-                service_openapi_spec = yaml.load(open(f'/teanga/OAS/{openapi_filename}'),Loader=yaml.FullLoader)
+                service_openapi_spec = yaml.load(open(f'/teanga/{self.openapi_folder}/{openapi_filename}'),Loader=yaml.FullLoader)
                 for (workflow_id, d) in steps_using_service:
                     operation_id  = d["operation_id"]
                     self.workflow[workflow_id]["operation_spec"] = self.get_spec_from_operationId(service_openapi_spec, operation_id) 
@@ -87,16 +88,31 @@ class Workflow:
                     flatten["sucess_response"] = operation_data["responses"].get("200",operation_data["responses"].get(200,None))
                     if not flatten["sucess_response"]: raise Error("Missing sucess response schema") 
 
-                    flatten["response_schema"] = \
-                            flatten["sucess_response"]['content']['application/json']['schema']\
-                            if flatten["sucess_response"].get('content',False) else None
-                    if flatten["response_schema"]:
-                        if flatten["response_schema"].get("type",False) == "array":
-                            flatten["response_schema_item_name"] = \
-                                    flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]
-                        elif flatten["response_schema"].get("$ref",False):
-                            flatten["response_schema_name"] = \
-                                    flatten["sucess_response"]['content']['application/json']['schema']["$ref"].split("/")[-1]
+                    if not flatten["sucess_response"].get('content', False):
+                        flatten["content_type"] = None
+                        flatten["sucess_response"] = None
+                      
+
+                    elif len(flatten["sucess_response"]['content'].keys()) == 1:
+                        flatten["content_type"] = [k for k in flatten["sucess_response"]['content'].keys()][0]  
+                    else: raise Error("sucess reponse type can be only of one type")
+
+                    if flatten["content_type"]  == "application/json":
+                        flatten["response_schema"] = \
+                                flatten["sucess_response"]['content']['application/json']['schema']\
+                                if flatten["sucess_response"].get('content',False) else None
+                        if flatten["response_schema"]:
+                            if flatten["response_schema"].get("type",False) == "array":
+                                flatten["response_schema_item_name"] = \
+                                        flatten["sucess_response"]['content']['application/json']['schema']["items"]["$ref"].split("/")[-1]
+                            elif flatten["response_schema"].get("$ref",False):
+                                flatten["response_schema_name"] = \
+                                        flatten["sucess_response"]['content']['application/json']['schema']["$ref"].split("/")[-1]
+                    elif flatten["content_type"]  == "text/plain":
+                        flatten["response_schema"] = {
+                                "type": "string"
+                                }
+
         flatten["schemas"] = OAS.get('components',{}).get('schemas',{})
         return flatten 
     #}
