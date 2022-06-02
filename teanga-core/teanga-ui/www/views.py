@@ -2242,16 +2242,21 @@ class Airflow(AirflowViewMixin, BaseView):
 class HomeView(AirflowViewMixin, AdminIndexView):
     @expose("/ping",methods=["POST"])
     def teanga_create_workflow(self):
-        with open("/teanga/dags_generator/dag_from_ui.py") as templatef:
+        ts = str(dt.datetime.now()) 
+        for char_ in [" ","-",":"]:
+            ts = ts.replace(char_,"_")
+        workflow_filename=f"{ts}.json"
+        workflow_filepath=f"/teanga/workflows/{workflow_filename}"
+        with open(workflow_filepath,"w") as outf:
+            json.dump(request.json, outf)
+
+        with open("/teanga/dags_generator/dag_template") as templatef:
             dag_template = Template(templatef.read())
-            workflow_filename="ttt"+''.join(random.choice(string.ascii_lowercase) for i in range(20))+".json"
-            content = dag_template.render(workflow_filename=workflow_filename)
+            content = dag_template.render(workflow_filepath=workflow_filepath)
 
         with open("/teanga/dags/"+workflow_filename.replace(".json",".py"),"w") as dagrun_file:
             dagrun_file.write(content)
 
-        with open(f"/teanga/workflows/{workflow_filename}","w") as outf:
-            json.dump(request.json, outf)
 
         return jsonify({"status":"created"})  
 
