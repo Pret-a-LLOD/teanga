@@ -8,12 +8,12 @@
       
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/teanga-logo.ico">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.6">
     
     
       
-        <title>Teanga</title>
+        <title>teanga</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#00bdd6">
         
       
     
@@ -48,7 +52,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="cyan" data-md-color-accent="">
   
     
     
@@ -72,10 +76,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Teanga" class="md-header__button md-logo" aria-label="Teanga" data-md-component="logo">
+    <a href="." title="teanga" class="md-header__button md-logo" aria-label="teanga" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="assets/teanga-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -85,7 +88,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Teanga
+            teanga
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -158,13 +161,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Teanga" class="md-nav__button md-logo" aria-label="Teanga" data-md-component="logo">
+    <a href="." title="teanga" class="md-nav__button md-logo" aria-label="teanga" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="assets/teanga-logo.png" alt="logo">
 
     </a>
-    Teanga
+    teanga
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -254,7 +256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="teanga_ui/" class="md-nav__link">
+      <a href="teanga_ui.md" class="md-nav__link">
         Teanga UI
       </a>
     </li>
@@ -358,7 +360,7 @@
               
                 
 
-<h1 id="welcome-to-teanga">Welcome to Teanga</h1>
+<h1 id="welcome-to-teanga"><img alt="image" src="/assets/teanga-logo.png" />  Welcome to Teanga</h1>
 <p>Teanga is a command-line tool that automates and facilitates using sequences of containerized rest api as a workflow. It aims at creation of complex Natural Language Processing workflows using Airflow, OpenAPI specification and docker.
 Our code is open-source and available in <a href="https://github.com/pret-a-llod/teanga">GitHub</a>.</p>
 <h2 id="installation">Installation</h2>
@@ -385,13 +387,13 @@ teanga run workflow -f ./workflows/my_teanga_workflow.json
 </ul>
 <h2 id="tutorials">Tutorials</h2>
 <ul>
-<li><a href="/teanga/teanga_ui/">Teanga Start UI</a> - Start Teanga backend and UI.</li>
-<li><a href="/teanga/run_existing_workflow/">Teanga Run Existing Workflow</a> - Start Teanga backend and UI.</li>
-<li><a href="/teanga/create_new_workflow/">Creating a new Workflow in Teanga</a> - Start Teanga backend and UI.</li>
-<li><a href="/teanga/create_new_workflow/">Creating a new Service in Teanga</a> - Start Teanga backend and UI.</li>
-<li><a href="/teanga/create_new_workflow/">List of available services in teanga</a> - Start Teanga backend and UI.</li>
-<li><a href="/teanga/create_new_workflow/">List of example Workflows</a> - Start Teanga backend and UI.</li>
+<li><a href="/teanga/start_teanga/">Teanga Start UI</a> - Start Teanga backend and UI.</li>
 <li><a href="/teanga/stop_teanga/">Shutdown Teanga</a> - Stop Teanga backend and UI.</li>
+<li><a href="/teanga/run_existing_workflow/">Teanga Run Existing Workflow</a> - Start Teanga backend and UI.</li>
+<li><a href="/teanga/create_new_workflow/">Creating a new Workflow in Teanga</a> - Create a workflow from a workflow description json file.</li>
+<li><a href="/teanga/create_new_service/">Creating a new Service in Teanga</a> - Step by step for developers create a rest api for teanga.</li>
+<li><a href="/teanga/available_services/">List of available services in teanga</a> - Existing teanga services.</li>
+<li><a href="/teanga/available_workflows/">List of example Workflows</a> - Start Teanga backend and UI.</li>
 </ul>
 
               
@@ -407,13 +409,13 @@ teanga run workflow -f ./workflows/my_teanga_workflow.json
       
       
         
-        <a href="teanga_ui/" class="md-footer__link md-footer__link--next" aria-label="Next: Teanga UI" rel="next">
+        <a href="run_existing_workflow/" class="md-footer__link md-footer__link--next" aria-label="Next: Run Existing Workflow" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Teanga UI
+              Run Existing Workflow
             </div>
           </div>
           <div class="md-footer__button md-icon">
