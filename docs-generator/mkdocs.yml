@@ -1,10 +1,15 @@
-site_name: Teanga
+site_name: teanga
 nav: 
     - Home: index.md
     - Teanga UI: teanga_ui.md
     - Run Existing Workflow: run_existing_workflow.md
     - Create new Workflow: create_new_workflow.md
-theme: material
+theme:
+  name: material 
+  palette:
+    primary: cyan
+  logo: assets/teanga-logo.png
+  favicon: assets/teanga-logo.ico
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
