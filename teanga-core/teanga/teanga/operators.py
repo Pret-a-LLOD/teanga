@@ -11,7 +11,7 @@ def generate_pull_operators(unique_services, dag): #{
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
-        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}'
         task_id=f"pull--{airflow_imageName}--{d['host_port']}"
         check_imageExists = f'$(docker images -q {full_imagePath})'
         pull_command=f'docker pull {full_imagePath}'
@@ -28,7 +28,7 @@ def generate_pull_operators(unique_services, dag): #{
     repo=""# #{
     name="rq_manager"
     tag=today_date
-    full_imagePath = f"{name}:{tag}"  
+    full_imagePath = f"{name}:{tag}"
     task_id=f"pull--{repo}--{name}--{tag}"
     command=f'docker pull {full_imagePath}'
     print(command);
@@ -48,9 +48,9 @@ def generate_setup_operators(unique_services, dag): #{{
     operators = {}
     for full_imagePath, services_instances in unique_services.items():
         d = services_instances[0][1]
-        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}'
         task_id=f"setup-{airflow_imageName}--{d['host_port']}"
-        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 90"
+        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 10"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -64,7 +64,7 @@ def generate_setup_operators(unique_services, dag): #{{
 def generate_validateWorkflow_operator(): #{
     """
     """
-    operators = {}    
+    operators = {}
     task_id=f"validating--workflow"
     command=f'python3 /teanga/workflow_validation.py'
     operators[task_id] = BashOperator(
@@ -105,25 +105,25 @@ def generate_stop_operators(unique_services, dag, workflow,operators_instances )
         full_imagePath = f'{d["repo"]}/{d["image_id"]}:{d["image_tag"]}'\
                             if d['repo'] else f'{d["image_id"]}:{d["image_tag"]}'
         if step_description["stop_container"] == "yes":
-            if stop_operators_flags.get(full_imagePath,False) and stop_operators_flags[full_imagePath]["stop"] == "no": 
+            if stop_operators_flags.get(full_imagePath,False) and stop_operators_flags[full_imagePath]["stop"] == "no":
                 pass
             else:
                 stop_operators_flags[full_imagePath] = {"stop":"yes"}
-        elif step_description["stop_container"] == "no": 
+        elif step_description["stop_container"] == "no":
             stop_operators_flags[full_imagePath]= {"stop":"no"}
-        
-    res = True 
+
+    res = True
     test_val = "yes"
-    
+
     for ele in stop_operators_flags:
         if stop_operators_flags[ele]["stop"] != test_val:
-            res = False 
-  
+            res = False
+
     if res == True:
         for full_imagePath, services_instances in unique_services.items():
                         d = services_instances[0][1]
                         to_stop = f'$(docker ps -a | awk "/teanga/ {{ print $1}}")'
-                        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}' 
+                        airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}'
                         # setup_task_id=f"setup-{airflow_imageName}--{d['host_port']}"
                         task_id=f"stop-{airflow_imageName}--{d['host_port']}"
                         command=f'docker stop echo {to_stop}'
@@ -133,20 +133,20 @@ def generate_stop_operators(unique_services, dag, workflow,operators_instances )
                                 bash_command=command,
                                 dag=dag,
                                 xcom_push =True,
-                                
-                        )            
+
+                        )
                         return operators
     else:
         #pass
         stop_operators_instances  =   {}
-        return stop_operators_instances 
+        return stop_operators_instances
 
-    
-    
+
+
 
 
 def flatten_operator(airflowOperator_id, dag):#{{
-    operators = {}    
+    operators = {}
     task_id=f"flatten-{airflowOperator_id}"
     command=f'echo testing'
     return PythonOperator(
@@ -166,10 +166,10 @@ def flatten_function(*args,**kwargs):
                     - given_inputs
                         - type : list
                         - items :
-                            - type : dict 
+                            - type : dict
 
-        Its expected that every value in                     
-        given_inputs dictionaries are a list 
+        Its expected that every value in
+        given_inputs dictionaries are a list
         of objects with the same schema
     '''
     #{{
@@ -185,7 +185,7 @@ def flatten_function(*args,**kwargs):
     for idx, schema_dict in enumerate(kwargs['given_inputs']):
             for schema_name, schema_info in schema_dict.items():
                 if not isinstance(schema_info, dict):
-                   continue 
+                   continue
                 schema = schema_info["schema"]
                 list_of_objects = schema_info["value"]
                 for object in list_of_objects:
@@ -194,14 +194,14 @@ def flatten_function(*args,**kwargs):
     return {
             schema_name: {
             "value":flattened_elements,
-            "schema": schema 
+            "schema": schema
             }
         }
     #}}
 #}}
 
-def matching_operator(airflowOperator_id, dag):#{{ 
-    operators = {}    
+def matching_operator(airflowOperator_id, dag):#{{
+    operators = {}
     task_id=f"{airflowOperator_id}-matching"
     return PythonOperator(
         task_id=task_id,
@@ -213,7 +213,7 @@ def matching_operator(airflowOperator_id, dag):#{{
 def matching_function(*args, **kwargs):
     """
         - inputs
-            kwargs: dict, 
+            kwargs: dict,
             {
                 "given_inputs": [dict or str],
                 "expected_parameters": [str],
@@ -224,10 +224,10 @@ def matching_function(*args, **kwargs):
         {
             "inputs": dict or [dict],
             "json_inputs": True or None,
-            "header": string or None 
+            "header": string or None
         }
     """
-    # 1 inputs -> "expected_requestBody" "expected_parameters" and "given_inputs" 
+    # 1 inputs -> "expected_requestBody" "expected_parameters" and "given_inputs"
     # 2 check if there's user input and depencencies input
     # 3 match
     #{{
@@ -243,12 +243,12 @@ def matching_function(*args, **kwargs):
 
         elif isinstance(input_source,str):
             kwargs['given_inputs'].pop(idx)
-            abc = kwargs['ti'].xcom_pull(task_ids=input_source)
-            if isinstance(abc, str):
-                kwargs['given_inputs'].append({"requestBody":abc})
-            if isinstance(abc, dict):
+            dependency_output = kwargs['ti'].xcom_pull(task_ids=input_source)
+            if isinstance(dependency_output, str):
+                kwargs['given_inputs'].append({"requestBody":ast.literal_eval(dependency_output)})
+            if isinstance(dependency_output, dict):
                 pass
-            #for dict_ in abc:
+            #for dict_ in dependency_output:
 
     expected_inputs = kwargs["expected_parameters"]
     # check if file is required
@@ -266,16 +266,16 @@ def matching_function(*args, **kwargs):
 
             if source_idx:
                 pass
-                #kwargs['given_inputs'][source_idx][expected_schema_name] = kwargs['given_inputs'][source_idx]["requestBody"] 
-                #del kwargs['given_inputs'][source_idx]["requestBody"]
-        else: 
-            expected_inputs['files'] = kwargs["expected_requestBody"] 
+#               kwargs['given_inputs'][source_idx][expected_schema_name] = kwargs['given_inputs'][source_idx]["requestBody"]
+#               del kwargs['given_inputs'][source_idx]["requestBody"]
+        else:
+            expected_inputs['files'] = kwargs["expected_requestBody"]
 
     given_inputs_dict = {}
     for inputs_dict in kwargs['given_inputs']:
         for input_key, input_value in inputs_dict.items():
             if isinstance(input_value, dict):
-                given_inputs_dict[input_key]= input_value 
+                given_inputs_dict[input_key]= input_value
             else:
                 given_inputs_dict[input_key]= {
                      "value": input_value,
@@ -283,23 +283,23 @@ def matching_function(*args, **kwargs):
                     }
 
 
-    
+
     missing_expected_inputs = {}
-    isCollection = False 
+    isCollection = False
     for expected_input, expected_details in expected_inputs.items():
         if given_inputs_dict.get(expected_input,False):
-            if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array": 
+            if given_inputs_dict[expected_input].get("schema", {} ).get("type",None) == "array":
                 isCollection = expected_input
             else:
                 #given_inputs_dict[expected_input].update(expected_details)
                 pass
         else:
-            missing_expected_inputs[expected_input] = expected_details 
+            missing_expected_inputs[expected_input] = expected_details
 
     #for expected_input, expected_details in expected_inputs.items():
-    # if many -> one 
-    #(given input is a schema of type array of a certain schema and expected input is that certain schema)  
-    
+    # if many -> one
+    #(given input is a schema of type array of a certain schema and expected input is that certain schema)
+
 
     if given_inputs_dict.get("files",False):
         files = []
@@ -310,26 +310,26 @@ def matching_function(*args, **kwargs):
         else:
             for filename in files_name:
                 file_content = open(f'/teanga/files/{filename}')
-                files.append(file_content) 
-
+                files.append(file_content)
 
     if missing_expected_inputs:
+        logging.info(f" missing expected inputs: {missing_expected_inputs.items()}")
         for expected_input, expected_details in missing_expected_inputs.items():
-            if expected_details.get("required",None) != None:
-                if expected_details["required"] == True:
+            if expected_details.get("required",None) is not None:
+                if expected_details["required"] is True:
                     raise Exception("Missing inputs")
                 else:
                     continue
             else:
-                raise Exception("Missing inputs")
+                continue
         print("matching with missing inputs", given_inputs_dict)
         return {
             "header": {'Content-Type': 'application/json'},
             "inputs":given_inputs_dict
             }
     elif isCollection:
-        given_inputs_per_item = [] 
-        for item in given_inputs_dict[isCollection]["value"]: 
+        given_inputs_per_item = []
+        for item in given_inputs_dict[isCollection]["value"]:
             given_inputs_per_item.append(
                     dict({k:v for k,v in  given_inputs_dict.items()},
                         **{isCollection:{"value": {k:v for k,v in  item.items()}}})
@@ -337,9 +337,10 @@ def matching_function(*args, **kwargs):
         return {
                 "header": {'Content-Type': 'application/json'},
                 "json_input": isCollection,
-                "inputs":given_inputs_per_item 
+                "inputs":given_inputs_per_item
                 }
     else:
+        logging.info(given_inputs_dict)
         header = locals().get("header", None)
         return {
             "header" : header,
@@ -357,7 +358,7 @@ def generate_endpointRequest_operator(workflow_step, endpoint_name,endpoint_info
         op_kwargs={},
         dag=dag,
     )
-    return operator 
+    return operator
 
 def setup_request(named_inputs,#{{
                 endpoint,
@@ -393,7 +394,7 @@ def setup_request(named_inputs,#{{
                           data=data)
     else:
         if header:
-            #data = remaining_inputs.pop(matching_output["json_input"]) 
+            #data = remaining_inputs.pop(matching_output["json_input"])
             if len(remaining_inputs.keys()) == 1:
                 data = remaining_inputs[list(remaining_inputs.keys())[0]]
             else:
@@ -410,7 +411,7 @@ def setup_request(named_inputs,#{{
                     params=remaining_inputs,
                           url=url)
     request_ = request_.prepare()
-    return request_ 
+    return request_
     #}}
 
 
@@ -435,7 +436,7 @@ def endpointRequest_function(*args, **kwargs):
                                      )
                                      for inputs_dict in inputs ]
 
-        elif isinstance(inputs,dict): 
+        elif isinstance(inputs,dict):
             requests_ = [setup_request(inputs,
                                      kwargs['step_description']['operation_spec']["endpoint"],
                                      kwargs['step_description']['operation_spec']["request_method"],
@@ -456,7 +457,7 @@ def endpointRequest_function(*args, **kwargs):
                     if json_description.get("schema",False):
                         json_schema = json_description["schema"]
                         if json_schema.get("type",False):
-                            expected_type = json_schema["type"] 
+                            expected_type = json_schema["type"]
                             if expected_type == "string":
                                 response = response.strip()
                 elif expected_content.get("text/plain",False):
@@ -485,19 +486,19 @@ def endpointRequest_function(*args, **kwargs):
                         }
                         #response.update(kwargs['step_description']['operation_spec']["response_schema"])
 
-                else: 
+                else:
                     response = session.send(request_).text.encode("utf-8")
             else:
                 response = session.send(request_).text.encode("utf-8")
             responses.append(response)
             '''
             pass
-        return response  
+        return response
     #}}
 #}
 
 def groupby_operator(id, dag):#{{
-    operators = {}    
+    operators = {}
     task_id=f"groupby--{id}"
     return PythonOperator(
             task_id=task_id,
@@ -527,7 +528,7 @@ def groupby_function(*args,**kwargs):
                 logging.info(schema_dict.items())
                 for schema_name, schema_info in schema_dict.items():
                     if not isinstance(schema_info, dict):
-                       continue 
+                       continue
                     logging.info(schema_info)
                     logging.info(schema_info.keys())
                     schema = schema_info["schema"]
@@ -538,7 +539,7 @@ def groupby_function(*args,**kwargs):
         return {
                 schema_name: {
                 "value":flattened_elements,
-                "schema": schema 
+                "schema": schema
                 }
             }
     #}}
@@ -547,7 +548,7 @@ def groupby_function(*args,**kwargs):
 #}}
 
 def compose_operator(id, dag):#{{
-    operators = {}    
+    operators = {}
     task_id=f"compose--{id}"
     command=f'echo testing'
     return PythonOperator(
@@ -577,7 +578,7 @@ def compose_function(*args,**kwargs):
                 logging.info(schema_dict.items())
                 for schema_name, schema_info in schema_dict.items():
                     if not isinstance(schema_info, dict):
-                       continue 
+                       continue
                     logging.info(schema_info)
                     logging.info(schema_info.keys())
                     schema = schema_info["schema"]
@@ -588,7 +589,7 @@ def compose_function(*args,**kwargs):
         return {
                 schema_name: {
                 "value":flattened_elements,
-                "schema": schema 
+                "schema": schema
                 }
             }
     #}}
@@ -597,7 +598,7 @@ def compose_function(*args,**kwargs):
 #}}
 
 def concatenate_operator(id, dag):#{{
-    operators = {}    
+    operators = {}
     task_id=f"concatenate-{id}"
     command=f'echo testing'
     return PythonOperator(
@@ -626,7 +627,7 @@ def concatenate_function(*args,**kwargs):
                 logging.info(schema_dict.items())
                 for schema_name, schema_info in schema_dict.items():
                     if not isinstance(schema_info, dict):
-                       continue 
+                       continue
                     logging.info(schema_info)
                     logging.info(schema_info.keys())
                     schema = schema_info["schema"]
@@ -637,7 +638,7 @@ def concatenate_function(*args,**kwargs):
         return {
                 schema_name: {
                 "value":flattened_elements,
-                "schema": schema 
+                "schema": schema
                 }
             }
     #}}

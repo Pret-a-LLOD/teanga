@@ -1,0 +1,298 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: DKPro OpenNLP in Teanga
+paths:
+  /opennlp_segmenter:
+    post:
+      operationId: segmenter
+      summary: Tokenizer and sentence splitter using OpenNLP.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyCas'
+      parameters:
+        - name: language
+          description: Use this language instead of the document language to resolve the model.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: modelVariant
+          description: Override the default variant used to locate the model.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: segmentationModelLocation
+          description: Load the segmentation model from this location instead of locating the model automatically.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: strictZoning
+          description: Strict zoning causes the segmentation to be applied only within the boundaries of a zone annotation. This works only if a single zone type is specified (the zone annotations should NOT overlap) or if no zone type is specified - in which case the whole document is taken as a zone. If strict zoning is turned off, multiple zone types can be specified. A list of all zone boundaries (start and end) is created and segmentation happens between them.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: tokenizationModelLocation
+          description: Load the tokenization model from this location instead of locating the model automatically.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: writeSentence
+          description: Create Sentence annotations.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: writeToken
+          description: Create Token annotations.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: zoneTypes
+          description: A list of type names used for zoning.
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            default: ["de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Div"]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CasSentenceToken'
+  /opennlp_tagger:
+    post:
+      operationId: tagger
+      summary: Part-of-Speech annotator using OpenNLP. Requires Sentences to be annotated before.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CasSentenceToken'
+      parameters:
+        - name: language
+          description: Use this language instead of the document language to resolve the model.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: modelVariant
+          description: Override the default variant used to locate the model.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: posMappingLocation
+          description: Load the part-of-speech tag to UIMA type mapping from this location instead of locating the mapping automatically.
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: internTags
+          description: Use the String#intern() method on tags. This is usually a good idea to avoid spaming the heap with thousands of strings representing only a few different tags.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: modelLocation
+          description: Load the model from this location instead of locating the model automatically.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: printTagset
+          description: Log the tag set(s) when a model is loaded
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CasPOS'
+
+components:
+  schemas:
+    EmptyCas:
+      type: object
+      required:
+        - documentText
+        - language
+      properties:
+        documentText:
+          type: string
+        language:
+          type: string
+    CasSentenceToken:
+      type: object
+      required:
+        - documentText
+        - language
+        - token
+        - sentence
+      properties:
+        documentText:
+          type: string
+        language:
+          type: string
+        token:
+          type: array
+          items:
+            $ref: '#/components/schemas/Token'
+        sentence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sentence'
+    CasPOS:
+      type: object
+      required:
+        - documentText
+        - language
+        - pos
+      properties:
+        documentText:
+          type: string
+        language:
+          type: string
+        pos:
+          type: array
+          items:
+            $ref: '#/components/schemas/POS'
+    Token:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        id:
+          type: string
+        lemma:
+          $ref: '#/components/schemas/Lemma'
+        stem:
+          $ref: '#/components/schemas/Stem'
+        pos:
+          $ref: '#/components/schemas/POS'
+        morph:
+          $ref: '#/components/schemas/MorphologicalFeatures'
+    Sentence:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        id:
+          type: string
+    Lemma:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        value:
+          type: string
+    Stem:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        value:
+          type: string
+    MorphologicalFeatures:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        gender:
+          type: string
+        number:
+          type: string
+        case:
+          type: string
+        degree:
+          type: string
+        verbForm:
+          type: string
+        tense:
+          type: string
+        mood:
+          type: string
+        voice:
+          type: string
+        definiteness:
+          type: string
+        value:
+          type: string
+        person:
+          type: string
+        aspect:
+          type: string
+        animacy:
+          type: string
+        negative:
+          type: string
+        numType:
+          type: string
+        possessive:
+          type: string
+        pronType:
+          type: string
+        reflex:
+          type: string
+    POS:
+      type: object
+      required:
+        - begin
+        - end
+      properties:
+        begin:
+          type: integer
+        end:
+          type: integer
+        posValue:
+          type: string
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/jmccrae/teanga-dkpro/1.0.0
