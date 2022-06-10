@@ -37,8 +37,9 @@ show_usage () {
 }
 
 get_teanga_backend_container_id () {
-    TEANGA_BACKEND_CONTAINER_ID=`docker inspect -f   '{{.Id}}' $TEANGA_CONTAINER_NAME`
+    TEANGA_BACKEND_CONTAINER_ID=`docker inspect -f '{{.Id}}' $TEANGA_CONTAINER_NAME`
 }
+
 check_if_in_list () {
     VALID_COMMAND=0
     local INPUT=$1
@@ -153,7 +154,7 @@ RUN_WORKFLOW () {
 }
 
 START_GLOBAL () {
-    if [[ -z $(docker ps | awk '/teanga/ {print $1}') ]];
+    if [[ -z $(docker ps -a | awk '/teanga/ {print $1}') ]];
     then
         echo "Starting Teanga";
     else
@@ -182,27 +183,40 @@ START_GLOBAL () {
     mkdir -p $PWD/$OPENAPI_FOLDERNAME
     mkdir -p $PWD/$FILES_FOLDERNAME
     mkdir -p $PWD/$OUTPUT_FOLDERNAME
-    docker run -dt --rm --name $TEANGA_CONTAINER_NAME \
-               -v /var/run/docker.sock:/var/run/docker.sock \
-               -v $PWD/$WORKFLOWS_FOLDERNAME:/teanga/workflows \
-               -v $PWD/$OPENAPI_FOLDERNAME:/teanga/OAS \
-               -v $PWD/$FILES_FOLDERNAME:/teanga/files \
-               -v $PWD/$OUTPUT_FOLDERNAME:/teanga/logs \
-               -v /Users/kdu/projects/teanga_master/teanga-core/teanga:/teanga/teanga \
-               -e TEANGA_DIR=$PWD \
-               -p $PORT:8080 \
-               $IMAGE_NAME:$IMAGE_TAG
+    if [ "$IMAGE_TAG" = "test" ]; then
+        echo "using test docker";
+        docker run -dt --rm --name $TEANGA_CONTAINER_NAME \
+                   -v /var/run/docker.sock:/var/run/docker.sock \
+                   -v $PWD/$WORKFLOWS_FOLDERNAME:/teanga/workflows \
+                   -v $PWD/$OPENAPI_FOLDERNAME:/teanga/OAS \
+                   -v $PWD/$FILES_FOLDERNAME:/teanga/files \
+                   -v $PWD/$OUTPUT_FOLDERNAME:/teanga/logs \
+                   -v /Users/kdu/projects/teanga_master/teanga-core/teanga:/teanga/teanga \
+                   -e TEANGA_DIR=$PWD \
+                   -p $PORT:8080 \
+                   $IMAGE_NAME:$IMAGE_TAG
+    else
+        docker run -dt --rm --name $TEANGA_CONTAINER_NAME \
+                   -v /var/run/docker.sock:/var/run/docker.sock \
+                   -v $PWD/$WORKFLOWS_FOLDERNAME:/teanga/workflows \
+                   -v $PWD/$OPENAPI_FOLDERNAME:/teanga/OAS \
+                   -v $PWD/$FILES_FOLDERNAME:/teanga/files \
+                   -v $PWD/$OUTPUT_FOLDERNAME:/teanga/logs \
+                   -e TEANGA_DIR=$PWD \
+                   -p $PORT:8080 \
+                   $IMAGE_NAME:$IMAGE_TAG
+    fi
     echo "Teanga UI is running in port: $PORT"
 }
 
 STOP_GLOBAL () {
-    if [[ -z $(docker ps | awk '/teanga/ {print $1}') ]];
+    if [[ -z $(docker ps -a | awk '/teanga/ {print $1}') ]];
     then
         echo "Teanga is not running";
         exit
     else
         echo "Shutting down teanga";
-        docker stop $(docker ps | awk '/teanga/ {print $1}')
+        docker stop $(docker ps -a | awk '/teanga/ {print $1}')
         echo "Teanga is shutdown"
     fi
 }
