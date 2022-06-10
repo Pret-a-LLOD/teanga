@@ -373,17 +373,19 @@ Our code is open-source and available in <a href="https://github.com/pret-a-llod
 </code></pre>
 <h2 id="quick-start">Quick Start</h2>
 <p>1.Download the workflow <a href="https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/workflows/dkpro_treetagger.json">example</a> 
-   or Create your own workflow file following <a href="/run_existing_workflow">Teanga Run Existing Workflow Tutorial</a>.</p>
+   or Create your own workflow file following <a href="/create_new_workflow">Creating a new Workflow in Teanga</a>.</p>
 <p>2.Start Teanga and Run Workflow:</p>
 <pre><code>teanga start
 
-teanga run workflow -f ./workflows/my_teanga_workflow.json
+teanga create workflow -f ./workflows/my_teanga_workflow.json
+teanga run worflow {my_workflow_id}
 </code></pre>
 <h2 id="commands">Commands</h2>
 <ul>
 <li><code>teanga start</code> - Start Teanga backend and UI.</li>
 <li><code>teanga stop</code> - Stop Teanga backend and UI.</li>
-<li><code>teanga run workflow -f {filepath}</code> -  Runs a workflow through the command line</li>
+<li><code>teanga create workflow -f {filepath}</code> -  creates a workflow through the command line</li>
+<li><code>teanga run workflow --id {workflow_id}</code> -  Runs a workflow through the command line</li>
 </ul>
 <h2 id="tutorials-under-construction-most-tutorials-are-empty">Tutorials (Under construction, Most tutorials are empty)</h2>
 <ul>
