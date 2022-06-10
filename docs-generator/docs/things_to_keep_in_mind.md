@@ -8,3 +8,11 @@
 - teanga start command should be idempotent running more than once does not anything
 - if you create two workflow with the same filename it will overwrite the first one
 - We assume the content response of an endpoint in the openapi spec is either application/json or text/plain this happens in Workflow.py the flattening operation spec function
+- teanga dependency format is       
+      {
+        "operator": "pass",
+        "steps": [
+          "1"
+        ]
+      }
+-
