@@ -16,20 +16,21 @@ If you have curl command installed in your terminal:
 
 ## Quick Start
 1.Download the workflow [example](https://raw.githubusercontent.com/Pret-a-LLOD/teanga/master/workflows/dkpro_treetagger.json) 
-   or Create your own workflow file following [Teanga Run Existing Workflow Tutorial](/run_existing_workflow).
+   or Create your own workflow file following [Creating a new Workflow in Teanga](/create_new_workflow).
 
 2.Start Teanga and Run Workflow:
 
     teanga start
 
-    teanga run workflow -f ./workflows/my_teanga_workflow.json
-
+    teanga create workflow -f ./workflows/my_teanga_workflow.json
+    teanga run worflow {my_workflow_id}
 
 ## Commands
 
 * `teanga start` - Start Teanga backend and UI.
 * `teanga stop` - Stop Teanga backend and UI.
-* `teanga run workflow -f {filepath}` -  Runs a workflow through the command line
+* `teanga create workflow -f {filepath}` -  creates a workflow through the command line
+* `teanga run workflow --id {workflow_id}` -  Runs a workflow through the command line
 
 
 ## Tutorials (Under construction, Most tutorials are empty)
