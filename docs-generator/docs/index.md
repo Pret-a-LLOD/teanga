@@ -23,7 +23,7 @@ If you have curl command installed in your terminal:
     teanga start
 
     teanga create workflow -f ./workflows/my_teanga_workflow.json
-    teanga run worflow {my_workflow_id}
+    teanga run worflow --id {my_workflow_id}
 
 ## Commands
 

@@ -252,6 +252,14 @@
 <li>teanga start command should be idempotent running more than once does not anything</li>
 <li>if you create two workflow with the same filename it will overwrite the first one</li>
 <li>We assume the content response of an endpoint in the openapi spec is either application/json or text/plain this happens in Workflow.py the flattening operation spec function</li>
+<li>teanga dependency format is     <br />
+      {
+        "operator": "pass",
+        "steps": [
+          "1"
+        ]
+      }
+-</li>
 </ul>
 
               
