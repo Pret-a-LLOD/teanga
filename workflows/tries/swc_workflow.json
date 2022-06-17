@@ -1,0 +1,27 @@
+{
+    "1":{
+        "operation_id":"postagger",
+        "input": {
+        "sentences": ["this","is","a","sentence","and","it","is","tokenized"]
+        },
+        "repo":"pretallod",
+        "image_id":"teanga-postagger",
+        "image_tag":"032022",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": []
+    },
+    "2":{
+        "operation_id":"swcchunker",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"teanga-chunker",
+        "image_tag":"032022",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+            {"operator":"pass", "steps":["1"]}
+        ]
+    }
+}

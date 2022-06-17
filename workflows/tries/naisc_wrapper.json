@@ -1,0 +1,42 @@
+{
+    "1":{
+        "operation_id":"upload",
+        "input": {
+        "id": "left_id",
+        "files": ["left.rdf"]
+        },
+        "repo":"berstearns",
+        "image_id":"naisc",
+        "image_tag":"062020",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": []
+    },
+    "2":{
+        "operation_id":"upload",
+        "input": {
+        "id": "right_id", 
+        "files": ["right.rdf"]
+        },
+        "repo":"berstearns",
+        "image_id":"naisc",
+        "image_tag":"062020",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies":[]
+    },
+    "3":{
+        "operation_id":"block",
+        "input": {
+        "config": "auto" 
+        },
+        "repo":"berstearns",
+        "image_id":"naisc",
+        "image_tag":"062020",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies":[
+            {"operator":"pass", "steps":["1","2"]}
+        ]
+    }
+}

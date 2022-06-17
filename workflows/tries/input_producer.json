@@ -1,0 +1,14 @@
+{
+    "1":{
+        "operation_id":"staticrandomvalue",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"input_producer",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+        ]
+    }
+}
