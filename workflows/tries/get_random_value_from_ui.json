@@ -1,0 +1,1 @@
+{"1": {"selectedPath": "/value/{value_type}", "selectedMethod": "get", "operation_id": "randomvalue", "repo": "pretallod", "image_id": "teanga-dummy_service_python", "image_tag": "latest", "host_port": 8001, "container_port": 8080, "input": {"value_type": "str"}, "dependencies": []}}

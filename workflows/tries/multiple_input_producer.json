@@ -1,0 +1,53 @@
+{
+    "1":{
+        "operation_id":"staticrandomvalue",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"input_producer",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+        ]
+    },
+    "2":{
+        "operation_id":"staticrandomvalue",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"input_producer",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+                {"operator":"wait", "steps":["1"]}
+        ]
+    },
+    "3":{
+        "operation_id":"staticrandomvalue",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"input_producer",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+                {"operator":"wait", "steps":["2"]}
+        ]
+    },
+    "4":{
+        "operation_id":"staticrandomvalue",
+        "input": {
+        },
+        "repo":"pretallod",
+        "image_id":"input_producer",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [
+                {"operator":"wait", "steps":["2"]}
+        ]
+    }
+}

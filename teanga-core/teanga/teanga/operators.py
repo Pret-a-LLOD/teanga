@@ -50,7 +50,7 @@ def generate_setup_operators(unique_services, dag): #{{
         d = services_instances[0][1]
         airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}'
         task_id=f"setup-{airflow_imageName}--{d['host_port']}"
-        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 10"
+        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 90"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -373,7 +373,9 @@ def setup_request(named_inputs,#{{
         if input_dict.get("name",False) and  f'{{{input_dict["name"]}}}' in endpoint:
             endpoint = endpoint.replace(f'{{{input_dict["name"]}}}',str(input_dict["value"]))
             remaining_inputs.pop(input_dict["name"],None);
-    url = f'http://host.docker.internal:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
+    #host.docker.internal
+    #localhost
+    url = f'http://172.17.0.1:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
     if named_inputs.get("files",False):
         data =  remaining_inputs.pop("files",None)
         if isinstance(data,dict) or isinstance(data,list) :
