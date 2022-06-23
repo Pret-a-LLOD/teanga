@@ -247,9 +247,6 @@ def matching_function(*args, **kwargs):
             dependency_output = kwargs['ti'].xcom_pull(task_ids=input_source)
             if isinstance(dependency_output, str):
                 kwargs['given_inputs'].append({"requestBody":ast.literal_eval(dependency_output)})
-            if isinstance(dependency_output, dict):
-                pass
-            #for dict_ in dependency_output:
 
     expected_inputs = kwargs["expected_parameters"]
     # check if file is required
@@ -264,6 +261,9 @@ def matching_function(*args, **kwargs):
             elif expected_schema.get("type",False):
                 expected_schema_name = expected_schema["type"]
                 expected_inputs["requestBody"] = rqB["content"]["application/json"]["schema"]
+            elif expected_schema.get("properties",False):
+                #kwargs['given_inputs'].append({"requestBody":ast.literal_eval(dependency_output)})
+                pass
 
             if source_idx:
                 pass
