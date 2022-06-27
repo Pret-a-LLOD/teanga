@@ -4,6 +4,7 @@ import logging
 import json
 import requests
 import ast
+import os
 
 def generate_pull_operators(unique_services, dag): #{
     """
@@ -50,7 +51,7 @@ def generate_setup_operators(unique_services, dag): #{{
         d = services_instances[0][1]
         airflow_imageName = f'teanga-{full_imagePath.replace("/","--").replace(":","--")}'
         task_id=f"setup-{airflow_imageName}--{d['host_port']}"
-        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 90"
+        command=f"docker run --rm --name {airflow_imageName} -d -p {d['host_port']}:{d['container_port']} -e PORT={d['container_port']} {full_imagePath};sleep 10"
         print(command);
         operators[task_id] = BashOperator(
                 task_id=task_id,
@@ -246,9 +247,6 @@ def matching_function(*args, **kwargs):
             dependency_output = kwargs['ti'].xcom_pull(task_ids=input_source)
             if isinstance(dependency_output, str):
                 kwargs['given_inputs'].append({"requestBody":ast.literal_eval(dependency_output)})
-            if isinstance(dependency_output, dict):
-                pass
-            #for dict_ in dependency_output:
 
     expected_inputs = kwargs["expected_parameters"]
     # check if file is required
@@ -263,6 +261,9 @@ def matching_function(*args, **kwargs):
             elif expected_schema.get("type",False):
                 expected_schema_name = expected_schema["type"]
                 expected_inputs["requestBody"] = rqB["content"]["application/json"]["schema"]
+            elif expected_schema.get("properties",False):
+                #kwargs['given_inputs'].append({"requestBody":ast.literal_eval(dependency_output)})
+                pass
 
             if source_idx:
                 pass
@@ -373,9 +374,16 @@ def setup_request(named_inputs,#{{
         if input_dict.get("name",False) and  f'{{{input_dict["name"]}}}' in endpoint:
             endpoint = endpoint.replace(f'{{{input_dict["name"]}}}',str(input_dict["value"]))
             remaining_inputs.pop(input_dict["name"],None);
-    #host.docker.internal
+    #
     #localhost
-    url = f'http://172.17.0.1:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
+
+    USEROS = os.getenv("USEROS", default=None)
+    localhost_url= {
+            "darwin": "host.docker.internal",
+            "linux": "172.17.0.1",
+            "windows": "host.docker.internal" 
+    }.get(USEROS, "172.17.0.1") 
+    url = f'http://{localhost_url}:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
     if named_inputs.get("files",False):
         data =  remaining_inputs.pop("files",None)
         if isinstance(data,dict) or isinstance(data,list) :

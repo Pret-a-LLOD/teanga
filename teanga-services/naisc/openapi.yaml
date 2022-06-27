@@ -85,6 +85,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LangStringPair"
+
   /naisc/{config}/text_features:
     post:
       summary: Extract features from text
