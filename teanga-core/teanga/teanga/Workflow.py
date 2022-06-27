@@ -300,7 +300,7 @@ class TestingWorkflow:
         for url in OAS['paths'].keys():
             for request_method in OAS['paths'][url].keys():
                 operation_data=OAS['paths'][url][request_method]
-                if operation_data["operationId"] == operationId:
+                if operation_data.get("operationId",False) == operationId or operation_data.get("operation_id",False) == operationId:
                     flatten["operation_id"] = operationId
                     flatten["endpoint"] = url
                     flatten["request_method"] = request_method

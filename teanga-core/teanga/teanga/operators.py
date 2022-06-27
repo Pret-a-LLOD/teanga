@@ -4,7 +4,7 @@ import logging
 import json
 import requests
 import ast
-import platform
+import os
 
 def generate_pull_operators(unique_services, dag): #{
     """
@@ -377,11 +377,12 @@ def setup_request(named_inputs,#{{
     #
     #localhost
 
+    USEROS = os.getenv("USEROS", default=None)
     localhost_url= {
             "darwin": "host.docker.internal",
             "linux": "172.17.0.1",
             "windows": "host.docker.internal" 
-    }.get(platform.system().lower(), "172.17.0.1") 
+    }.get(USEROS, "172.17.0.1") 
     url = f'http://{localhost_url}:{host_port}{endpoint}' if not testing else f'http://localhost:{host_port}{endpoint}'
     if named_inputs.get("files",False):
         data =  remaining_inputs.pop("files",None)
