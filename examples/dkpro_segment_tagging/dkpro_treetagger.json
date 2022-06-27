@@ -1,0 +1,25 @@
+{
+    "1":{
+        "input": {
+            "EmptyCas": {"documentText":"this is a test","language":"en"}
+        },
+        "operation_id":"segmenter",
+        "repo":"berstearns",
+        "image_id":"teanga-dkpro-wrapper",
+        "image_tag":"032021",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": []
+    },
+    "2":{
+        "input": {
+        },
+        "operation_id":"tagger",
+        "repo":"berstearns",
+        "image_id":"teanga-dkpro-wrapper",
+        "image_tag":"032021",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": [{"operator":"pass","steps":["1"]}]
+    }
+}

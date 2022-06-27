@@ -1,0 +1,14 @@
+{
+    "1":{
+        "input": {
+            "value_type": "str"
+        },
+        "operation_id":"randomvalue",
+        "repo":"pretallod",
+        "image_id":"teanga-dummy_service_python",
+        "image_tag":"latest",
+        "host_port":8001,
+        "container_port":8080,
+        "dependencies": []
+    }
+}
