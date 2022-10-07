@@ -1,2 +1,2 @@
-apache-airflow==1.10.12
+apache-airflow==2.4.1
 docker
